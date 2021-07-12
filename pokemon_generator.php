@@ -12,10 +12,4 @@
     $array = mysqli_fetch_row($result);
 
     echo json_encode($array);
-
-
-
-
-
-
 ?>

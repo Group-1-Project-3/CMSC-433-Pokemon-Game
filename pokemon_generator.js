@@ -14,8 +14,7 @@ $(document).ready(function(){
             var spattack = pokemon[9];
             var spdefense = pokemon[10];
             var speed = pokemon[11];
-
+            
         });
-
     });
 });

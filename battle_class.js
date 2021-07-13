@@ -11,16 +11,20 @@ class BattleLogic {
 
     // returns updated hp for the attacked pokemon
     attack(offence_pl, attack_type){
+        let target_pok = this.user_pok[0];
+        let attack_pok = this.comp_pok[0];
 
-        if (offence_pl == "user")
+        console.log(this.user_pok[0]);
+        if (offence_pl == "user"){
             target_pok = this.comp_pok[0];
-        else if (offence_pl == "comp")
-            target_pok = this.user_pok[0];
+            attack_pok = this.user_pok[0];
+        } else 
+            return -1;
 
         let damage = attack_pok.calcDamage(target_pok, attack_type);
         let newHP = target_pok.hp - damage;
-        if (newHp < 0)
-            newHp = 0;
+        if (newHP < 0)
+            newHP = 0;
         target_pok.hp = newHP;
 
         if (offence_pl == "user")

@@ -7,6 +7,7 @@ class BattleLogic {
         this.comp = comp;
         this.user_pok = user.pokparty;
         this.comp_pok = comp.pokparty;
+    }
 
     // returns updated hp for the attacked pokemon
     attack(offence_pl, attack_type){
@@ -45,9 +46,10 @@ class BattleLogic {
         let dead = [];
         if (this.user_pok[0].hp == 0)
             dead.push("user");
-        if this.comp_pok[0].hp == 0)
+        if (this.comp_pok[0].hp == 0)
             dead.push("comp");
         
         return dead;
     }
 }
+export { BattleLogic };

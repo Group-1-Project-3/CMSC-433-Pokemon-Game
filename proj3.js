@@ -37,8 +37,13 @@ $(document).ready(function(){
 //Player Object/Class
 class Player {
 	
+	//Create player obj with their starter pokemon
 	constructor(pokeparty){
 		this.pokeparty = pokeparty;
-		console.log(pokeparty);
+	}
+	
+	//Add pokemon to player's team
+	addPokemon(newPokemon) {
+		this.pokeparty.push(newPokemon);
 	}
 }

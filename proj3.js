@@ -23,13 +23,11 @@ $(document).ready(function(){
 				var spdefense = pokemon[10];
 				var speed = pokemon[11];
 	
-				//Set mainPokemon to new pokemon object of user's choice
+				//Set pokeChosen to new pokemon object of user's choice
 				pokeChosen = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 1); 
-				//console.log(pokeChosen.pokemon_name);
 			
 				//Add the pokemon chosen into the array
 				pokeparty.push(pokeChosen);
-				console.log(pokeparty[0].pokemon_name);
 	
 				user = new Player(pokeparty);
 			});

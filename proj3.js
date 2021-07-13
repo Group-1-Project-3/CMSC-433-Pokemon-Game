@@ -4,6 +4,9 @@ var pokeChosen; //Pokemon chosen by the user
 var pokeparty = []; //"Pokemon Holder" Array that will hold all the pokemon
 var user;
 
+//Test new_poke
+var new_poke = new Pokemon("Squirtle",0,0,0,0,0,0,0,0,0,1);
+
 //Get selected Pokemon
 $(document).ready(function(){
 	document.getElementById('submit').onclick = function() {
@@ -30,6 +33,10 @@ $(document).ready(function(){
 				pokeparty.push(pokeChosen);
 	
 				user = new Player(pokeparty);
+				
+				//TEST
+				user.addPokemon(new_poke);
+				user.getPokeInfo("Squirtle", pokeparty);
 			});
 	}
 });
@@ -45,5 +52,30 @@ class Player {
 	//Add pokemon to player's team
 	addPokemon(newPokemon) {
 		this.pokeparty.push(newPokemon);
+	}
+
+	//Get Pokemon Info
+	getPokeInfo(pokeName, pokeparty) {
+		let i = 0;
+		let len = pokeparty.length;
+
+		//Check that array isn't empty
+		if (len > 0) {
+			for (i; i < len; i++) {
+				if (pokeparty[i].pokemon_name == pokeName) {
+					//Ouput Pokemon Info
+
+					//TEST (DELETE LATER)
+					console.log(pokeparty[i].pokemon_name);
+					console.log("Attack "+ pokeparty[i].spattack);
+				}
+			}
+		}
+		else if (len == 0) {
+			//Output that there is no Pokemon
+
+			//TEST (DEL LATER)
+			console.log("There is no pokemon currently in the array.");
+		}
 	}
 }

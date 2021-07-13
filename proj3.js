@@ -1,34 +1,51 @@
-/* To do:
- * 1.) Make frame rate independent for animations by setting the delay in the animation class proportional to the running frame rate
- * 2.) Put all warrior related events, updates, and renderings in the Warrior class
- * 3.) Create a Canvas class that gets new canvas layers, draws frames, and draw regular pictures (kind of like TextureManager class)
- * 4.) Encapsulate default init functions within Game.Init() like Game.AttachEvents() and Canvas.LoadImages() 
- * 5.) Create a TextureManage class that parses the textures.json file and stores images in a map
- * */
+/* Classes & Objects */
+const Canvas = {
+    Context: {},
+    CanWidth: 0,
+    CanHeight: 0,
+    _canvas: {},
+    Init: function () {
+        this._canvas = document.getElementById('canvas');
+        this.Context = this._canvas.getContext('2d');
+        this.CanWidth = this._canvas.width;
+        this.CanHeight = this._canvas.height;
+    }
+};
 
-const can = document.getElementById('canvas');
-const ctx = can.getContext('2d');
-const canWidth = can.width;
-const canHeight = can.height;
+const TextureManager = {
+    TextureMap: TEXTURES,
+    Init: function () {
+        const keys = Object.keys(this.TextureMap);
+        let imagePath = "";
+        keys.forEach( (key) => {
+            imagePath = this.TextureMap[key].path;
+            this.TextureMap[key].image = this.createImage(imagePath);
+        } );
+    },
+    createImage: function (src) {
+        const image = new Image();
+        image.src = src;
+        return image;
+    },
+    DrawFrame: function (textureId, currFrame, x, y) {
+        const texture = this.TextureMap[textureId];
+        Canvas.Context.drawImage(
+            texture.image,
+            currFrame.row * texture.frameWidth,
+            currFrame.col * texture.frameHeight,
+            texture.frameWidth,
+            texture.frameHeight,
+            x,
+            y,
+            texture.frameWidth,
+            texture.frameHeight
+        );
+    }
+};
 
-/* Game Classes & Objects */
-const Game = {
+const Events = {
     KEY: "",
-    _frameWidth: 128 / 4,
-    _frameHeight: 192 / 4,
-    _sprite: new Image(),
-    _animation: new Animation(),
-    _frameSets: {
-        walk_right: [ [2, 0], [2, 1], [2, 2], [2, 3] ],
-        walk_left: [ [1, 0], [1, 1], [1, 2], [1, 3] ],
-        walk_up: [ [3, 0], [3, 1], [3, 2], [3, 3] ],
-        walk_down: [ [0, 0], [0, 1], [0, 2], [0, 3] ],
-        idle: [ [0, 0], [0, 0], [0, 0], [0, 0] ]
-    },
-    Init: function (){
-        this._sprite.src = "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Characters/NPC 19.png";
-    },
-    AttachEvents: function () {
+    Init: function() {
         document.addEventListener('keydown', (e) => {
             e.preventDefault();
             const key = e.key;
@@ -45,74 +62,8 @@ const Game = {
             e.preventDefault();
             this.KEY="";
         });
-    },
-    Events: function(){
-        if (this.KEY === "RIGHT") {
-            this._animation.SetProps(this._frameSets.walk_right, 10);
-        }
-        else if (this.KEY === "LEFT") {
-            this._animation.SetProps(this._frameSets.walk_left, 10);
-        }
-        else if (this.KEY === "UP") {
-            this._animation.SetProps(this._frameSets.walk_up, 10);
-        }
-        else if (this.KEY === "DOWN") {
-            this._animation.SetProps(this._frameSets.walk_down, 10);
-        }
-        else {
-            this._animation.SetProps(this._frameSets.idle, 10);
-        }
-    },
-    Update: function () {
-        this._animation.Update();
-    },
-    Render: function () {
-        ctx.clearRect(0, 0, canWidth, canHeight);
-        ctx.drawImage(
-            this._sprite,
-            this._animation.frame.row * this._frameWidth,
-            this._animation.frame.col * this._frameHeight,
-            this._frameWidth,
-            this._frameHeight,
-            canWidth / 2,
-            canHeight / 2,
-            this._frameWidth,
-            this._frameHeight
-        );
     }
 };
-
-function Animation() {
-    this.delay;
-    this.frame = {};
-    this.frameIndex;
-    this.frameSet;
-    this.count;
-
-    this.SetProps = function (frameSet, delay) {
-        if (this.frameSet != frameSet) {
-            this.delay = delay;
-            this.frame = {};
-            this.frameIndex = 0;
-            this.frameSet = frameSet;
-            this.count = 0;
-        }
-    }
-
-    this.Update = function () {
-        this.count++; 
-        if (this.count >= this.delay) {
-            // update the animation to the next frame in the frame set
-            this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
-            // reset the count
-            this.count = 0;
-        }
-
-        const frameArray = this.frameSet[this.frameIndex];
-        this.frame.row = frameArray[1];
-        this.frame.col = frameArray[0];
-    }
-}
 
 const Clock = {
     DeltaTime: 0,
@@ -125,10 +76,119 @@ const Clock = {
     },
 };
 
+const Player = {
+    _animation: new Animation('trainer_red'),
+    _x: 10,
+    _y: 10,
+    _dx: 5,
+    _dy: 5,
+    Update: function () {
+        let prevX = this._x;
+        let prevY = this._y;
+
+        if (Events.KEY === "RIGHT"){
+            this._x += this._dx * Clock.DeltaTime;
+            this._animation.SetProps('walk_right', 10);
+        }
+        else if (Events.KEY === "LEFT") {
+            this._x += -this._dx * Clock.DeltaTime;
+            this._animation.SetProps('walk_left', 10);
+        }
+        else if (Events.KEY === "UP") {
+            this._y += -this._dy * Clock.DeltaTime;
+            this._animation.SetProps('walk_up', 10);
+        }
+        else if (Events.KEY === "DOWN") {
+            this._y += this._dy * Clock.DeltaTime;
+            this._animation.SetProps('walk_down', 10);
+        }
+        else {
+            this._animation.SetProps('idle', 10);
+        }
+
+        /* If our player goes out of bounds or runs into the collision layer we don't update 'x' and 'y' */
+        let rightBody = this._x + TextureManager.TextureMap['trainer_red'].frameWidth;
+        let bottomBody = this._y + TextureManager.TextureMap['trainer_red'].frameHeight;
+        let leftBody = this._x;
+        let topBody = this._y;
+        let rightWall = Canvas.CanWidth;
+        let leftWall = 0;
+        let topWall = 0;
+        let bottomWall = Canvas.CanHeight;
+
+        if ( rightBody >= rightWall || bottomBody >= bottomWall || topBody <= topWall || leftBody <= leftWall){
+            // do nothing
+            this._x = prevX;
+            this._y = prevY;
+        }
+
+        this._animation.Update();
+    },
+    Render: function () {
+        this._animation.Render(this._x, this._y);
+    }
+};
+
+const Game = {
+    Init: function (){
+        Canvas.Init();
+        Events.Init();    
+        TextureManager.Init();
+    },
+    Update: function () {
+        Player.Update();
+    },
+    Render: function () {
+        Player.Render();
+    },
+    Clear: function () {
+        Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
+    }
+};
+
+function Animation(textureId) {
+    this.delay;
+    this.frame = {};
+    this.frameIndex;
+    this.frameSet;
+    this.count;
+    this.id = textureId;
+    this.action;
+
+    Animation.prototype.SetProps = function (action, delay) {
+        if (this.action !== action) {
+            this.action = action;
+            this.delay = delay;
+            this.frame = {};
+            this.frameIndex = 0;
+            this.frameSet = TextureManager.TextureMap[this.id].frameSets[action];
+            this.count = 0;
+        }
+    }
+
+    Animation.prototype.Update = function () {
+        this.count++; 
+        if (this.count >= this.delay) {
+            // update the animation to the next frame in the frame set
+            this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
+            // reset the count
+            this.count = 0;
+        }
+
+        const frameArray = this.frameSet[this.frameIndex];
+        this.frame.row = frameArray[1];
+        this.frame.col = frameArray[0];
+    }
+
+    Animation.prototype.Render = function (x, y) {
+        TextureManager.DrawFrame(this.id, this.frame, x, y);
+    }
+}
+
 function main() {
 
     /* Game loop */
-    Game.Events();
+    Game.Clear();
     Game.Update();
     Game.Render();
     Clock.Tick();
@@ -137,7 +197,6 @@ function main() {
 }
 
 /* Prepare game by init events and defaults */
-Game.AttachEvents();
 Game.Init();
-/* Request animation frame performs at 60fps on most monitorss */
+/* Performs at 60fps on most monitorss */
 requestAnimationFrame(main);

@@ -16,14 +16,10 @@ $(document).ready(function(){
         var spdefense = pokemon[10];
         var speed = pokemon[11];
 
-        var pok = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 20);
-        var pokcurrentHP = pok.hp;
-        console.log("attack is ", pokemon[7]);
-
-        var pok2 = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 5);
-        console.log("defense is ", pokemon[8]);
-        $("#mybutton").click(function(p){
-            console.log(pokcurrentHP -= pok.calcDamage(pok2, "special"));
-        });
+        var pok = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 1);
+        console.log(pok.pokemon_name);
+        // $("#mybutton").click(function(p){
+        //
+        // });
     });
 });

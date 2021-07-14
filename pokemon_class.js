@@ -1,4 +1,4 @@
-import { TYPES, TYPE_ORDER, TYPE_CHART } from "./type-chart.js";
+// import { TYPES, TYPE_ORDER, TYPE_CHART } from "./type-chart.js";
 class Pokemon {
 
     constructor(pokemon_name, type1, type2, totalstat, hp, attack, defense, spattack, spdefense, speed, level){

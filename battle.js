@@ -9,10 +9,14 @@ function getRand(){
     return Math.floor(Math.random() * 2);
 }
 
+/*
+user: player obj
+comp: player obj if trainer, else Pokemon obj (meant for wild pokemon)
 
+returns user and comp as player objs
+*/
 function initBattle(user, comp){
     let dead = [];
-    let in_progress = true;
 
     if (comp.constructor.name == "Pokemon")
         var pl2 = new Player("wild", [comp]);
@@ -23,28 +27,34 @@ function initBattle(user, comp){
 
     // start battle graphics
 
-    while (in_progress){
+    while (true){
         
         let choice = getKey();
 
         battle_logic.attack("user", attack_option[choice]);
     
+        // graphics of user attacking comp, stats already updated
+
         // check if any pokemon are out of hp
         dead = battle_logic.swap();
         if (dead.length > 0){
-            in_progress = false; // end battle
+            // graphics for end of battle, winner can be found in dead
             break;
         }
+        // can do swapping graphics here, pokeparty array already updated to have next alive pok in pos 0
 
         // opponent attacks 
         battle_logic.attack("comp", attack_option[getRand()]);
 
+        // graphics of comp attacking user, stats already updated
+
         // check if any pokemon are out of hp
         dead = battle_logic.swap();
         if (dead.length > 0){
-            in_progress = false; // end battle
+            // graphics for end of battle, winner can be found in dead
             break;
         }
+        // can do swapping graphics here, pokeparty array already updated to have next alive pok in pos 0
     }
 
     comp = pl2;
@@ -52,7 +62,9 @@ function initBattle(user, comp){
     return {user, comp};
 }
 
-
+/*
+uses prompt for user input
+*/
 function getKey() {
     let KEY = 2;
     while (KEY != 0 && KEY != 1){

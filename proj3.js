@@ -140,9 +140,17 @@ const Clock = {
 //Starter Scene Choosing pokemon
 const StarterScene = {
 	Init: function () {
+		//Note: Didn't know how to scale background image, so drew own for now.
 		let starterBackground = new Image();
 		starterBackground.src = "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/helpadventurebg.png"
 		Canvas.Context.drawImage(starterBackground, 0, 0, 1200, 700);
+
+		//Adding text to Canvas
+		Canvas.Context.font = "30px Courier";
+		Canvas.Context.textAlign = "center";
+		Canvas.Context.fillText("Choose Your Pokemon!", Canvas.CanWidth/2, 60);
+
+		//Add animation for bobbing starter pokemon
 		pokeStarterAnimationOverlay();
 	},
 };
@@ -154,7 +162,7 @@ function pokeStarterAnimationOverlay() {
 		col: 0
 	};
 
-	
+
 }
 
 const Game = {

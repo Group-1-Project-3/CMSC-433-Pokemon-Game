@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	</head>
-	<body>
+
+<head>
+	<link rel="stylesheet" href="proj3.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="textures.js"></script>
+</head>
+
+<body>
+	<div class="page1">
+	<div class="canvas-container">
+		<canvas id="canvas" width="1200" height="700" style="border:1px solid #000000;"></canvas>
+	</div>
+
+	<div class="pokeChoices" >
 		<form id="pokemonChosen">
 			<input type="radio" id="pokemon1" name="pokemon" value="Charmander">
-			
-			<label for="pokemon1"> Charmander</label><br>
+			<label for="pokemon1"> <img src="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Items/CHERISHBALL.png">Charmander</label>
 			<input type="radio" id="pokemon2" name="pokemon" value="Bulbasaur">
-			<label for="pokemon2"> Bulbasaur</label><br>
+			<label for="pokemon2"> <img src="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Items/DUSKBALL.png">Bulbasaur</label>
 			<input type="radio" id="pokemon3" name="pokemon" value="Squirtle">
-			<label for="pokemon3"> Squirtle</label>
+			<label for="pokemon3"> <img src="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Items/DIVEBALL.png">Squirtle</label>
 		</form>
-		<button id="submit">Submit</button>
-		
-		<script src="proj3.js" type="module"></script>
-	</body>
+		<br><br><br><button id="submit">Submit</button><br>
+	</div>
+</div>
+
+	<script src="proj3.js" type="module"></script>
+</body>
 
 </html>
-
-
-

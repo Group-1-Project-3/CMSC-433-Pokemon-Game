@@ -42,7 +42,7 @@ $(document).ready(function () {
 
 //Hide div of Poke Choices after selection
 function hideDiv () {
-	$(pokeChoices).hide();
+	$(".pokeChoices").hide();
 }
 
 // *****Classes and Objects*****

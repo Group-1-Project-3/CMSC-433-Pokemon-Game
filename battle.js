@@ -4,16 +4,16 @@ import { Pokemon } from "./pokemon_class.js";
 
 const attack_option = ["physical", "special"];
 
+
 function getRand(){
-    return Math.floor(Math.random() * 2) + 1;
+    return Math.floor(Math.random() * 2);
 }
+
 
 function initBattle(user, comp){
     let dead = [];
-    let attackedHP = 0;
     let in_progress = true;
 
-    console.log(comp.constructor.name);
     if (comp.constructor.name == "Pokemon")
         var pl2 = new Player("wild", [comp]);
     else
@@ -24,11 +24,10 @@ function initBattle(user, comp){
     // start battle graphics
 
     while (in_progress){
-        // get attack choice from user
         
-        let choice = getKey(); // use keypress event to get choice
+        let choice = getKey();
 
-        attackedHP = battle_logic.attack("user", attack_option[choice]);
+        battle_logic.attack("user", attack_option[choice]);
     
         // check if any pokemon are out of hp
         dead = battle_logic.swap();
@@ -48,29 +47,27 @@ function initBattle(user, comp){
         }
     }
 
+    comp = pl2;
+
     return {user, comp};
 }
 
-async function getKey() {
-    let KEY = "";
+
+function getKey() {
+    let KEY = 2;
     while (KEY != 0 && KEY != 1){
-        console.log("wait");
-        await waitingKeypress();
-        console.log("key pressed");
-        $('input').on('keyup', function(e) {
-            KEY = e.key;
-            console.log(KEY);
-        });
+        KEY = prompt("0 -> physical, 1 -> special");
     }
     return KEY;
 }
 
-//$(document).ready(function(){
+/*
+$(document).ready(function(){
     $.get("get_pokemon_data.php?pokemon_name=Charmander", function(data){
         var pokemon = jQuery.parseJSON(data);
         var pokemon_id = pokemon[1];
         var pokemon_name = pokemon[2];
-        var type1 = pokemon[3];
+        var type1 = pokemon[3]; 
         var type2 = pokemon[4];
         var totalstat = pokemon[5];
         var hp = pokemon[6];
@@ -81,24 +78,20 @@ async function getKey() {
         var speed = pokemon[11];
 
         var pok = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 20);
-        console.log("pok");
-        console.log(pok);
-        var pokcurrentHP = pok.hp;
-        console.log("attack is ", pokemon[7]);
 
         var pok2 = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 5);
-        console.log("defense is ", pokemon[8]);
-        $("#mybutton").click(function(p){
-            console.log(pokcurrentHP -= pok.calcDamage(pok2, "special"));
-        });
-        console.log(pok);
-        let user = new Player("user", [pok]);
-        let comp = new Player("comp", [pok2]);
+
+        var pok3 = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 5);
+
+        var pok4 = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 5);
+
+        let user = new Player("user", [pok, pok2]);
+        let comp = new Player("comp", [pok3, pok4]);
         
-        initBattle(user, comp);
+        let result = initBattle(user, comp);
+        console.log(result.user.pokeparty, result.comp.pokeparty);
 
         console.log("over");
-        
     });
-
-//});
+});
+*/

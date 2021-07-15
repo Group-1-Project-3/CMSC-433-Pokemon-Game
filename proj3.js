@@ -35,8 +35,15 @@ $(document).ready(function () {
 			user = new Player(pokeparty);
 		});
 	}
+
+	document.getElementById('submit').addEventListener("click", hideDiv);
+
 });
 
+//Hide div of Poke Choices after selection
+function hideDiv () {
+	$(pokeChoices).hide();
+}
 
 // *****Classes and Objects*****
 
@@ -140,7 +147,7 @@ const Clock = {
 //Starter Scene Choosing pokemon
 const StarterScene = {
 	Init: function () {
-		//Note: Didn't know how to scale background image, so drew own for now.
+		// //Note: Didn't know how to scale background image, so drew own for now.
 		let starterBackground = new Image();
 		starterBackground.src = "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/helpadventurebg.png"
 		Canvas.Context.drawImage(starterBackground, 0, 0, 1200, 700);

@@ -21,6 +21,12 @@ const Canvas = {
     }
 };
 
+const AudioManager = {
+    Init: function () {
+        
+    }
+};
+
 const TextureManager = {
     TextureMap: TEXTURES,
     Init: function () {

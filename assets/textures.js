@@ -42,4 +42,12 @@ var TEXTURES =
         frameHeight: 192 / 4
     },
 
+    outside_tileset: {
+        path: "./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Tilesets/Outside.png",
+        image: {},
+        frameSets: {
+        },
+        frameWidth: 32,
+        frameHeight: 32
+    }
 }

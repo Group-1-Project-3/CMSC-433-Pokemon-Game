@@ -140,12 +140,14 @@ const Clock = {
 const CollisionHandler = {
     mapH: 0,
     mapW: 0,
+    collisionLayer: {},
     Init: function (map) {
         this.mapH = map.heightPx;
         this.mapW = map.widthPx;
+        this.collisionLayer = map.GetCollisionLayer();
     },
     IsOutOfBoundsCollision: function (textureId, x, y) { 
-        /* If our player goes out of bounds or runs into the collision layer we don't update 'x' and 'y' */
+        /* If our player goes out of bounds we don't update 'x' and 'y' */
         let rightBody = x + TextureManager.TextureMap[textureId].frameWidth;
         let bottomBody = y + TextureManager.TextureMap[textureId].frameHeight;
         let leftBody = x;
@@ -160,7 +162,23 @@ const CollisionHandler = {
 
         return false;
     },
-    IsMapCollision: function (x, y) {
+    IsMapCollision: function (textureId, x, y) {
+        /* If our player goes into collision layer we don't update 'x' and 'y' */
+        let leftSide = Math.floor(x / this.collisionLayer.tileSize);
+        let rightSide = Math.ceil((x + TextureManager.TextureMap[textureId].frameWidth) / this.collisionLayer.tileSize);
+        let topSide = Math.floor(y / this.collisionLayer.tileSize);
+        let bottomSide = Math.ceil((y + TextureManager.TextureMap[textureId].frameHeight) / this.collisionLayer.tileSize);
+
+        for (let i = leftSide; i < rightSide; i++) {
+            for (let j = topSide; j < bottomSide; j++) {
+                console.log(this.collisionLayer.tileMap[i][j]);
+                if (this.collisionLayer.tileMap[j][i] !== 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;        
     }
 }
 
@@ -241,7 +259,7 @@ function Player(x, y, dx, dy) {
             this._animation.Stop(0);
         }
 
-        if (CollisionHandler.IsOutOfBoundsCollision('trainer_red', this._x, this._y)) {
+        if (CollisionHandler.IsOutOfBoundsCollision('trainer_red', this._x, this._y) || CollisionHandler.IsMapCollision('trainer_red', this._x, this._y)) {
             // do nothing
             this._x = prevX;
             this._y = prevY;
@@ -338,6 +356,10 @@ function Map(tileLayers, widthPx, heightPx) {
     this.tileLayers = tileLayers;
     this.widthPx = widthPx;
     this.heightPx = heightPx;
+
+    Map.prototype.GetCollisionLayer = function () {
+        return this.tileLayers[this.tileLayers.length - 1];
+    }
 
     Map.prototype.Render = function () {
         for (let i = 0; i < tileLayers.length; i++)

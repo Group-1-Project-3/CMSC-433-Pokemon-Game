@@ -4,7 +4,7 @@ import { Camera } from "./camera.js";
 import { Events } from "./input.js";
 
 function Player(x, y, dx, dy) {
-    this._animation = new Animation('npc_19');
+    this._animation = new Animation('trainer_red');
     this._x = x;
     this._y = y;
     this._dx = dx;
@@ -35,7 +35,9 @@ function Player(x, y, dx, dy) {
             this._animation.Stop(0);
         }
 
-        if (CollisionHandler.IsOutOfBoundsCollision('npc_19', this._x, this._y) || CollisionHandler.IsMapCollision('npc_19', this._x, this._y)) {
+        /* check for collisions */
+        let isCollision =   CollisionHandler.IsOutOfBoundsCollision('trainer_red', this._x, this._y) || CollisionHandler.IsMapCollision('trainer_red', this._x, this._y);
+        if (isCollision) {
             // do nothing
             this._x = prevX;
             this._y = prevY;

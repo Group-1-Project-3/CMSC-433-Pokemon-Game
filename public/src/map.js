@@ -2,33 +2,32 @@ import { TextureManager } from "./graphics.js";
 
 const MapParser = {
     Load: function (jsonMap) {
+        /* Get map size */
+        const width = jsonMap['width'];
+        const height = jsonMap['height'];
+        const tileSize = jsonMap['tilewidth'];
+        let totalWidth = width * tileSize;
+        let totalHeight = height * tileSize;
+
         /* Parse the tilesets */
         let tileSets = [];
         for (let i = 0; i < jsonMap['tilesets'].length; i++) {
             const tileSetElem = jsonMap['tilesets'][i];
-            tileSets.push( this.ParseTileSet(tileSetElem) );
+            tileSets.push( this.ParseTileSet(tileSetElem, tileSize) );
         }
 
         /* Parse the tilelayers */
         let tileLayers = [];
         for (let i = 0; i < jsonMap['layers'].length; i++) {
             const layerElem = jsonMap['layers'][i];
-            tileLayers.push( this.ParseTileLayer(layerElem, tileSets) );
+            tileLayers.push( this.ParseTileLayer(layerElem, tileSets, tileSize) );
         }
-
-        /* Get map size */
-        const width = jsonMap['width'];
-        const height = jsonMap['height'];
-        const tilewidth = jsonMap['tilewidth'];
-        let totalWidth = width * tilewidth;
-        let totalHeight = height * tilewidth;
 
         return new Map(tileLayers, totalWidth, totalHeight);
     },
-    ParseTileLayer: function (layerElem, tileSet) {
+    ParseTileLayer: function (layerElem, tileSets, tileSize) {
         const colCount = layerElem['width'];
         const rowCount = layerElem['height'];
-        const tileSize = tileSet['tileSize'];
 
         let tileMap = [];
         let index = 0;
@@ -40,11 +39,10 @@ const MapParser = {
             tileMap.push(row);
         }
 
-        return new TileLayer(tileSize, rowCount, colCount, tileMap, tileSet);    
+        return new TileLayer(tileSize, rowCount, colCount, tileMap, tileSets);    
     },
-    ParseTileSet: function (tileElem) {
+    ParseTileSet: function (tileElem, tileSize) {
         const tileName = tileElem['name'];
-        const tileSize = tileElem['tilewidth'];
         const colCount = tileElem['columns'];
         const firstId = tileElem['firstgid'];
         const lastId = firstId + tileElem['tilecount'] - 1;

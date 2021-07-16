@@ -72,5 +72,14 @@ var TEXTURES =
         },
         "frameWidth": 32,
         "frameHeight": 32
+    },
+
+    "Gyms interior": {
+        "path": "./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Tilesets/Gyms interior.png",
+        "image": {},
+        "frameSets": {
+        },
+        "frameWidth": 32,
+        "frameHeight": 32
     }
 }

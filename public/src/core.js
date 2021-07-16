@@ -17,7 +17,7 @@ const Clock = {
 };
 
 const Game = {
-    Map: MapParser.Load(MAP, 'outside_tileset'),
+    Map: MapParser.Load(MAP),
     Player: new Player(200, 200, 5, 5),
     Init: function (){
         Canvas.Init();

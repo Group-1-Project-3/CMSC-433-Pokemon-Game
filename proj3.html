@@ -6,26 +6,28 @@
 	<link rel="stylesheet" href="proj3.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="textures.js"></script>
+
+	<audio id="charmander" src = "assets/Pokemon Essentials v19.1 2021-05-22/Audio/SE/Cries/CHARMANDER.wav"></audio>
+	<audio id="bulbasaur" src = "assets/Pokemon Essentials v19.1 2021-05-22/Audio/SE/Cries/BULBASAUR.wav"></audio>
+	<audio id="squirtle" src = "assets/Pokemon Essentials v19.1 2021-05-22/Audio/SE/Cries/SQUIRTLE.wav"></audio>
 </head>
 
 <body>
-
 	<div class="canvas-container">
 		<canvas id="canvas" width="1200" height="700" style="border:1px solid #000000;"></canvas>
 	</div>
 	<div class="pokeChoices">
 		<form id="pokemonChosen">
-			<input type="radio" id="pokemon1" name="pokemon" value="Charmander">
+			<input type="radio" id="pokemon1" name="pokemon" value="Charmander" onclick="document.getElementById('charmander').play()">
 			<label for="pokemon1"> <img
 					src="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Items/CHERISHBALL.png">Charmander</label>
-			<input type="radio" id="pokemon2" name="pokemon" value="Bulbasaur">
+			<input type="radio" id="pokemon2" name="pokemon" value="Bulbasaur" onclick="document.getElementById('bulbasaur').play()">
 			<label for="pokemon2"> <img
 					src="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Items/DUSKBALL.png">Bulbasaur</label>
-			<input type="radio" id="pokemon3" name="pokemon" value="Squirtle">
+			<input type="radio" id="pokemon3" name="pokemon" value="Squirtle" onclick="document.getElementById('squirtle').play()">
 			<label for="pokemon3"> <img
 					src="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Items/DIVEBALL.png">Squirtle</label>
 		</form>
-		<button id="submit">Submit</button><br>
 	</div>
 
 	<script src="proj3.js" type="module"></script>

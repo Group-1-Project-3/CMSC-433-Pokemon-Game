@@ -24,6 +24,14 @@ html, body{
     justify-content: center;
 }
 
+#pokemon1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    padding: 8px;
+    background-color: #f44336;
+}
+
 /* HIDE RADIO */
 [type=radio] { 
     position: absolute;

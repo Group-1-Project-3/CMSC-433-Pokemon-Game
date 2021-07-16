@@ -6,7 +6,8 @@ var user;
 
 //Get selected Pokemon
 $(document).ready(function () {
-	document.getElementById('submit').onclick = function () {
+
+	document.getElementById('pokemonChosen').onclick = function () {
 		var selected = document.querySelector('input[type=radio][name=pokemon]:checked');
 
 		$.get(`get_pokemon_data.php?pokemon_name=${selected.value}`, function (data) {
@@ -33,17 +34,28 @@ $(document).ready(function () {
 			pokeparty.push(pokeChosen);
 
 			user = new Player(pokeparty);
+
+			//TEST
+			console.log(user.pokeparty);
 		});
 	}
 
-	document.getElementById('submit').addEventListener("click", hideDiv);
+	document.getElementById('pokemonChosen').addEventListener("click", hideDiv);
 
 });
+
+//Hover over Sounds
+//document.getElementById('pokemon1').addEventListener("click", char_sound());
 
 //Hide div of Poke Choices after selection
 function hideDiv () {
 	$(".pokeChoices").hide();
 }
+
+// function char_sound() {
+// 	var audio_char = new Audio("assets/Pokemon Essentials v19.1 2021-05-22/Audio/SE/Cries/CHARMANDER.wav");
+// 	audio_char.play()
+// }
 
 // *****Classes and Objects*****
 
@@ -158,18 +170,17 @@ const StarterScene = {
 		Canvas.Context.fillText("Choose Your Pokemon!", Canvas.CanWidth/2, 60);
 
 		//Add animation for bobbing starter pokemon
-		pokeStarterAnimationOverlay();
+		charmander_animation(100,100);
 	},
 };
 
 //Animation overlay for bobbing pokemon
-function pokeStarterAnimationOverlay() {
-	var frame = {
-		row: 0,
-		col: 0
-	};
-
-
+function charmander_animation(x, y) {
+	var _animation = new Animation('poke_starter_charmander');
+	
+// 	_animation.prototype.SetProps('bobbing', 6);
+// 	_animation.prototype.Update();
+// 	_animation.prototype.Render(x, y);
 }
 
 const Game = {

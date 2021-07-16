@@ -9,6 +9,8 @@ function getRand(){
     return Math.floor(Math.random() * 2);
 }
 
+let wild = false;
+
 /*
 user: player obj
 comp: player obj if trainer, else Pokemon obj (meant for wild pokemon)
@@ -18,9 +20,10 @@ returns user and comp as player objs
 function initBattle(user, comp){
     let dead = [];
 
-    if (comp.constructor.name == "Pokemon")
+    if (comp.constructor.name == "Pokemon"){
         var pl2 = new Player("wild", [comp]);
-    else
+        wild = true;
+    } else
         var pl2 = comp;
 
     let battle_logic = new BattleLogic(user, pl2);
@@ -30,6 +33,17 @@ function initBattle(user, comp){
     while (true){
         
         let choice = getKey();
+
+        // deal with catch attempt if wild
+        if (choice == 2){
+            // graphics for catching go here
+            let success = battle_logic.catchpok();
+            if (success == true){
+                break
+            } else {
+                console.log("failed to catch")
+            }
+        }
 
         battle_logic.attack("user", attack_option[choice]);
     
@@ -66,14 +80,19 @@ function initBattle(user, comp){
 uses prompt for user input
 */
 function getKey() {
-    let KEY = 2;
-    while (KEY != 0 && KEY != 1){
-        KEY = prompt("0 -> physical, 1 -> special");
+    let KEY = 3;
+    if (wild == true){
+        while (KEY != 0 && KEY != 1 && KEY != 2){
+            KEY = prompt("0 -> physical, 1 -> special, 2 -> catch attempt");
+        }
+    } else {
+        while (KEY != 0 && KEY != 1){
+            KEY = prompt("0 -> physical, 1 -> special");
+        }
     }
     return KEY;
 }
 
-/*
 $(document).ready(function(){
     $.get("get_pokemon_data.php?pokemon_name=Charmander", function(data){
         var pokemon = jQuery.parseJSON(data);
@@ -100,10 +119,9 @@ $(document).ready(function(){
         let user = new Player("user", [pok, pok2]);
         let comp = new Player("comp", [pok3, pok4]);
         
-        let result = initBattle(user, comp);
+        let result = initBattle(user, pok4);
         console.log(result.user.pokeparty, result.comp.pokeparty);
 
         console.log("over");
     });
 });
-*/

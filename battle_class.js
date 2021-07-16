@@ -51,5 +51,29 @@ class BattleLogic {
         
         return dead;
     }
+
+    catchpok() {
+        let N = Math.floor(Math.random() * 255);
+        if (N < 25){
+            this.caught();
+            return true;
+        }
+        let M = Math.floor(Math.random() * 255);
+        let HPcur = this.comp_pok[0].hp;
+        let HPmax = this.comp_pok[0].hpmax; 
+        
+        let f = ((HPmax*255*4)/(HPcur*8));
+        if (f > M){
+            this.caught();
+            return true;
+        }
+        return false;
+    }
+
+    caught(){
+        this.user_pok.push(this.comp_pok[0]);
+        this.comp_pok[0] = "caught";
+        return
+    }
 }
 export { BattleLogic };

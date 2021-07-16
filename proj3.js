@@ -12,6 +12,7 @@ const Canvas = {
         this.Context = this._canvas.getContext('2d');
         this.CanWidth = this._canvas.width;
         this.CanHeight = this._canvas.height;
+
     }
 };
 
@@ -31,7 +32,6 @@ const TextureManager = {
         return image;
     },
     DrawFrame: function (textureId, currFrame, x, y) {
-        const SCALE = 2.34375;
         const texture = this.TextureMap[textureId];
         Canvas.Context.drawImage(
             texture.image,
@@ -41,10 +41,24 @@ const TextureManager = {
             texture.frameHeight,
             x,
             y,
-            texture.frameWidth * SCALE,
-            texture.frameHeight * SCALE
+            texture.frameWidth,
+            texture.frameHeight
         );
-    }
+    },
+
+    DrawPicture: function (textureId, x, y, scale){
+        const texture = this.TextureMap[textureId];
+        Canvas.Context.drawImage(
+            texture.image,
+            0,
+            0,
+            texture.frameWidth,
+            texture.frameHeight,
+            x,
+            y,
+            texture.frameWidth * scale,
+            texture.frameHeight * scale
+    )}
 };
 
 const Events = {
@@ -165,12 +179,8 @@ const Game = {
 };
 
 function drawBackground(textureId) {
-    var frame = {
-        row : 0,
-        col : 0
-    };
-
-    TextureManager.DrawFrame(textureId, frame, 0, 0);
+    const SCALE = 2.37;
+    TextureManager.DrawPicture(textureId, 0, 0, SCALE);
 
 }
 
@@ -183,29 +193,23 @@ function drawBackground(textureId) {
 // }
 
 function draw_fight_overlay(){
-    var frame = {
-        row : 0,
-        col : 0
-    };
-    TextureManager.DrawFrame('overlay_message_box', frame, 0, 475);
-    TextureManager.DrawFrame('overlay_fight', frame, 0, 475);
-    TextureManager.DrawFrame('our_health_box', frame, 731, 300);
-    TextureManager.DrawFrame('foe_health_box', frame, 0, 50);
-    TextureManager.DrawFrame('pokemon_front', frame, 70, 0);
-    TextureManager.DrawFrame('pokemon_back', frame, 100, 100);
+    const SCALE = 2.37;
+    TextureManager.DrawPicture('overlay_message_box', 0, 475, SCALE);
+    TextureManager.DrawPicture('overlay_fight', 0, 475, SCALE);
+    TextureManager.DrawPicture('our_health_box', 731, 300, SCALE);
+    TextureManager.DrawPicture('foe_health_box', 0, 50, SCALE);
+    TextureManager.DrawPicture('pokemon_front', 650, 0, SCALE);
+    TextureManager.DrawPicture('pokemon_back', 100, 100, SCALE);
 
 }
 
 function slideInAnimation(){
-    var frame = {
-        row : 0,
-        col : 0
-    };
-    TextureManager.DrawFrame('base0', frame, -300, 325);
-    TextureManager.DrawFrame('base1', frame, 600, 100);
+    const SCALE = 2.37;
+    TextureManager.DrawPicture('base0', -300, 325, SCALE);
+    TextureManager.DrawPicture('base1', 600, 100, SCALE);
 }
 
-// to do list: make a script to grab path of image of pokemon (front and back)
+
 // function drawPokemons(){
 //     var frame = {
 //         row : 0,
@@ -272,22 +276,22 @@ requestAnimationFrame(main);
 
 // $(document).ready(function(){
 //
-//     // $.get("get_pokemon_data.php?pokemon_name=Charmander", function(data){
-//     //     var pokemon = jQuery.parseJSON(data);
-//     //     var pokemon_id = pokemon[1];
-//     //     var pokemon_name = pokemon[2];
-//     //     var type1 = pokemon[3];
-//     //     var type2 = pokemon[4];
-//     //     var totalstat = pokemon[5];
-//     //     var hp = pokemon[6];
-//     //     var attack = pokemon[7];
-//     //     var defense = pokemon[8];
-//     //     var spattack = pokemon[9];
-//     //     var spdefense = pokemon[10];
-//     //     var speed = pokemon[11];
-//     //
-//     //     // $("#mybutton").click(function(p){
-//     //     //
-//     //     // });
-//     // });
+//     $.get("get_pokemon_data.php?pokemon_name=Charmander", function(data){
+//         var pokemon = jQuery.parseJSON(data);
+//         var pokemon_id = pokemon[1];
+//         var pokemon_name = pokemon[2];
+//         var type1 = pokemon[3];
+//         var type2 = pokemon[4];
+//         var totalstat = pokemon[5];
+//         var hp = pokemon[6];
+//         var attack = pokemon[7];
+//         var defense = pokemon[8];
+//         var spattack = pokemon[9];
+//         var spdefense = pokemon[10];
+//         var speed = pokemon[11];
+//
+//         $("#mybutton").click(function(p){
+//
+//         });
+//     });
 // });

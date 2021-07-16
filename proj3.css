@@ -13,4 +13,6 @@ html, body{
 }
 #canvas{
     background-color: white;
+    width: 60%;
+    height: 60%;
 }

@@ -28,9 +28,9 @@ const CollisionHandler = {
     IsMapCollision: function (textureId, x, y) {
         /* If our player goes into collision layer we don't update 'x' and 'y' */
         let leftSide = Math.floor(x / this.collisionLayer.tileSize);
-        let rightSide = Math.ceil((x + TextureManager.TextureMap[textureId].frameWidth) / this.collisionLayer.tileSize);
+        let rightSide = Math.floor((x + TextureManager.TextureMap[textureId].frameWidth) / this.collisionLayer.tileSize);
         let topSide = Math.floor(y / this.collisionLayer.tileSize);
-        let bottomSide = Math.ceil((y + TextureManager.TextureMap[textureId].frameHeight) / this.collisionLayer.tileSize);
+        let bottomSide = Math.floor((y + TextureManager.TextureMap[textureId].frameHeight) / this.collisionLayer.tileSize);
 
         for (let i = leftSide; i < rightSide; i++) {
             for (let j = topSide; j < bottomSide; j++) {

@@ -1,4 +1,4 @@
-import { MapParser } from "./map.js";
+import { MapParser, TileEffect } from "./map.js";
 import { Player } from "./player.js";
 import { TextureManager, Canvas } from "./graphics.js";
 import { Camera } from "./camera.js";
@@ -17,9 +17,15 @@ const Clock = {
 };
 
 const Game = {
-    Map: MapParser.Load(MAP),
-    Player: new Player(200, 200, 5, 5),
+    Map: {},
+    Player: {},
+    TileEffect: {},
     Init: function (){
+        /* Initialize all game classes */
+        this.Map = MapParser.Load(MAP);
+        this.Player = new Player("npc_19", "idle", 96, 64, 4, 4);
+        this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player);
+
         Canvas.Init();
         Events.Init();    
         TextureManager.Init();
@@ -28,11 +34,13 @@ const Game = {
     },
     Update: function () {
         this.Player.Update(Clock.DeltaTime);
+        this.TileEffect.Update(Clock.DeltaTime);
         Camera.Update(Clock.DeltaTime);
     },
     Render: function () {
         this.Map.Render();
         this.Player.Render();
+        this.TileEffect.Render();
     },
     Clear: function () {
         Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);

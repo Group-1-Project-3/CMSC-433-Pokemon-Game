@@ -32,8 +32,8 @@ const TextureManager = {
         const texture = this.TextureMap[textureId];
         Canvas.Context.drawImage(
             texture.image,
-            currFrame.row * texture.frameWidth,
-            currFrame.col * texture.frameHeight,
+            currFrame.col * texture.frameWidth,
+            currFrame.row * texture.frameHeight,
             texture.frameWidth,
             texture.frameHeight,
             x - Camera.camX,
@@ -111,8 +111,8 @@ function Animation(textureId) {
         }
 
         const frameArray = this.frameSet[this.frameIndex];
-        this.frame.row = frameArray[1];
-        this.frame.col = frameArray[0];
+        this.frame.row = frameArray[0];
+        this.frame.col = frameArray[1];
     }
 
     Animation.prototype.Render = function (x, y) {

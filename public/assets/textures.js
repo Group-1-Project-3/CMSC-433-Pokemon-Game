@@ -56,6 +56,16 @@ var TEXTURES =
         "frameHeight": 192 / 4
     },
 
+    "grass": {
+        "path": "./assets/grass.png",
+        "image": {},
+        "frameSets": {
+            "brush": [ [0, 1], [0, 1], [0, 2] ],
+        },
+        "frameWidth": 96 / 3,
+        "frameHeight": 32 / 1
+    },
+
     "Outside": {
         "path": "./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Tilesets/Outside.png",
         "image": {},

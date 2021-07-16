@@ -1,15 +1,19 @@
 import { TextureManager } from "./graphics.js";
 
 const MapParser = {
-    Load: function (jsonMap, srcTileSet) {
-        /* Parse the tileset */
-        let tileSet = this.ParseTileSet(jsonMap.tilesets[0]);
+    Load: function (jsonMap) {
+        /* Parse the tilesets */
+        let tileSets = [];
+        for (let i = 0; i < jsonMap['tilesets'].length; i++) {
+            const tileSetElem = jsonMap['tilesets'][i];
+            tileSets.push( this.ParseTileSet(tileSetElem) );
+        }
 
-        /* Parse the tilelayer */
+        /* Parse the tilelayers */
         let tileLayers = [];
-        for (let i = 0; i < jsonMap.layers.length; i++) {
-            const layerElem = jsonMap.layers[i];
-            tileLayers.push( this.ParseTileLayer(layerElem, tileSet, srcTileSet) );
+        for (let i = 0; i < jsonMap['layers'].length; i++) {
+            const layerElem = jsonMap['layers'][i];
+            tileLayers.push( this.ParseTileLayer(layerElem, tileSets) );
         }
 
         /* Get map size */
@@ -21,27 +25,30 @@ const MapParser = {
 
         return new Map(tileLayers, totalWidth, totalHeight);
     },
-    ParseTileLayer: function (layerElem, tileSet, srcTileSet) {
-        const colCount = layerElem.width;
-        const rowCount = layerElem.height;
-        const tileSize = tileSet.tileSize;
+    ParseTileLayer: function (layerElem, tileSet) {
+        const colCount = layerElem['width'];
+        const rowCount = layerElem['height'];
+        const tileSize = tileSet['tileSize'];
 
         let tileMap = [];
         let index = 0;
         for (let i = 0; i < rowCount; i++) {
             let row = [];
             for (let j = 0; j < colCount; j++) {
-                row.push( layerElem.data[index++] );
+                row.push( layerElem['data'][index++] );
             }
             tileMap.push(row);
         }
 
-        return new TileLayer(tileSize, rowCount, colCount, tileMap, tileSet, srcTileSet);    
+        return new TileLayer(tileSize, rowCount, colCount, tileMap, tileSet);    
     },
     ParseTileSet: function (tileElem) {
-        const tileSize = tileElem.tilewidth;
-        const colCount = tileElem.columns;
-        return new TileSet(tileSize, colCount);    
+        const tileName = tileElem['name'];
+        const tileSize = tileElem['tilewidth'];
+        const colCount = tileElem['columns'];
+        const firstId = tileElem['firstgid'];
+        const lastId = firstId + tileElem['tilecount'] - 1;
+        return new TileSet(tileName, tileSize, colCount, firstId, lastId);    
     }
 }
 
@@ -60,13 +67,12 @@ function Map(tileLayers, widthPx, heightPx) {
     }
 }
 
-function TileLayer(tileSize, rowCount, colCount, tileMap, tileSet, srcTileSet) {
-    this.tileSet = tileSet;
+function TileLayer(tileSize, rowCount, colCount, tileMap, tileSets) {
+    this.tileSets = tileSets;
     this.tileMap = tileMap;
     this.rowCount = rowCount;
     this.colCount = colCount;
     this.tileSize = tileSize;
-    this.textureId = srcTileSet;
  
     TileLayer.prototype.Render = function () {
         for (let i = 0; i < this.rowCount; i++) {
@@ -76,16 +82,30 @@ function TileLayer(tileSize, rowCount, colCount, tileMap, tileSet, srcTileSet) {
                 if (id === 0)
                     continue;
 
-                let col = (id - 1) % tileSet.colCount;
-                let row = Math.floor((id - 1) / tileSet.colCount);                    
+                // get the correct tileset
+                let ts;
+                for (let i = 0; i < this.tileSets.length; i++) {
+                    ts = this.tileSets[i];
+                    if (id >= ts.firstId && id <= ts.lastId) {
+                        // normalize the id to a valid state
+                        id = id - (ts.firstId - 1);
+                        break;
+                    }
+                }
 
-                TextureManager.DrawTile(this.textureId, row, col, j, i);
+                let col = (id - 1) % ts.colCount;
+                let row = Math.floor((id - 1) / ts.colCount);                    
+
+                TextureManager.DrawTile(ts.name, row, col, j, i);
             }
         }    
     }
 }
 
-function TileSet(tileSize, colCount) {
+function TileSet(name, tileSize, colCount, firstId, lastId) {
+    this.name = name;
+    this.firstId = firstId;
+    this.lastId = lastId;
     this.tileSize = tileSize;
     this.colCount = colCount;
 }

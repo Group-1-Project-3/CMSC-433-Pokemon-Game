@@ -44,21 +44,13 @@ $(document).ready(function () {
 
 });
 
-//Hover over Sounds
-//document.getElementById('pokemon1').addEventListener("click", char_sound());
 
 //Hide div of Poke Choices after selection
-function hideDiv () {
+function hideDiv() {
 	$(".pokeChoices").hide();
 }
 
-// function char_sound() {
-// 	var audio_char = new Audio("assets/Pokemon Essentials v19.1 2021-05-22/Audio/SE/Cries/CHARMANDER.wav");
-// 	audio_char.play()
-// }
-
 // *****Classes and Objects*****
-
 
 //Player Object/Class
 class Player {
@@ -99,7 +91,6 @@ class Player {
 	}
 }
 
-/* Classes & Objects */
 const Canvas = {
 	Context: {},
 	CanWidth: 0,
@@ -167,22 +158,25 @@ const StarterScene = {
 		//Adding text to Canvas
 		Canvas.Context.font = "30px Courier";
 		Canvas.Context.textAlign = "center";
-		Canvas.Context.fillText("Choose Your Pokemon!", Canvas.CanWidth/2, 60);
+		Canvas.Context.fillText("Choose Your Pokemon!", Canvas.CanWidth / 2, 60);
 
-		//Add animation for bobbing starter pokemon
-		charmander_animation(100,100);
+		//Add pics of starter pokemon
+		starter_poke_placement(); 
+
 	},
 };
 
 //Animation overlay for bobbing pokemon
-function charmander_animation(x, y) {
-	var _animation = new Animation('poke_starter_charmander');
-	
-// 	_animation.prototype.SetProps('bobbing', 6);
-// 	_animation.prototype.Update();
-// 	_animation.prototype.Render(x, y);
-}
+function starter_poke_placement() { 
+	var frame = {
+		row: 0,
+		col: 0
+	};
 
+	TextureManager.DrawFrame('poke_starter_charmander', frame, 50, 200);
+	TextureManager.DrawFrame('poke_starter_bulbasaur', frame, 400, 200);
+	TextureManager.DrawFrame('poke_starter_squirtle', frame, 750, 200);
+}
 const Game = {
 	Init: function () {
 		Canvas.Init();
@@ -194,10 +188,9 @@ const Game = {
 	},
 	Render: function () {
 		// Player.Render();
-
 	},
 	Clear: function () {
-		// Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
+		//Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
 	}
 };
 
@@ -211,14 +204,6 @@ function drawBackground(textureId) {
 
 }
 
-// function draw_menu_overlay(){
-//     var frame = {
-//         row : 0,
-//         col : 0
-//     };
-//     TextureManager.DrawFrame();
-// }
-
 function slideInAnimation() {
 	var frame = {
 		row: 0,
@@ -227,15 +212,6 @@ function slideInAnimation() {
 	TextureManager.DrawFrame('base0', frame, -300, 325);
 	TextureManager.DrawFrame('base1', frame, 600, 100);
 }
-
-// to do list: make a script to grab path of image of pokemon (front and back)
-// function drawPokemons(){
-//     var frame = {
-//         row : 0,
-//         col : 0
-//     };
-//
-// }
 
 function Animation(textureId) {
 	this.delay;

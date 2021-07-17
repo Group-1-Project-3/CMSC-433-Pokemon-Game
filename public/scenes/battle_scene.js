@@ -11,15 +11,19 @@ const BattleScene = {
     initial_x_health0 : 1600,
     initial_x_health1 : -1000,
     command_animation : new Animation("command"),
+    fight_command_animation : new Animation("fight_command"),
+    normal_attack_animation : new Animation("normal_attack_anim"),
     action : "fight",
     command_x : 600,
     command_y : 500,
+    fight_command_x : 10,
+    fight_command_y : 490,
+    attacking_flag : false,
+    normal_attack : false,
+
 
     Init: function(){
-
         drawInitBattle(this.initial_x_base0, this.initial_x_base1);
-
-
     },
 
     Animations: function(){
@@ -43,12 +47,31 @@ const BattleScene = {
 
         }
         drawInitBattle(this.initial_x_base0, this.initial_x_base1);
-        drawHealthBoxes(this.initial_x_health0, this.initial_x_health1, 0.8, 0.2);
+        drawHealthBoxes(this.initial_x_health0, this.initial_x_health1, 1, 1);
 
-        if (this.baseSlidedIn && this.healthBoxSlidedIn){
-            drawFightOverlay();
-            this.Selection();
+
+        if (this.baseSlidedIn && this.healthBoxSlidedIn && !this.attacking_flag){
+            drawOptionsOverlay();
+            this.command_animation.SetProps(this.action, 25);
+            this.command_animation.Update();
+            this.command_animation.Render(this.command_x, this.command_y);
+
+
         }
+        if (this.attacking_flag){
+            drawFightOverlay();
+            this.fight_command_animation.SetProps(this.action, 25);
+            this.fight_command_animation.Update();
+            this.fight_command_animation.Render(this.fight_command_x, this.fight_command_y);
+            drawText("Normal attack", 75, 560);
+            drawText("Special attack", 515, 560);
+
+        }
+        if (this.normal_attack){
+            this.normalAttack();
+        }
+
+        this.Selection();
     },
 
     Selection: function(){
@@ -57,11 +80,18 @@ const BattleScene = {
                 this.action = "catch";
                 this.command_x = 834;
                 this.command_y = 500;
+
             }
             else if (this.action == "swap"){
                 this.action = "run";
                 this.command_x = 834;
                 this.command_y = 600;
+            }
+
+            else if (this.action == "normal"){
+                this.action = "special";
+                this.fight_command_x = 450;
+                this.fight_command_y = 490;
             }
         }
         else if (Events.KEY === "LEFT") {
@@ -74,6 +104,11 @@ const BattleScene = {
                 this.action = "swap";
                 this.command_x = 600;
                 this.command_y = 600;
+            }
+            else if (this.action == "special"){
+                this.action = "normal";
+                this.fight_command_x = 10;
+                this.fight_command_y = 490;
             }
         }
         else if (Events.KEY === "UP") {
@@ -100,10 +135,56 @@ const BattleScene = {
                 this.command_y = 600;
             }
         }
-        this.command_animation.SetProps(this.action, 15);
-        this.command_animation.Update();
-        this.command_animation.Render(this.command_x, this.command_y);
+
+        else if (Events.KEY === "YES"){
+
+            if (this.action == "fight"){
+                // calls fight function from battle.js
+                this.action = "normal";
+                this.attacking_flag = true;
+            }
+            else if (this.action == "catch"){
+                // calls catch function
+            }
+            else if (this.action == "swap"){
+                // calls swap function
+            }
+            else if (this.action == "run"){
+                // calls run function
+            }
+            else if (this.normal_attack){
+                this.normal_attack = false;
+                this.attacking_flag = false;
+                this.action = "fight";
+            }
+
+        }
+
+        else if (Events.KEY === "NO"){
+            if (this.attacking_flag && !this.normal_attack){
+                this.attacking_flag = false;
+                this.action = "fight";
+                this.fight_command_x = 10;
+                this.fight_command_y = 490;
+            }
+
+        }
+        else if (Events.KEY === "SELECTED"){
+            if (this.action == "normal"){
+                this.normal_attack = true;
+            }
+        }
+
+    },
+    normalAttack : function () {
+        TextureManager.DrawPicture('pokemon_front', this.initial_x_base1 + 100, 0, SCALE);
+        TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
+        drawText("You have used normal attack", 50, 575);
+        this.normal_attack_animation.SetProps(this.action, 10);
+        this.normal_attack_animation.Update();
+        this.normal_attack_animation.Render(900, 100);
     }
+
 };
 
 function drawInitBattle(initial_x_base0, initial_x_base1) {
@@ -164,7 +245,7 @@ function drawHealthBoxes(initial_x_health0, initial_x_health1, foeHealth, player
 
 }
 
-function drawFightOverlay(){
+function drawOptionsOverlay(){
     var fight = {
         row : 0,
         col : 0
@@ -185,11 +266,9 @@ function drawFightOverlay(){
         col : 3
     };
 
-    TextureManager.DrawPicture('overlay_message_box', 0, 475, SCALE);
+    TextureManager.DrawPicture('field_message_box', 0, 475, SCALE);
     TextureManager.DrawPicture('overlay_command', 0, 475, SCALE);
-    Canvas.Context.font = '60px redfont';
-    Canvas.Context.fillStyle = "#4a4a4f";
-    Canvas.Context.fillText("What will you do?", 50, 575);
+    drawText("What will you do?", 50, 575);
 
     TextureManager.DrawFrame('command', fight, 600, 500);
     TextureManager.DrawFrame('command', catchPokemon, 834, 500);
@@ -197,6 +276,28 @@ function drawFightOverlay(){
     TextureManager.DrawFrame('command', run, 834, 600);
 }
 
+function drawFightOverlay(){
+    var normal = {
+        row : 0,
+        col : 8
+    }
+    var special = {
+        row : 0,
+        col : 0
+    }
+    TextureManager.DrawPicture('field_message_box', 0, 475, SCALE);
+    TextureManager.DrawPicture('overlay_fight', 0, 475, SCALE);
+    TextureManager.DrawFrame('fight_command', normal, 10, 490);
+    TextureManager.DrawFrame('fight_command', special, 450, 490);
 
+
+}
+
+function drawText(text, x, y){
+    Canvas.Context.font = '60px redfont';
+    Canvas.Context.fillStyle = "#4a4a4f";
+    Canvas.Context.fillText(text, x, y);
+
+}
 
 export { BattleScene };

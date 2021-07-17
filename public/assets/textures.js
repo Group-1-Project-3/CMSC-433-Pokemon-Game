@@ -220,8 +220,17 @@ var TEXTURES = {
         "frameHeight": 8
     },
 
-    "overlay_message_box": {
+    "field_message_box": {
         "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Battlebacks/field_message.png",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 512,
+        "frameHeight": 96
+
+    },
+
+    "overlay_message": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Battle/overlay_message.png",
         "image": {},
         "frameSets": {},
         "frameWidth": 512,
@@ -264,6 +273,26 @@ var TEXTURES = {
         },
         "frameWidth": 468.75 / 2,
         "frameHeight": 829 / 10
+    },
+
+    "fight_command": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Battle/cursor_fight.png",
+        "image": {},
+        "frameSets": {
+            "normal": [
+                [8, 0],
+                [8, 1]
+            ],
+
+            "special": [
+                [0, 0],
+                [0, 1]
+            ],
+
+        },
+        "frameWidth": 900 / 2,
+        "frameHeight": 2048 / 19
+
     },
 
     "our_health_box": {
@@ -342,5 +371,26 @@ var TEXTURES = {
         "frameSets": {},
         "frameWidth": 512,
         "frameHeight": 96
+    },
+
+    "normal_attack_anim": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Animations/004-Attack02.png",
+        "image": {},
+        "frameSets": {
+            "normal" : [
+                [0, 0],
+                [0, 1],
+                [0, 2],
+                [0, 3],
+                [0, 4],
+                [1, 0],
+                [1, 1],
+                [1, 2],
+                [1, 3]
+            ]
+        },
+        "frameWidth": 960 / 5,
+        "frameHeight": 384 / 2
+
     }
 }

@@ -49,7 +49,7 @@ function Player(x, y, dx, dy) {
     }
 
     Player.prototype.Render = function () {
-        this._animation.Render(this._x, this._y, SCALE);
+        this._animation.Render(this._x, this._y);
     }
 };
 

@@ -34,6 +34,11 @@ function initBattle(user, comp){
         
         let choice = getKey();
 
+        // running away
+        if (choice == 3){
+            break
+        }
+
         // deal with catch attempt if wild
         if (choice == 2){
             // graphics for catching go here
@@ -80,10 +85,10 @@ function initBattle(user, comp){
 uses prompt for user input
 */
 function getKey() {
-    let KEY = 3;
+    let KEY = 4;
     if (wild == true){
-        while (KEY != 0 && KEY != 1 && KEY != 2){
-            KEY = prompt("0 -> physical, 1 -> special, 2 -> catch attempt");
+        while (KEY != 0 && KEY != 1 && KEY != 2 && KEY != 3){
+            KEY = prompt("0 -> physical, 1 -> special, 2 -> catch attempt, 3 -> run");
         }
     } else {
         while (KEY != 0 && KEY != 1){

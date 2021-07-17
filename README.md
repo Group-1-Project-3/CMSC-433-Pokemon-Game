@@ -28,6 +28,7 @@ else goes back to start of current gym, xp gained will be saved
 
 ### stuff
 public/battle_class.js added
+
 public/assets/gym.tmx added
 
 

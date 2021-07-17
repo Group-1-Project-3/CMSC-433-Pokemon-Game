@@ -1,0 +1,23 @@
+{
+  "name": "cmsc-433-pokemon-game",
+  "version": "1.0.0",
+  "description": "### attributes of game",
+  "main": "proj3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Group-1-Project-3/CMSC-433-Pokemon-Game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Group-1-Project-3/CMSC-433-Pokemon-Game/issues"
+  },
+  "homepage": "https://github.com/Group-1-Project-3/CMSC-433-Pokemon-Game#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

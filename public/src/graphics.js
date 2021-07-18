@@ -86,6 +86,18 @@ const TextureManager = {
         )
     },
 
+    addImageObject: function (src, key) {
+        const img = this.CreateImage(src);
+        var img_object = {
+            "path": `${src}`,
+            "image": img,
+            "frameSets": {},
+            "frameWidth": 160,
+            "frameHeight": 160
+        };
+        this.TextureMap[key] = img_object;
+
+    }
 };
 
 function Animation(textureId) {

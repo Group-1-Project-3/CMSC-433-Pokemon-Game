@@ -29,7 +29,7 @@ const Game = {
         // CollisionHandler.Init(this.Map);
     },
     Update: function () {
-        BattleScene.Animations();
+        // BattleScene.Animations();
         // this.Player.Update(Clock.DeltaTime);
         // Camera.Update(Clock.DeltaTime);
     },
@@ -40,7 +40,7 @@ const Game = {
         // this.Player.Render();
     },
     Clear: function () {
-        Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
+        // Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
     }
 };
 

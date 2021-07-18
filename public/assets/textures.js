@@ -332,23 +332,6 @@ var TEXTURES = {
         "frameHeight": 18 / 3
     },
 
-    "pokemon_back": {
-        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Back/CHARMANDER.png",
-        "image": {},
-        "frameSets": {},
-        "frameWidth": 160,
-        "frameHeight": 160
-
-    },
-
-    "pokemon_front": {
-        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/BULBASAUR.png",
-        "image": {},
-        "frameSets": {},
-        "frameWidth": 160,
-        "frameHeight": 160
-    },
-
     "trainer_red_battle_back": {
         "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Trainers/POKEMONTRAINER_Red_back.png",
         "image": {},
@@ -392,5 +375,26 @@ var TEXTURES = {
         "frameWidth": 960 / 5,
         "frameHeight": 384 / 2
 
+    },
+
+    "special_attack_anim": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Animations/003-Attack01.png",
+        "image": {},
+        "frameSets": {
+            "special" : [
+                [0, 0],
+                [0, 1],
+                [0, 2],
+                [0, 3],
+                [0, 4],
+                [1, 0],
+                [1, 1],
+                [1, 2],
+                [1, 3],
+                [1, 4]
+            ]
+        },
+        "frameWidth": 960 / 5,
+        "frameHeight": 384 / 2
     }
-}
+};

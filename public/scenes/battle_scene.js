@@ -22,7 +22,7 @@ const BattleScene = {
     attacking_flag : false,
     normal_attack : false,
     special_attack : false,
-    player_pokemon : "CHARIZARD",
+    player_pokemon : "ODDISH",
     foe_pokemon : "PIKACHU",
 
 
@@ -205,7 +205,7 @@ const BattleScene = {
     },
     normalAttack : function (target) {
         if (target == "foe"){
-            TextureManager.DrawPicture(this.foe_pokemon, this.initial_x_base1 + 100, 0, SCALE);
+            TextureManager.DrawPicture(this.foe_pokemon, this.initial_x_base1 + 100, 0, 2);
             TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
             drawText(60, "You have used normal attack", 50, 575);
             this.normal_attack_animation.SetProps(this.action, 10);
@@ -213,7 +213,7 @@ const BattleScene = {
             this.normal_attack_animation.Render(900, 100);
         }
         else if (target == "player"){
-            TextureManager.DrawPicture(this.player_pokemon, this.initial_x_base0 + 400, 100, SCALE);
+            TextureManager.DrawPicture(this.player_pokemon, this.initial_x_base0 + 400, 200, 2);
             TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
             drawText(60, "Enemy has used normal attack", 50, 575);
             this.normal_attack_animation.SetProps(this.action, 10);
@@ -224,7 +224,7 @@ const BattleScene = {
 
     specialAttack : function (target) {
         if (target == "foe"){
-            TextureManager.DrawPicture(this.foe_pokemon, this.initial_x_base1 + 100, 0, SCALE);
+            TextureManager.DrawPicture(this.foe_pokemon, this.initial_x_base1 + 100, 0, 2);
             TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
             drawText(60, "You have used special attack", 50, 575);
             this.special_attack_animation.SetProps(this.action, 10);
@@ -232,7 +232,7 @@ const BattleScene = {
             this.special_attack_animation.Render(900, 100);
         }
         else if (target == "player"){
-            TextureManager.DrawPicture(this.player_pokemon, this.initial_x_base0 + 400, 100, SCALE);
+            TextureManager.DrawPicture(this.player_pokemon, this.initial_x_base0 + 400, 200, 2);
             TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
             drawText(60, "Enemy has used special attack", 50, 575);
             this.special_attack_animation.SetProps(this.action, 10);
@@ -252,12 +252,12 @@ function drawInitBattle(initial_x_base0, initial_x_base1, playerPokemonName, foe
     TextureManager.DrawPicture('black_bar', 0, 475, SCALE);
 
     TextureManager.DrawPicture('base1', initial_x_base1, 100, SCALE);
-    TextureManager.DrawPicture(foePokemonName, initial_x_base1 + 100, 0, SCALE);
+    TextureManager.DrawPicture(foePokemonName, initial_x_base1 + 100, 0, 2);
 
 
 
     TextureManager.DrawPicture('base0', initial_x_base0, 325, SCALE);
-    TextureManager.DrawPicture(playerPokemonName, initial_x_base0 + 400, 100, SCALE);
+    TextureManager.DrawPicture(playerPokemonName, initial_x_base0 + 400, 200, 2);
 
 
 }

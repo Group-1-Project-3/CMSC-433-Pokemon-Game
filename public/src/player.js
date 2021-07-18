@@ -16,6 +16,7 @@ function Player(textureId, action, x, y, dx, dy) {
     this.moving_left = false;
     this.moving_up = false;
     this.moving_down = false;
+    this.moving = false;
     this.destination;
 
     Player.prototype.GetOrigin = function () {
@@ -36,9 +37,11 @@ function Player(textureId, action, x, y, dx, dy) {
         }
         else if (Events.KEY === "LEFT" && !this.moving_left) {
             this.moving_left = true;
+            this.destination = this.x - 32;
         }
         else if (Events.KEY === "UP" && !this.moving_up){
             this.moving_up = true;
+            this.destination = this.y - 32;
         }
         else if (Events.KEY === "DOWN" && !this.moving_down){
             this.moving_down = true;
@@ -53,6 +56,24 @@ function Player(textureId, action, x, y, dx, dy) {
             }
             else{
                 this.x += 1;
+            }
+        }
+        else if (this.moving_left) {
+            if (this.destination % this.x === 0) {
+                this.y = this.destination;
+                this.moving_down = false;
+            }
+            else{
+                this.x -= 1;
+            }
+        }
+        else if (this.moving_up) {
+            if (this.destination % this.y === 0) {
+                this.y = this.destination;
+                this.moving_down = false;
+            }
+            else{
+                this.y -= 1;
             }
         }
         else if (this.moving_down) {

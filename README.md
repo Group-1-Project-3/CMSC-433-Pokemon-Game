@@ -33,4 +33,5 @@ else goes back to start of current gym, xp gained will be saved
 4.) Make sure the character is going 32px exactly and starts in a location that allows it to go 32px exactly
 5.) Better Collision detection
 6.) Player should have GetHead() GetFeet() GetOrigin() GetRight() GetLeft()
+7.) Making animated tiles
 

@@ -57,7 +57,7 @@ function Map(tileLayers, widthPx, heightPx) {
     this.widthPx = widthPx;
     this.heightPx = heightPx;
 
-    Map.prototype.GetActiveTileId = function (layerName, playerLocation) {
+    Map.prototype.GetTileLayer = function (layerName) {
         let tileLayer;
         for (let i = 0; i < tileLayers.length; i++) {
             const layer = tileLayers[i];
@@ -65,25 +65,7 @@ function Map(tileLayers, widthPx, heightPx) {
                 tileLayer = layer;
         }
 
-        const row = Math.floor( playerLocation.y / tileLayer.tileSize );
-        const col = Math.floor( playerLocation.x / tileLayer.tileSize );
-        const activeTileId = tileLayer.tileMap[row][col];
-
-        return activeTileId;
-    }
-
-    Map.prototype.GetActiveTileLocation = function (layerName, playerLocation) {
-        let tileLayer;
-        for (let i = 0; i < tileLayers.length; i++) {
-            const layer = tileLayers[i];
-            if (layer.name === layerName) 
-                tileLayer = layer;
-        }
-
-        const row = Math.floor( playerLocation.y / tileLayer.tileSize );
-        const col = Math.floor( playerLocation.x / tileLayer.tileSize );
-
-        return {row: row, col: col};
+        return tileLayer;
     }
 
     Map.prototype.GetCollisionLayer = function () {
@@ -140,7 +122,7 @@ function TileSet(name, tileSize, colCount, firstId, lastId) {
     this.colCount = colCount;
 }
 
-function TileEffect(textureId, tileId, layerName, map, player) {
+function TileEffect(textureId, tileId, layerName, map, player, delay) {
     this.animation = new Animation(textureId);
     this.tileId = tileId;
     this.tileEffect = false;
@@ -148,29 +130,53 @@ function TileEffect(textureId, tileId, layerName, map, player) {
     this.map = map
     this.layerName = layerName;
     this.previousTiles = [];
+    this.delay = delay;
+    this.count = 0;
+
+    TileEffect.prototype.GetActiveTileId = function (layerName, playerLocation) {
+        const tileLayer = this.map.GetTileLayer(layerName);
+        const row = Math.floor( playerLocation.y / tileLayer.tileSize );
+        const col = Math.floor( playerLocation.x / tileLayer.tileSize );
+        const activeTileId = tileLayer.tileMap[row][col];
+
+        return activeTileId;
+    }
+
+    TileEffect.prototype.GetActiveTileLocation = function (layerName, playerLocation) {
+        const tileLayer = this.map.GetTileLayer(layerName);
+        const row = Math.floor( playerLocation.y / tileLayer.tileSize );
+        const col = Math.floor( playerLocation.x / tileLayer.tileSize );
+
+        return {row: row, col: col};
+    }
+
 
     TileEffect.prototype.Update = function (dt) {
-        const activeTileId = this.map.GetActiveTileId(this.layerName, this.player.GetOrigin());
-        const activeTileLocation = this.map.GetActiveTileLocation( this.layerName, this.player.GetOrigin() );
+        const activeTileId = this.GetActiveTileId(this.layerName, this.player.GetOrigin());
 
         /* 
          * Make sure we update this animation effect for grass to trigger when the players feet hit the grass
          * and not his origin...
          */
 
-        this.animation.SetProps("brush", 5)
 
-        if ( Events.KEY === "" )
-            this.animation.Stop(0)
+        /* 
+         * If the animation below has stopped than animate again
+         */
 
-        this.animation.Update();
-
-        this.tileEffect = ( activeTileId === tileId ) ? true : false;
+        if (activeTileId === this.tileId) {
+            this.animation.SetProps("brush", 10, false);
+            this.tileEffect = true;
+            if (this.animation.Finished()) {
+                this.tileEffect = false;
+            }
+            this.animation.Update();
+        }
     }
 
     TileEffect.prototype.Render = function () {
-        const x = this.map.GetActiveTileLocation( this.layerName, this.player.GetOrigin() ).col * 32;
-        const y = this.map.GetActiveTileLocation( this.layerName, this.player.GetOrigin() ).row * 32;
+        const x = this.GetActiveTileLocation( this.layerName, this.player.GetOrigin() ).col * 32;
+        const y = this.GetActiveTileLocation( this.layerName, this.player.GetOrigin() ).row * 32;
         if (this.tileEffect === true){
             this.animation.Render(x, y);
         }

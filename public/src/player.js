@@ -9,7 +9,14 @@ function Player(textureId, action, x, y, dx, dy) {
     this.y = y;
     this.dx = dx;
     this.dy = dy;
+    this.nextX = this.x; // buffer for next tile 
+    this.nextY = this.x; // buffer for next tile 
     this.action = action;
+    this.moving_right = false;
+    this.moving_left = false;
+    this.moving_up = false;
+    this.moving_down = false;
+    this.destination;
 
     Player.prototype.GetOrigin = function () {
         const w = TextureManager.TextureMap[textureId].frameWidth;
@@ -23,25 +30,42 @@ function Player(textureId, action, x, y, dx, dy) {
         let prevX = this.x;
         let prevY = this.y;
 
-        if (Events.KEY === "RIGHT"){
-            this.x += this.dx * dt;
-            this.action = "walk_right";
+        if (Events.KEY === "RIGHT" && !this.moving_right){
+            this.moving_right = true;
+            this.destination = this.x + 32;
         }
-        else if (Events.KEY === "LEFT") {
-            this.x += -this.dx * dt;
-            this.action = "walk_left";
+        else if (Events.KEY === "LEFT" && !this.moving_left) {
+            this.moving_left = true;
         }
-        else if (Events.KEY === "UP") {
-            this.y += -this.dy * dt;
-            this.action = "walk_up";
+        else if (Events.KEY === "UP" && !this.moving_up){
+            this.moving_up = true;
         }
-        else if (Events.KEY === "DOWN") {
-            this.y += this.dy * dt;
-            this.action = "walk_down";
+        else if (Events.KEY === "DOWN" && !this.moving_down){
+            this.moving_down = true;
+            this.destination = this.y + 32;
         }
-        else if (Events.KEY === "") {
-            this.animation.Stop(0);
+
+        if (this.moving_right) {
+            console.log(`${this.destination - this.x}`);
+            if (this.destination % this.x === 0) {
+                this.x = this.destination;
+                this.moving_right = false;
+            }
+            else{
+                this.x += 1;
+            }
         }
+        else if (this.moving_down) {
+            if (this.destination % this.y === 0) {
+                this.y = this.destination;
+                this.moving_down = false;
+            }
+            else{
+                this.y += 1;
+            }
+        }
+        
+        this.animation.SetProps("walk_right", 10);
 
         /* check for collisions */
         let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) || 
@@ -54,7 +78,6 @@ function Player(textureId, action, x, y, dx, dy) {
         }
 
         Camera.SetTarget(this);
-        this.animation.SetProps(this.action, 6);
         this.animation.Update();
     }
 

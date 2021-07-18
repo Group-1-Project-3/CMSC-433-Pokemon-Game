@@ -36,8 +36,8 @@ const TextureManager = {
             currFrame.row * texture.frameHeight,
             texture.frameWidth,
             texture.frameHeight,
-            x - Camera.camX,
-            y - Camera.camY,
+            x,
+            y,
             texture.frameWidth,
             texture.frameHeight
         );

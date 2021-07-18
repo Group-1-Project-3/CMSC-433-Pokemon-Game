@@ -23,25 +23,27 @@ const Game = {
     TileEffect: {},
     Init: function (){
         /* Initialize all game classes */
-        this.Map = MapParser.Load(MAP);
-        this.Player = new Player("trainer_brendan", "idle", 96, 64, 10, 10);
-        this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
+        // this.Map = MapParser.Load(MAP);
+        // this.Player = new Player("trainer_brendan", "idle", 96, 64, 10, 10);
+        // this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
 
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
-        Camera.Init(this.Map);
-        CollisionHandler.Init(this.Map);
+        BattleScene.Init();
+        // Camera.Init(this.Map);
+        // CollisionHandler.Init(this.Map);
     },
     Update: function () {
-        this.Player.Update(Clock.DeltaTime);
-        this.TileEffect.Update(Clock.DeltaTime);
-        Camera.Update(Clock.DeltaTime);
+        BattleScene.Animations();
+        // this.Player.Update(Clock.DeltaTime);
+        // this.TileEffect.Update(Clock.DeltaTime);
+        // Camera.Update(Clock.DeltaTime);
     },
     Render: function () {
-        this.Map.Render();
-        this.Player.Render();
-        this.TileEffect.Render();
+        // this.Map.Render();
+        // this.Player.Render();
+        // this.TileEffect.Render();
     },
     Clear: function () {
         Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);

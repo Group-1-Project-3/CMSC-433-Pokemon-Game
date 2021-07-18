@@ -3,30 +3,51 @@ import { Events } from "../src/input.js";
 import { SCALE } from "../proj3.js";
 
 const BattleScene = {
-    baseSlidedIn : 0,
-    healthBoxSlidedIn: 0,
-    healthFilled : 0,
-    initial_x_base0 : 900,
-    initial_x_base1 : -500,
-    initial_x_health0 : 1600,
-    initial_x_health1 : -1000,
-    command_animation : new Animation("command"),
-    fight_command_animation : new Animation("fight_command"),
-    normal_attack_animation : new Animation("normal_attack_anim"),
-    special_attack_animation : new Animation("special_attack_anim"),
-    action : "fight",
-    command_x : 600,
-    command_y : 500,
-    fight_command_x : 10,
-    fight_command_y : 490,
-    attacking_flag : false,
-    normal_attack : false,
-    special_attack : false,
-    player_pokemon : "ODDISH",
-    foe_pokemon : "PIKACHU",
+    // baseSlidedIn : 0,
+    // healthBoxSlidedIn: 0,
+    // healthFilled : 0,
+    // initial_x_base0 : 900,
+    // initial_x_base1 : -500,
+    // initial_x_health0 : 1600,
+    // initial_x_health1 : -1000,
+    // command_animation : new Animation("command"),
+    // fight_command_animation : new Animation("fight_command"),
+    // normal_attack_animation : new Animation("normal_attack_anim"),
+    // special_attack_animation : new Animation("special_attack_anim"),
+    // action : "fight",
+    // command_x : 600,
+    // command_y : 500,
+    // fight_command_x : 10,
+    // fight_command_y : 490,
+    // attacking_flag : false,
+    // normal_attack : false,
+    // special_attack : false,
+    // player_pokemon : "ODDISH",
+    // foe_pokemon : "PIKACHU",
 
 
     Init: function(){
+        this.initial_x_base0 = 900;
+        this.initial_x_base1 = -500;
+        this.baseSlidedIn = 0;
+        this.healthBoxSlidedIn = 0;
+        this.healthFilled = 0;
+        this.initial_x_health0 = 1600;
+        this.initial_x_health1 = -1000;
+        this.command_animation = new Animation("command");
+        this.fight_command_animation = new Animation("fight_command");
+        this.normal_attack_animation = new Animation("normal_attack_anim");
+        this.special_attack_animation = new Animation("special_attack_anim");
+        this.action = "fight";
+        this.command_x = 600;
+        this.command_y = 500;
+        this.fight_command_x = 10;
+        this.fight_command_y = 490;
+        this.attacking_flag = false;
+        this.normal_attack = false;
+        this.special_attack = false;
+        this.player_pokemon = "ODDISH";
+        this.foe_pokemon = "PIKACHU";
         drawInitBattle(this.initial_x_base0, this.initial_x_base1, this.player_pokemon, this.foe_pokemon);
     },
 

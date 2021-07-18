@@ -2,6 +2,7 @@ const SceneManager = {
     currScene : "walking",
     currScene_index : 0,
     sceneOptions : ["walking", "talking", "battle"],
+    sceneLoaded : 0,
 
 
     nextScene : function() {
@@ -16,7 +17,16 @@ const SceneManager = {
 
     getScene : function(){
         return this.currScene;
+    },
+
+    toggleSceneLoaded : function (){
+        this.sceneLoaded = (this.sceneLoaded) ? 0 : 1;
+    },
+
+    checkSceneLoaded : function(){
+        return this.sceneLoaded;
     }
+
 
 };
 

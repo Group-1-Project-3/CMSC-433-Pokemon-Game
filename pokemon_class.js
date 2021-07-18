@@ -1,7 +1,7 @@
 import { TYPES, TYPE_ORDER, TYPE_CHART } from "./type-chart.js";
 class Pokemon {
 
-    constructor(pokemon_name, type1, type2, totalstat, hp, attack, defense, spattack, spdefense, speed, level){
+    constructor(pokemon_name, type1, type2, totalstat, hp, attack, defense, spattack, spdefense, speed, level,image){
         this.pokemon_name = pokemon_name;
         this.type1 = type1;
         this.type2 = type2;

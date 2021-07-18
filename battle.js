@@ -1,104 +1,148 @@
-import { BattleLogic } from "./battle_class.js";
 import { Player } from "./player_class.js";
-import { Pokemon } from "./pokemon_class.js";
+import {TEXTURES} from ""
+class BattleLogic {
 
-const attack_option = ["physical", "special"];
-
-function getRand(){
-    return Math.floor(Math.random() * 2) + 1;
-}
-
-function initBattle(user, comp){
-    let dead = [];
-    let attackedHP = 0;
-    let in_progress = true;
-
-    console.log(comp.constructor.name);
-    if (comp.constructor.name == "Pokemon")
-        var pl2 = new Player("wild", [comp]);
-    else
-        var pl2 = comp;
-
-    let battle_logic = new BattleLogic(user, pl2);
-
-    // start battle graphics
-
-    while (in_progress){
-        // get attack choice from user
-        
-        let choice = getKey(); // use keypress event to get choice
-
-        attackedHP = battle_logic.attack("user", attack_option[choice]);
-    
-        // check if any pokemon are out of hp
-        dead = battle_logic.swap();
-        if (dead.length > 0){
-            in_progress = false; // end battle
-            break;
-        }
-
-        // opponent attacks 
-        battle_logic.attack("comp", attack_option[getRand()]);
-
-        // check if any pokemon are out of hp
-        dead = battle_logic.swap();
-        if (dead.length > 0){
-            in_progress = false; // end battle
-            break;
-        }
+    constructor (user, comp){
+        this.user = user;
+        this.comp = ((comp.constructor.name === "Player") ? comp : new Player([comp]));
+        this.background="assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Battlebacks/field_bg.png";
     }
 
-    return {user, comp};
-}
 
-async function getKey() {
-    let KEY = "";
-    while (KEY != 0 && KEY != 1){
-        console.log("wait");
-        await waitingKeypress();
-        console.log("key pressed");
-        $('input').on('keyup', function(e) {
-            KEY = e.key;
-            console.log(KEY);
-        });
+    // returns updated hp for the attacked pokemon
+    // give attack type as expected by pokemon class calcDamage 
+    // and bool if computer doing the attack
+    *attack(attack_type, isComp = false){
+        let target_pok = this.comp.pokeparty[0];
+        let attack_pok = this.user.pokeparty[0];
+
+        if (isComp == true){
+            target_pok = this.user.pokeparty[0];
+            attack_pok = this.comp.pokeparty[0];
+        } 
+
+        let damage = attack_pok.calcDamage(target_pok, attack_type);
+        let newHP = target_pok.hp - damage;
+        if (newHP < 0)
+            newHP = 0;
+        target_pok.hp = newHP;
+
+        if (offence_pl == "user")
+            this.comp.pokeparty[0] = target_pok;
+        else if (offence_pl == "comp")
+            this.user.pokeparty[0] = target_pok;
+
+        return [this.user.pokeparty[0], this.comp.pokeparty[0]];
     }
-    return KEY;
+
+
+    // returns if the players have any living pokemon left
+    *checkAlive(){
+        let useralive = false;
+        let compalive = false;
+        for (var pok in this.user.pokeparty){
+            if (pok.hp > 0)
+                useralive = true;
+        }
+        if (this.comp.pokeparty[0] != "caught"){
+            for (var pok in this.comp.pokeparty){
+                if (pok.hp > 0)
+                    compalive = true;
+            }
+        }
+        
+        return [useralive, compalive];
+    }
+
+
+    *getPlayers(){
+        return [this.user, this.comp]
+    }
+
+
+    *checkSwap(){
+        let result = [false, false];
+        if (this.user.pokeparty[0].hp == 0)
+            result[0] = true;
+        if (this.comp.pokeparty[0].hp == 0)
+            result[1] = true;
+        return result;
+    }
+
+
+    // moves pokemon to end of array if out of hp
+    // returns the new pokemon
+    *swap(){
+        if (this.user.pokeparty[0].hp == 0){
+            let tmp = this.user.pokeparty.shift();
+            this.user.pokeparty.push(tmp);
+        }
+
+        if (this.comp.pokeparty[0].hp == 0){
+            let tmp = this.comp.pokeparty.shift();
+            this.comp.pokeparty.push(tmp);
+        }
+
+        return [this.user.pokeparty[0], this.comp.pokeparty[0]];
+    }
+
+
+    // calculates if a pokemon was caught and updates the players pokeparty if true
+    *catchpok() {
+        let N = Math.floor(Math.random() * 255);
+        if (N < 25){
+            this.user.pokeparty.push(this.comp.pokeparty[0]);
+            this.comp.pokeparty[0] = "caught";
+            return true;
+        }
+        let M = Math.floor(Math.random() * 255);
+        let HPcur = this.comp.pokeparty[0].hp;
+        let HPmax = this.comp.pokeparty[0].hpmax; 
+        
+        let f = ((HPmax*255*4)/(HPcur*8));
+        if (f > M){
+            this.user.pokeparty.push(this.comp.pokeparty[0]);
+            this.comp.pokeparty[0] = "caught";
+            return true;
+        }
+        return false;
+    }
+    *displayBattle(){
+        const BattleBackground=new Image();
+        BattleBackground.Image=this.background;
+
+        Canvas.Context.drawImage(BattleBackground.Image,0,0,Canvas.CanHeight,Canvas.CanWidth);
+            
+
+
+    }
+    *swapAnimation(){
+
+    }
+    *shake(pokemon, canvas){
+        var pokeHeight=pokemon.height;
+        var pokewidth=pokemon.width;
+        var xPostion=pokemon.xPostion;
+        var yPostion=pokemon.yPostion;
+        var top=xPostion+pokeHeight;
+        var bottom=xPostion-pokeHeight;
+        const interal=100;
+        const move=20;
+        var x=0;
+        var y=0;
+      tID=setInterval(()=>{
+        
+          if(xPostion<top){
+                xPostion=xPostion+move;
+          }
+          if(xPostion>bottom){
+                xPostion=xPostion-move;
+          }
+
+        convas.Image(pokemon.Image,xPostion,yPostion,pokeWidth,pokeHeight,pokemon.framex,pokemon.framey,x,y);   
+      },interal);  
+
+    }
+
 }
-
-//$(document).ready(function(){
-    $.get("get_pokemon_data.php?pokemon_name=Charmander", function(data){
-        var pokemon = jQuery.parseJSON(data);
-        var pokemon_id = pokemon[1];
-        var pokemon_name = pokemon[2];
-        var type1 = pokemon[3];
-        var type2 = pokemon[4];
-        var totalstat = pokemon[5];
-        var hp = pokemon[6];
-        var attack = pokemon[7];
-        var defense = pokemon[8];
-        var spattack = pokemon[9];
-        var spdefense = pokemon[10];
-        var speed = pokemon[11];
-
-        var pok = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 20);
-        console.log("pok");
-        console.log(pok);
-        var pokcurrentHP = pok.hp;
-        console.log("attack is ", pokemon[7]);
-
-        var pok2 = new Pokemon(pokemon_name, type1, type2,totalstat, hp, attack, defense, spattack, spdefense, speed, 5);
-        console.log("defense is ", pokemon[8]);
-        $("#mybutton").click(function(p){
-            console.log(pokcurrentHP -= pok.calcDamage(pok2, "special"));
-        });
-        console.log(pok);
-        let user = new Player("user", [pok]);
-        let comp = new Player("comp", [pok2]);
-        
-        initBattle(user, comp);
-
-        console.log("over");
-        
-    });
-
-//});
+export { BattleLogic };

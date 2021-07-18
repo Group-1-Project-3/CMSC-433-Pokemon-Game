@@ -26,6 +26,10 @@ if user wins, moves on to next gym
 
 else goes back to start of current gym, xp gained will be saved
 
+### to do
+1.) Audio Manager
+2.) NPCFactory ( that takes a Properties obj in its constructor )
+3.) Create visual effect when running through grass
 
 
 ### resources

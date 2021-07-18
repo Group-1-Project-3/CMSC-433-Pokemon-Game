@@ -4,6 +4,7 @@ import { TextureManager, Canvas } from "./graphics.js";
 import { Camera } from "./camera.js";
 import { CollisionHandler } from "./collision.js";
 import { Events } from "./input.js";
+import { BattleScene } from "../scenes/battle_scene.js";
 
 const Clock = {
     DeltaTime: 0,
@@ -27,7 +28,7 @@ const Game = {
         this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
 
         Canvas.Init();
-        Events.Init();    
+        Events.Init();
         TextureManager.Init();
         Camera.Init(this.Map);
         CollisionHandler.Init(this.Map);

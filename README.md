@@ -35,3 +35,10 @@ else goes back to start of current gym, xp gained will be saved
 6.) Player should have GetHead() GetFeet() GetOrigin() GetRight() GetLeft()
 7.) Making animated tiles
 
+
+### resources
+Battle Damage Formula: https://www.math.miami.edu/~jam/azure/compendium/battdam.htm
+Experience and leveling: https://bulbapedia.bulbagarden.net/wiki/Experience
+Catch rate relative to HP: https://bulbapedia.bulbagarden.net/wiki/Catch_rate
+More info on stat: https://bulbapedia.bulbagarden.net/wiki/Stat
+Type: https://bulbapedia.bulbagarden.net/wiki/Type (later functionality if we have enough time)

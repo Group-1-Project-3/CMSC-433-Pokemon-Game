@@ -70,6 +70,33 @@ const TextureManager = {
             texture.frameWidth * scale,
             texture.frameHeight * scale
         )
+    },
+    DrawBar: function (textureId, currFrame, x, y, xscale, yscale) {
+        const texture = this.TextureMap[textureId];
+        Canvas.Context.drawImage(
+            texture.image,
+            currFrame.row * texture.frameWidth,
+            currFrame.col * texture.frameHeight,
+            texture.frameWidth,
+            texture.frameHeight,
+            x,
+            y,
+            texture.frameWidth * xscale,
+            texture.frameHeight * yscale
+        )
+    },
+
+    addImageObject: function (src, key) {
+        const img = this.CreateImage(src);
+        var img_object = {
+            "path": `${src}`,
+            "image": img,
+            "frameSets": {},
+            "frameWidth": 160,
+            "frameHeight": 160
+        };
+        this.TextureMap[key] = img_object;
+
     }
 };
 
@@ -103,7 +130,7 @@ function Animation(textureId) {
     }
 
     Animation.prototype.Update = function () {
-        this.count++; 
+        this.count++;
         if (this.count >= this.delay) {
             // update the animation to the next frame in the frame set
             this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;

@@ -14,3 +14,8 @@ html, body{
 #canvas{
     background-color: white;
 }
+
+@font-face {
+    font-family: 'redfont';
+    src: local('redfont'), url("./assets/Pokemon Essentials v19.1 2021-05-22/Fonts/power red and blue intl.ttf");
+}

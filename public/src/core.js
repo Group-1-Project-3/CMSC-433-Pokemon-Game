@@ -1,4 +1,4 @@
-import { MapParser } from "./map.js";
+import { MapParser, TileEffect } from "./map.js";
 import { Player } from "./player.js";
 import { TextureManager, Canvas } from "./graphics.js";
 import { Camera } from "./camera.js";
@@ -18,29 +18,33 @@ const Clock = {
 };
 
 const Game = {
-    Map: MapParser.Load(MAP),
-    // Player: new Player(200, 200, 5, 5),
+    Map: {},
+    Player: {},
+    TileEffect: {},
     Init: function (){
+        /* Initialize all game classes */
+        this.Map = MapParser.Load(MAP);
+        this.Player = new Player("trainer_brendan", "idle", 96, 64, 10, 10);
+        this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
+
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
-        BattleScene.Init();
-        // Camera.Init(this.Map);
-        // CollisionHandler.Init(this.Map);
+        Camera.Init(this.Map);
+        CollisionHandler.Init(this.Map);
     },
     Update: function () {
-        // BattleScene.Animations();
-        // this.Player.Update(Clock.DeltaTime);
-        // Camera.Update(Clock.DeltaTime);
+        this.Player.Update(Clock.DeltaTime);
+        this.TileEffect.Update(Clock.DeltaTime);
+        Camera.Update(Clock.DeltaTime);
     },
     Render: function () {
-
-        // BattleScene.Render();
-        // this.Map.Render();
-        // this.Player.Render();
+        this.Map.Render();
+        this.Player.Render();
+        this.TileEffect.Render();
     },
     Clear: function () {
-        // Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
+        Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
     }
 };
 

@@ -32,8 +32,8 @@ const TextureManager = {
         const texture = this.TextureMap[textureId];
         Canvas.Context.drawImage(
             texture.image,
-            currFrame.row * texture.frameWidth,
-            currFrame.col * texture.frameHeight,
+            currFrame.col * texture.frameWidth,
+            currFrame.row * texture.frameHeight,
             texture.frameWidth,
             texture.frameHeight,
             x - Camera.camX,
@@ -108,24 +108,25 @@ function Animation(textureId) {
     this.count;
     this.id = textureId;
     this.action;
-    this.stopped;
 
     Animation.prototype.SetProps = function (action, delay) {
-        if (this.action !== action || this.stopped === true) {
+        if (this.action !== action) {
             this.action = action;
             this.delay = delay;
             this.frame = {};
             this.frameIndex = 0;
             this.frameSet = TextureManager.TextureMap[this.id].frameSets[action];
             this.count = 0;
-            this.stopped = false;
         }
     }
 
-    Animation.prototype.Stop = function (frameIndex) {
-        this.stopped = true;
-        this.frameIndex = frameIndex;
-        this.delay = Infinity;
+    Animation.prototype.StopAtFrame = function (index) {
+        this.frameIndex = index;
+        this.finished = true;
+    }
+
+    Animation.prototype.Finished = function () {
+        return (this.frameIndex >= this.frameSet.length - 1) ? true : false;
     }
 
     Animation.prototype.Update = function () {
@@ -138,8 +139,8 @@ function Animation(textureId) {
         }
 
         const frameArray = this.frameSet[this.frameIndex];
-        this.frame.row = frameArray[1];
-        this.frame.col = frameArray[0];
+        this.frame.row = frameArray[0];
+        this.frame.col = frameArray[1];
     }
 
     Animation.prototype.Render = function (x, y) {

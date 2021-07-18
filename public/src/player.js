@@ -9,8 +9,8 @@ function Player(textureId, action, x, y, dx, dy) {
     this.y = y;
     this.dx = dx;
     this.dy = dy;
-    this.nextX = this.x; // buffer for next tile 
-    this.nextY = this.x; // buffer for next tile 
+    this.nextX = this.x; // buffer for next tile
+    this.nextY = this.x; // buffer for next tile
     this.action = action;
     this.moving_right = false;
     this.moving_left = false;
@@ -46,7 +46,7 @@ function Player(textureId, action, x, y, dx, dy) {
         }
 
         if (this.moving_right) {
-            console.log(`${this.destination - this.x}`);
+            // console.log(`${this.destination - this.x}`);
             if (this.destination % this.x === 0) {
                 this.x = this.destination;
                 this.moving_right = false;
@@ -64,11 +64,11 @@ function Player(textureId, action, x, y, dx, dy) {
                 this.y += 1;
             }
         }
-        
+
         this.animation.SetProps("walk_right", 10);
 
         /* check for collisions */
-        let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) || 
+        let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) ||
                             CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);
 
         if (isCollision) {

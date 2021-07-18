@@ -27,21 +27,39 @@ const Game = {
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
-        SceneManager.nex
-
         if (SceneManager.getScene() == "walking"){
             this.Map = MapParser.Load(MAP);
-            this.Player = new Player("trainer_red", "idle", 96, 64, 10, 10);
+            this.Player = new Player("trainer_red", "idle", 300, 150, 10, 10);
             this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
             Camera.Init(this.Map);
             CollisionHandler.Init(this.Map);
         }
-        else if (SceneManager.getScene() == "talking"){
-            console.log("talking");
+    },
+
+    Load: function (){
+
+        // WHEN CODING wild pokemon encounter, CHANGE THIS!!
+        if (Events.KEY == "RIGHT"){
+            var random = Math.floor(Math.random() * 1000);
+            if (random < 10){
+                console.log("Changing scene");
+                SceneManager.currScene = "battle";
+            }
+        }
+
+        if (BattleScene.action == "run" && Events.KEY == "YES"){
+            SceneManager.currScene = "walking";
+            SceneManager.toggleSceneLoaded(); // turns sceneLoaded to 0
+        }
+
+
+        if (SceneManager.getScene() == "talking"){
+            // console.log("talking");
             // adds dialogue functionality here
         }
-        else if (SceneManager.getScene() == "battle"){
+        else if (SceneManager.getScene() == "battle" && !SceneManager.checkSceneLoaded()){
             BattleScene.Init();
+            SceneManager.toggleSceneLoaded(); // turns sceneLoaded to 1
         }
 
 
@@ -57,7 +75,7 @@ const Game = {
             console.log("talking");
             // adds dialogue functionality here
         }
-        
+
         else if (SceneManager.getScene() == "battle"){
             BattleScene.Animations();
         }

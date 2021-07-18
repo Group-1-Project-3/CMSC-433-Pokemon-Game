@@ -13,6 +13,7 @@ function main() {
 
     /* Game loop */
     Game.Clear();
+    Game.Load();
     Game.Update();
     Game.Render();
     Clock.Tick();

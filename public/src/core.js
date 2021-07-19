@@ -23,42 +23,42 @@ const Game = {
     Player: {},
     TileEffect: {},
     Init: function (){
-        /* Initialize all game classes */
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
-        if (SceneManager.getScene() == "walking"){
-            this.Map = MapParser.Load(MAP);
-            this.Player = new Player("trainer_red", "idle", 300, 150, 10, 10);
-            this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
-            Camera.Init(this.Map);
-            CollisionHandler.Init(this.Map);
-        }
+
+        /* Initialize all game classes */
+        this.Map = MapParser.Load(MAP);
+        this.Player = new Player("trainer_red", "idle", 400, 70, 8, 8, 32, 32);
+        this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
+
+        Camera.Init(this.Map);
+        CollisionHandler.Init(this.Map);
     },
-    Load: function (){
+    Load: function () {
 
         // WHEN CODING wild pokemon encounter, CHANGE THIS!!
-        if (Events.KEY == "RIGHT"){
+        if (Events.KEY == "RIGHT") {
             var random = Math.floor(Math.random() * 1000);
-            if (random < 10){
+            if (random < 5) {
                 console.log("Changing scene");
                 SceneManager.currScene = "battle";
             }
         }
 
-        if (BattleScene.action == "run" && Events.KEY == "YES"){
+        if (BattleScene.action == "run" && Events.KEY == "YES") {
             SceneManager.currScene = "walking";
-            SceneManager.toggleSceneLoaded(); // turns sceneLoaded to 0
+            SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 0
         }
 
 
-        if (SceneManager.getScene() == "talking"){
+        if (SceneManager.getScene() == "talking") {
             // console.log("talking");
             // adds dialogue functionality here
         }
-        else if (SceneManager.getScene() == "battle" && !SceneManager.checkSceneLoaded()){
+        else if (SceneManager.getScene() == "battle" && !SceneManager.checkBattleSceneLoaded()) {
             BattleScene.Init();
-            SceneManager.toggleSceneLoaded(); // turns sceneLoaded to 1
+            SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 1
         }
 
 

@@ -1,15 +1,11 @@
 // import { TYPES, TYPE_ORDER, TYPE_CHART } from "./type-chart.js";
 import { POKEMONS } from "../assets/pokemon_data.js";
 
+
 class Party {
     constructor(chosenPokemon, pokemonArray) {
         this.chosenPokemon = chosenPokemon;
-        this.pokemonArray = JSON.parse(JSON.stringify(pokemonArray)); // deeps copy pokemon array
-
-    }
-
-    swapPokemon(){
-        this.chosenPokemon = this.pokemonArray[0];
+        this.pokemonArray = pokemonArray;
     }
 
 
@@ -32,6 +28,23 @@ class Pokemon {
         this.speed = speed;
         this.xp = this.calcRequiredXP(level - 1);
         this.level = level;
+    }
+
+    copyPokemon(target){
+        this.id = target.id;
+        this.pokemon_name = target.pokemon_name;
+        this.type1 = target.type1;
+        this.type2 = target.type2;
+        this.totalstat = target.totalstat;
+        this.hpmax = target.hp;
+        this.hp = target.hpmax;
+        this.attack = target.attack;
+        this.defense = target.defense;
+        this.spattack = target.spattack;
+        this.spdefense = target.spdefense;
+        this.speed = target.speed;
+        this.xp = target.xp
+        this.level = target.level;
     }
 
     calcRequiredXP(level) {
@@ -85,4 +98,5 @@ function generateRandomPokemon(){
     var pokemonObject = getPokemonObject(pokemon["pokemon_name"]);
     return pokemonObject;
 }
+
 export { Pokemon, Party, getPokemonObject, generateRandomPokemon };

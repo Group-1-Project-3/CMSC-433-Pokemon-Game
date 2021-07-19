@@ -2,6 +2,7 @@ import { Canvas, TextureManager, Animation } from "../src/graphics.js";
 import { Events } from "../src/input.js";
 import { SCALE } from "../proj3.js";
 import { SceneManager } from "./scene_manager.js";
+import { getPokemonObject, Pokemon, Party } from "../src/pokemon.js";
 
 //import { pokeparty } from "../src/core.js";
 const swapAnimation={
@@ -24,7 +25,7 @@ const swapAnimation={
         //TextureManager.setImage("./CMSC-433-Pokemon-Game/public/assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/bg.PNG");
         TextureManager.DrawPicture('party_background',0,0,SCALE);
 
-        this._pokeParty = JSON.parse(JSON.stringify(array));
+        this._pokeParty = array;
         swapAnimation.loadChar();
         return swapAnimation.pickPokemon();
 
@@ -39,12 +40,11 @@ const swapAnimation={
                 if(Events.KEY=="DOWN"){
                     this.down=true;
                     //this.index=this.index+1;
-                    console.log(this.index);
                 }
                 else if(Events.KEY=="UP"){
                     this.up=true;
                     //this.index=this.index-1;
-                    console.log(this.index);
+
 
                 }
             }
@@ -52,18 +52,16 @@ const swapAnimation={
                 if(Events.KEY=="DOWN"){
                     this.down=false;
                     this.index=this.index+1;
-                    console.log(this.index);
 
                 }
                 else if(Events.KEY=="UP"){
                     this.up=false;
                     this.index=this.index-1;
-                    console.log(this.index);
 
 
                 }
                 else if(Events.KEY=="SELECTED"){
-                    var savePoke=this._pokeParty[0];
+                    var savePoke = this._pokeParty[0];
                     this._pokeParty[0]=this._pokeParty[this.index];
                     this._pokeParty[this.index]=savePoke;
                     SceneManager.currScene = "battle";
@@ -143,7 +141,7 @@ const swapAnimation={
             TextureManager.addImageObject(`./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/${pokemon_name}.png`, pokemon_name);
             TextureManager.DrawPicture(pokemon_name,x,y,1.5);
 
-            TextureManager.drawText(`${this._pokeParty[i].pokemon_name}`,textX,texty);
+            TextureManager.drawText(`${this._pokeParty[i].pokemon_name}`,150,texty);
             TextureManager.DrawPicture('lv',textX+10,texty+20,SCALE);
             TextureManager.drawText(`${this._pokeParty[i].level}`,textX+60,texty+50);
             //TextureManager.drawText(`hp: ${this._pokeParty[i].hp}`,textX,texty+50);

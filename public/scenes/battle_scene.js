@@ -3,31 +3,9 @@ import { Events } from "../src/input.js";
 import { SCALE } from "../proj3.js";
 import { Pokemon, Party } from "../src/pokemon.js";
 import { SceneManager } from "./scene_manager.js";
-// import { swapAnimation } from "./swap.js";
+
 
 const BattleScene = {
-    // is_base_animated : 0,
-    // is_health_box_animated: 0,
-    // is_health_filled : 0,
-    // initial_x_playerBase : 900,
-    // initial_x_foeBase : -500,
-    // initial_x_playerHealth : 1600,
-    // initial_x_foeHealth : -1000,
-    // command_animation : new Animation("command"),
-    // fight_command_animation : new Animation("fight_command"),
-    // normal_attack_animation : new Animation("normal_attack_anim"),
-    // special_attack_animation : new Animation("special_attack_anim"),
-    // action : "fight",
-    // command_x : 600,
-    // command_y : 500,
-    // fight_command_x : 10,
-    // fight_command_y : 490,
-    // attacking_flag : false,
-    // normal_attack : false,
-    // special_attack : false,
-    // player_pokemon : "ODDISH",
-    // foe_pokemon : "PIKACHU",
-
 
     Init: function(player_pokemon, foe_pokemon){
         this.initial_x_playerBase = 900;
@@ -113,8 +91,8 @@ const BattleScene = {
             this.fight_command_animation.SetProps(this.action, 20);
             this.fight_command_animation.Update();
             this.fight_command_animation.Render(this.fight_command_x, this.fight_command_y);
-            drawText(60, "Normal attack", 75, 560);
-            drawText(60, "Special attack", 515, 560);
+            drawText(60, "Normal attack", 225, 560);
+            drawText(60, "Special attack", 675, 560);
 
         }
         var aiAttack = randomizeAttack();
@@ -155,13 +133,13 @@ const BattleScene = {
 
         if (this.player_pokemon.hp == 0){
             TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
-            drawText(60, "Your pokemon has fainted", 50, 575);
+            drawText(60, "Your pokemon has fainted", 350, 575);
 
         }
 
         else if (this.foe_pokemon.hp == 0){
             TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
-            drawText(60, "The enemy has fainted", 50, 575);
+            drawText(60, "The enemy has fainted", 350, 575);
         }
 
 
@@ -238,9 +216,28 @@ const BattleScene = {
                 this.attacking_flag = true;
             }
             else if (this.action == "catch"){
-                // calls catch function
+                if (this.foe_pokemon.catchPokemon() == true){
+
+                    SceneManager.currScene = "catching";
+                    SceneManager.currScene_index = 5;
+                }
+                else {
+                    var aiAttack = randomizeAttack();
+                    if (aiAttack == "normal"){
+                        this.action = "normal";
+                        this.normalAttack("player");
+                    }
+                    else if (aiAttack == "special"){
+                        this.action = "special";
+                        this.specialAttack("player");
+                    }
+                }
+                this.action = "fight";
+                this.command_x = 600;
+                this.command_y = 500;
             }
             else if (this.action == "swap"){
+                SceneManager.finishedSwapping = 0;
                 SceneManager.currScene = "swapping";
                 SceneManager.currScene_index = 3;
             }
@@ -301,6 +298,16 @@ const BattleScene = {
                 this.action = "fight";
                 this.fight_command_x = 10;
                 this.fight_command_y = 490;
+            }
+            if (this.action == "swap"){
+                this.action = "fight";
+                this.fight_command_x = 10;
+                this.fight_command_y = 490;
+                this.command_x = 600;
+                this.command_y = 500;
+                SceneManager.currScene = "battle";
+                SceneManager.currScene_index = 2;
+                SceneManager.finishedSwapping = 1;
             }
 
         }
@@ -470,7 +477,7 @@ function drawOptionsOverlay(){
 
     TextureManager.DrawPicture('field_message_box', 0, 475, SCALE);
     TextureManager.DrawPicture('overlay_command', 0, 475, SCALE);
-    drawText(60, "What will you do?", 50, 575);
+    drawText(60, "What will you do?", 250, 575);
 
     TextureManager.DrawFrame('command', fight, 600, 500);
     TextureManager.DrawFrame('command', catchPokemon, 834, 500);
@@ -500,14 +507,14 @@ function drawStatPlayer(name, level, currHealth, maxHealth){
     if (currHealth < 0){
         currHealth = 0;
     }
-    drawText(60, name, 715, 375);
-    drawText(60, `Lv.${level}`, 1000, 375);
-    drawText(50, `${currHealth}/${maxHealth}`, 930, 460);
+    drawText(60, name, 800, 375);
+    drawText(60, `Lv.${level}`, 1100, 375);
+    drawText(50, `${currHealth}/${maxHealth}`, 1000, 460);
 }
 
 function drawStatFoe(name, level){
-    drawText(60, name, 50, 125);
-    drawText(60, `Lv.${level}`, 325, 125);
+    drawText(60, name, 175, 125);
+    drawText(60, `Lv.${level}`, 450, 125);
 }
 
 function drawText(size, text, x, y){

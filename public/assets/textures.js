@@ -540,5 +540,20 @@ var TEXTURES = {
         },
         'frameWidth': 512,
         'frameHeight': 300
+    },
+
+    'cursor_ribbon': {
+        'path': "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Summary/cursor_ribbon.png",
+        'image': {},
+        'frameSets': {
+            "blinking": [
+                [0, 0],
+                [1, 0]
+            ]
+        },
+        'frameWidth': 350,
+        'frameHeight': 700 / 2
+
+
     }
 };

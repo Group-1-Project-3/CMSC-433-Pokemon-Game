@@ -10,6 +10,7 @@ const Canvas = {
         this.Context = this._canvas.getContext('2d');
         this.CanWidth = this._canvas.width;
         this.CanHeight = this._canvas.height;
+    
     }
 };
 
@@ -23,10 +24,21 @@ const TextureManager = {
             this.TextureMap[key].image = this.CreateImage(imagePath);
         } );
     },
+   hop:function (textureId) {
+       
+   },
     CreateImage: function (src) {
         const image = new Image();
         image.src = src;
         return image;
+    },
+    drawText:function(msg,x,y){
+        Canvas.Context.font = '48px Arial';
+        //Canvas.Context.fillStlye='black';
+        Canvas.Context.fillStlye="0000000";
+        Canvas.Context.fillText(msg, x, y);
+        
+
     },
     DrawFrame: function (textureId, currFrame, x, y) {
         const texture = this.TextureMap[textureId];
@@ -146,6 +158,7 @@ function Animation(textureId) {
     Animation.prototype.Render = function (x, y) {
         TextureManager.DrawFrame(this.id, this.frame, x, y);
     }
+    
 }
 
 export { Canvas, TextureManager, Animation };

@@ -18,11 +18,13 @@ const Events = {
                 this.KEY = "NO";
             else if (key === "u")
                 this.KEY = "SELECTED";
-        });
+            
+            });
         document.addEventListener('keyup', (e) => {
             e.preventDefault();
             this.KEY="";
         });
+        
 
     }
 };

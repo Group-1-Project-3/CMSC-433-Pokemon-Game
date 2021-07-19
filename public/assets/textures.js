@@ -420,5 +420,74 @@ var TEXTURES = {
         },
         "frameWidth": 960 / 5,
         "frameHeight": 384 / 2
-    }
+    },
+    "party_background":{
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/bg.PNG",
+        "image":{},
+        "frameSets":{},
+        "frameWidth": 512,
+        "frameHeight": 288
+    },
+    "lv":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_lv.png",
+        "image":{},
+        "frameSets":{},
+        "frameWidth": 22,
+        "frameHeight": 14
+    },
+    "overlay_hp_back":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp_back.png",
+        "image":{},
+        "frameSets":{},
+        "frameWidth": 138,
+        "frameHeight": 14
+    },
+    "overlay_hp_back_faint":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp_back_faint.png",
+        "image":{},
+        "frameSets":{},
+        "frameWidth": 138,
+        "frameHeight": 14
+    },
+    "overlay_hp_back_swap":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp_back_swap.png",
+        "image":{},
+        "frameSets":{},
+        "frameWidth": 138,
+        "frameHeight": 14
+    },
+    "overlay_hp":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp.png",
+        "image":{},
+        "frameSets":{"green":[0,0],
+            "yellow":[0,1],
+           "red": [0,2]
+        },
+        "frameWidth": 96,
+        "frameHeight": 8
+    },
+    "red_panel":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/panel_rect_faint_sel.png",
+        "image":{},
+        "frameSets":{
+        },
+        "frameWidth": 256,
+        "frameHeight": 98
+    },
+    "icon_ball_sel":
+    {
+        "path":"assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/icon_ball_sel.PNG",
+        "image":{},
+        "frameSets":{
+        },
+        "frameWidth": 44,
+        "frameHeight": 56
+    },
+
 };

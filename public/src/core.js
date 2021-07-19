@@ -35,7 +35,6 @@ const Game = {
             CollisionHandler.Init(this.Map);
         }
     },
-
     Load: function (){
 
         // WHEN CODING wild pokemon encounter, CHANGE THIS!!

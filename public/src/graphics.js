@@ -110,7 +110,7 @@ function Animation(textureId) {
     this.action;
 
     Animation.prototype.SetProps = function (action, delay) {
-        if (this.action !== action) {
+        if (this.action !== action ) {
             this.action = action;
             this.delay = delay;
             this.frame = {};
@@ -120,18 +120,23 @@ function Animation(textureId) {
         }
     }
 
-    Animation.prototype.StopAtFrame = function (index) {
-        this.frameIndex = index;
-        this.finished = true;
+    Animation.prototype.UpdateByFrame = function () {
+        // update the animation to the next frame in the frame set
+        this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
+        const frameArray = this.frameSet[this.frameIndex];
+        this.frame.row = frameArray[0];
+        this.frame.col = frameArray[1];
     }
 
     Animation.prototype.Finished = function () {
+        if(this.frameSet === undefined)
+            return false;
+
         return (this.frameIndex >= this.frameSet.length - 1) ? true : false;
     }
 
     Animation.prototype.Update = function () {
-        this.count++;
-        if (this.count >= this.delay) {
+        if ( this.count++ >= this.delay ){
             // update the animation to the next frame in the frame set
             this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
             // reset the count

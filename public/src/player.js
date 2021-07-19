@@ -61,7 +61,6 @@ function Player(textureId, action, x, y, dx, dy) {
             }
         }
         else if (this.moving_up) {
-            console.log(`${this.destination}, ${this.y}`);
             if (this.destination >= this.y) {
                 this.y = this.destination;
                 this.moving_up = false;
@@ -81,7 +80,6 @@ function Player(textureId, action, x, y, dx, dy) {
                 this.y += this.dy;
             }
         }
-        
     }
 
     Player.prototype.Update = function (dt) {
@@ -114,7 +112,7 @@ function Player(textureId, action, x, y, dx, dy) {
         this.Move(dt);
 
         /* check for collisions */
-        let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) || 
+        let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) ||
                             CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);
 
         if (isCollision) {

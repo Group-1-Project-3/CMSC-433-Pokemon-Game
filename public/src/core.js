@@ -5,6 +5,7 @@ import { Camera } from "./camera.js";
 import { CollisionHandler } from "./collision.js";
 import { Events } from "./input.js";
 import { BattleScene } from "../scenes/battle_scene.js";
+import { SceneManager } from "../scenes/scene_manager.js";
 
 const Clock = {
     DeltaTime: 0,
@@ -23,25 +24,67 @@ const Game = {
     TileEffect: {},
     Init: function (){
         /* Initialize all game classes */
-        this.Map = MapParser.Load(MAP);
-        this.Player = new Player("npc_19", "idle", 21*32, 46*32, 10, 10);
-        this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
-
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
-        Camera.Init(this.Map);
-        CollisionHandler.Init(this.Map);
+        if (SceneManager.getScene() == "walking"){
+            this.Map = MapParser.Load(MAP);
+            this.Player = new Player("trainer_red", "idle", 300, 150, 10, 10);
+            this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
+            Camera.Init(this.Map);
+            CollisionHandler.Init(this.Map);
+        }
+    },
+    Load: function (){
+
+        // WHEN CODING wild pokemon encounter, CHANGE THIS!!
+        if (Events.KEY == "RIGHT"){
+            var random = Math.floor(Math.random() * 1000);
+            if (random < 10){
+                console.log("Changing scene");
+                SceneManager.currScene = "battle";
+            }
+        }
+
+        if (BattleScene.action == "run" && Events.KEY == "YES"){
+            SceneManager.currScene = "walking";
+            SceneManager.toggleSceneLoaded(); // turns sceneLoaded to 0
+        }
+
+
+        if (SceneManager.getScene() == "talking"){
+            // console.log("talking");
+            // adds dialogue functionality here
+        }
+        else if (SceneManager.getScene() == "battle" && !SceneManager.checkSceneLoaded()){
+            BattleScene.Init();
+            SceneManager.toggleSceneLoaded(); // turns sceneLoaded to 1
+        }
+
+
     },
     Update: function () {
-        this.Player.Update(Clock.DeltaTime);
-        this.TileEffect.Update(Clock.DeltaTime);
-        Camera.Update(Clock.DeltaTime);
+        if (SceneManager.getScene() == "walking"){
+
+            this.Player.Update(Clock.DeltaTime);
+            this.TileEffect.Update(Clock.DeltaTime);
+            Camera.Update(Clock.DeltaTime);
+        }
+        else if (SceneManager.getScene() == "talking"){
+            console.log("talking");
+            // adds dialogue functionality here
+        }
+
+        else if (SceneManager.getScene() == "battle"){
+            BattleScene.Animations();
+        }
     },
     Render: function () {
-        this.Map.Render();
-        this.Player.Render();
-        this.TileEffect.Render();
+        if (SceneManager.getScene() == "walking"){
+            this.Map.Render();
+            this.Player.Render();
+            this.TileEffect.Render();
+        }
     },
     Clear: function () {
         Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);

@@ -1,0 +1,8 @@
+function NPC(){
+
+
+
+}
+
+
+export { NPC };

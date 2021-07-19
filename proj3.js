@@ -139,9 +139,6 @@ function starter_poke_placement() {
 		col: 0
 	};
 
-	//Add Poke Logo
-	//TextureManager.DrawFrame('pokemon_logo', frame, 0, 0);
-
 	//Pokemon Pics (placement of possible animation)
 	TextureManager.DrawFrame('poke_starter_charmander', frame, 50, 200);
 	TextureManager.DrawFrame('poke_starter_bulbasaur', frame, 400, 200);

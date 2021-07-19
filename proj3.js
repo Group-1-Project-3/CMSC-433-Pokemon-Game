@@ -5,44 +5,15 @@ var pokeparty = []; //"Pokemon Holder" Array that will hold all the pokemon
 var user;
 
 //Get selected Pokemon
-$(document).ready(function () {
 
-	document.getElementById('pokemonChosen').onclick = function () {
-		var selected = document.querySelector('input[type=radio][name=pokemon]:checked');
+document.getElementById('pokemonChosen').onclick = function () {
+	var selected = document.querySelector('input[type=radio][name=pokemon]:checked');
+	console.log(selected.value);
+	return selected.value;
+}
 
-		$.get(`get_pokemon_data.php?pokemon_name=${selected.value}`, function (data) {
-			var pokemon = jQuery.parseJSON(data);
-			var pokemon_id = pokemon[1];
-			var pokemon_name = pokemon[2];
-			var type1 = pokemon[3];
-			var type2 = pokemon[4];
-			var totalstat = pokemon[5];
-			var hp = pokemon[6];
-			var attack = pokemon[7];
-			var defense = pokemon[8];
-			var spattack = pokemon[9];
-			var spdefense = pokemon[10];
-			var speed = pokemon[11];
+document.getElementById('pokemonChosen').addEventListener("click", hideDiv);
 
-			//TEST
-			console.log(selected.value);
-
-			//Set pokeChosen to new pokemon object of user's choice	
-			pokeChosen = new Pokemon(pokemon_name, type1, type2, totalstat, hp, attack, defense, spattack, spdefense, speed, 1);
-
-			//Add the pokemon chosen into the array
-			pokeparty.push(pokeChosen);
-
-			user = new Player_Object(pokeparty);
-
-			//TEST
-			console.log(user.pokeparty);
-		});
-	}
-
-	document.getElementById('pokemonChosen').addEventListener("click", hideDiv);
-
-});
 
 
 //Hide div of Poke Choices after selection
@@ -75,8 +46,6 @@ class Player_Object {
 			for (i; i < len; i++) {
 				if (pokeparty[i].pokemon_name == pokeName) {
 					//Ouput Pokemon Info
-
-					//TEST (DELETE LATER)
 					console.log(pokeparty[i].pokemon_name);
 					console.log("Attack " + pokeparty[i].spattack);
 				}
@@ -84,8 +53,6 @@ class Player_Object {
 		}
 		else if (len == 0) {
 			//Output that there is no Pokemon
-
-			//TEST (DEL LATER)
 			console.log("There is no pokemon currently in the array.");
 		}
 	}
@@ -150,7 +117,6 @@ const Clock = {
 //Starter Scene Choosing pokemon
 const StarterScene = {
 	Init: function () {
-		// //Note: Didn't know how to scale background image, so drew own for now.
 		let starterBackground = new Image();
 		starterBackground.src = "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/helpadventurebg.png"
 		Canvas.Context.drawImage(starterBackground, 0, 0, 1200, 700);
@@ -161,13 +127,13 @@ const StarterScene = {
 		Canvas.Context.fillText("Choose Your Pokemon!", Canvas.CanWidth / 2, 60);
 
 		//Add pics of starter pokemon
-		starter_poke_placement(); 
+		starter_poke_placement();
 
 	},
 };
 
 //Animation overlay for bobbing pokemon
-function starter_poke_placement() { 
+function starter_poke_placement() {
 	var frame = {
 		row: 0,
 		col: 0

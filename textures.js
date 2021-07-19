@@ -52,6 +52,16 @@ var TEXTURES =
         frameHeight: 300
     },
 
+    pokemon_logo: {
+        path: "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Titles/Pokemon_Logo.png",
+        image: {},
+        frameSets: {
+            still: [[0, 0]]
+        },
+        frameWidth: 1000,
+        frameHeight: 500 
+    },
+
     poke_starter_charmander: {
         path: "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/CHARMANDER.png",
         image: {},

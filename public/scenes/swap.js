@@ -1,6 +1,7 @@
 import { Canvas, TextureManager, Animation } from "../src/graphics.js";
 import { Events } from "../src/input.js";
 import { SCALE } from "../proj3.js";
+import { SceneManager } from "./scene_manager.js";
 
 //import { pokeparty } from "../src/core.js";
 const swapAnimation={
@@ -64,6 +65,7 @@ const swapAnimation={
                     savePoke=this._pokeParty[0];
                     this._pokeParty[0]=this._pokeParty[index];
                     this._pokeParty[index]=savePoke;
+                    SceneManager.nextscene();
 
                 }
             }
@@ -142,7 +144,7 @@ const swapAnimation={
             TextureManager.drawText(`${this._pokeParty[i].level}`,textX+60,texty+50);
             //TextureManager.drawText(`hp: ${this._pokeParty[i].hp}`,textX,texty+50);
             //draw hp bar instead
-            //this._pokeParty[i].hp=this._pokeParty[i].hp*.75;
+            this._pokeParty[i].hp=this._pokeParty[i].hp*.75;
             var barLength=(this._pokeParty[i].hp/this._pokeParty[i].hpmax)*SCALE;
             if(this._pokeParty[i].hp>=this._pokeParty[i].hpmax*.60){
                 //draw green

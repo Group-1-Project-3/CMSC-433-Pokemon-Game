@@ -71,7 +71,7 @@ const Game = {
         console.log(Events.KEY);
         TextureManager.Init();
         
-        //.Init(this.Map);
+        .Init(this.Map);
         //CollisionHandler.Init(this.Map);
     },
     Update: function () {

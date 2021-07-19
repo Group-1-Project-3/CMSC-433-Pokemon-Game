@@ -17,6 +17,12 @@ function Player(textureId, action, x, y, dx, dy) {
     this.moving = false;
     this.destination;
 
+    /* constructor */
+    if (this.dx > 32 || this.dx <= 0)
+        console.log("ERROR: 'x' velocity is too big or too small");
+    if (this.dy > 32 || this.dy <= 0)
+        console.log("ERROR: 'y' velocity is too big or too small");
+
     Player.prototype.GetOrigin = function () {
         const w = TextureManager.TextureMap[textureId].frameWidth;
         const h = TextureManager.TextureMap[textureId].frameHeight;
@@ -25,32 +31,17 @@ function Player(textureId, action, x, y, dx, dy) {
         return {x: xCenter, y: yCenter};
     }
 
-    Player.prototype.Update = function (dt) {
-        let prevX = this.x;
-        let prevY = this.y;
-
-        this.moving = this.moving_right || this.moving_left || this.moving_down || this.moving_up;
-        if (Events.KEY === "RIGHT" && !this.moving){
-            this.moving_right = true;
-            //const xx = (this.x % 2 === 0) ? 1 : 0;
-            //this.destination = ( Math.floor(this.x / 32) + xx) * 32;
-            this.destination = this.x + 32;
-        }
-        else if (Events.KEY === "LEFT" && !this.moving) {
-            this.moving_left = true;
-            this.destination = this.x - 32;
-        }
-        else if (Events.KEY === "UP" && !this.moving){
-            this.moving_up = true;
-            this.destination = this.y - 32;
-        }
-        else if (Events.KEY === "DOWN" && !this.moving){
-            this.moving_down = true;
-            this.destination = this.y + 32;
-        }
-
+    Player.prototype.GetBottom = function () {
+        const w = TextureManager.TextureMap[textureId].frameWidth;
+        const h = TextureManager.TextureMap[textureId].frameHeight;
+        const xBottom = this.x + ( w / 2 );
+        const yBottom = this.y + (3/4) * h;
+        return {x: xBottom, y: yBottom};
+    }
+    
+    Player.prototype.Move = function (dt) {
         if (this.moving_right) {
-            if (this.destination - this.x === 0) {
+            if (this.destination <= this.x) {
                 this.x = this.destination;
                 this.moving_right = false;
             }
@@ -60,7 +51,7 @@ function Player(textureId, action, x, y, dx, dy) {
             }
         }
         else if (this.moving_left) {
-            if (this.destination - this.x === 0) {
+            if (this.destination >= this.x) {
                 this.x = this.destination;
                 this.moving_left = false;
             }
@@ -70,7 +61,8 @@ function Player(textureId, action, x, y, dx, dy) {
             }
         }
         else if (this.moving_up) {
-            if (this.destination - this.y === 0) {
+            console.log(`${this.destination}, ${this.y}`);
+            if (this.destination >= this.y) {
                 this.y = this.destination;
                 this.moving_up = false;
             }
@@ -80,7 +72,7 @@ function Player(textureId, action, x, y, dx, dy) {
             }
         }
         else if (this.moving_down) {
-            if (this.destination - this.y === 0) {
+            if (this.destination <= this.y) {
                 this.y = this.destination;
                 this.moving_down = false;
             }
@@ -90,6 +82,37 @@ function Player(textureId, action, x, y, dx, dy) {
             }
         }
         
+    }
+
+    Player.prototype.Update = function (dt) {
+        let prevX = this.x;
+        let prevY = this.y;
+
+        this.moving = this.moving_right || this.moving_left || this.moving_down || this.moving_up;
+        if (Events.KEY === "RIGHT" && !this.moving){
+            this.moving_right = true;
+            let distToNextTile = (this.x % 32 === 0) ? 32 : Math.ceil(this.x / 32) * 32 - this.x;
+            this.destination = this.x + distToNextTile;
+        }
+        else if (Events.KEY === "LEFT" && !this.moving) {
+            this.moving_left = true;
+            let distToNextTile = (this.x % 32 === 0) ? 32 : this.x - Math.floor(this.x / 32) * 32; 
+            this.destination = this.x - distToNextTile;
+        }
+        else if (Events.KEY === "UP" && !this.moving){
+            this.moving_up = true;
+            let distToNextTile = (this.y % 32 === 0) ? 32 : this.y - Math.floor(this.y / 32) * 32; 
+            this.destination = this.y - distToNextTile;
+        }
+        else if (Events.KEY === "DOWN" && !this.moving){
+            this.moving_down = true;
+            let distToNextTile = (this.y % 32 === 0) ? 32 : Math.ceil(this.y / 32) * 32 - this.y;
+            this.destination = this.y + distToNextTile; 
+        }
+
+        /* move the player */
+        this.Move(dt);
+
         /* check for collisions */
         let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) || 
                             CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);

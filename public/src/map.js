@@ -1,5 +1,4 @@
 import { Animation, TextureManager } from "./graphics.js";
-import { Events } from "./input.js";
 
 const MapParser = {
     Load: function (jsonMap) {
@@ -149,7 +148,6 @@ function TileEffect(textureId, tileId, layerName, map, player, delay) {
 
         return {row: row, col: col};
     }
-
 
     TileEffect.prototype.Update = function (dt) {
         const activeTileId = this.GetActiveTileId(this.layerName, this.player.GetOrigin());

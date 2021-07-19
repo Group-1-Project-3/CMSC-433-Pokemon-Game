@@ -23,7 +23,6 @@ const Events = {
             e.preventDefault();
             this.KEY="";
         });
-
     }
 };
 

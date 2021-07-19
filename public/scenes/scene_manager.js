@@ -1,9 +1,12 @@
 const SceneManager = {
-    currScene: "walking",
-    currScene_index: 0,
-    sceneOptions: ["walking", "talking", "battle"],
+    currScene: "choosingStarter",
+    currScene_index: 4,
+    sceneOptions: ["walking", "talking", "battle", "swapping", "choosingStarter", "catching"],
     sceneLoaded: 0,
-
+    chosenStarter: 0,
+    finishedChoosing: 0,
+    finishedSwapping: 0,
+    caughtPokemon: 0,
 
     nextScene: function () {
         this.currScene_index += 1;

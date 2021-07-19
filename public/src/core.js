@@ -6,7 +6,13 @@ import { CollisionHandler } from "./collision.js";
 import { Events } from "./input.js";
 import { BattleScene } from "../scenes/battle_scene.js";
 import { SceneManager } from "../scenes/scene_manager.js";
+import { Pokemon, Party, getPokemonObject, generateRandomPokemon } from "./pokemon.js";
+import { NPC } from "./npc.js";
+import { POKEMONS } from "../assets/pokemon_data.js";
+import { swapAnimation } from "../scenes/swap.js";
+import { StarterScene } from "../scenes/starter_scene.js";
 
+const TILEPIXELS = 32;
 const Clock = {
     DeltaTime: 0,
     _prevTime: 0,
@@ -18,37 +24,68 @@ const Clock = {
     },
 };
 
+
+
 const Game = {
     Map: {},
     Player: {},
     TileEffect: {},
+    foe: {},
+
+
     Init: function (){
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
 
+
         /* Initialize all game classes */
         this.Map = MapParser.Load(MAP);
-        this.Player = new Player("trainer_red", "idle", 400, 70, 8, 8, 32, 32);
+        this.Player = new Player("trainer_red", "idle", 21 * TILEPIXELS, 47 * TILEPIXELS, 8, 8, 10, 10, true);
         this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
+
+
 
         Camera.Init(this.Map);
         CollisionHandler.Init(this.Map);
-    },
-    Load: function () {
 
-        // WHEN CODING wild pokemon encounter, CHANGE THIS!!
-        if (Events.KEY == "RIGHT") {
-            var random = Math.floor(Math.random() * 1000);
-            if (random < 5) {
-                console.log("Changing scene");
-                SceneManager.currScene = "battle";
+
+
+
+    },
+
+    Load: function () {
+        if (!SceneManager.finishedChoosing){
+            if (SceneManager.getScene() == "choosingStarter"){
+                StarterScene.Init();
+            }
+            else{
+                var pokemon = "";
+                if (StarterScene.index == 0){
+                    pokemon = "Charmander";
+                }
+                else if (StarterScene.index == 1){
+                    pokemon = "Bulbasaur";
+                }
+                else{
+                    pokemon = "Squirtle";
+                }
+                var starterPokemon = getPokemonObject(pokemon)
+                this.Player.playerParty = new Party(starterPokemon, new Array(starterPokemon));
+
+                SceneManager.finishedChoosing = true;
             }
         }
-
-        if (BattleScene.action == "run" && Events.KEY == "YES") {
-            SceneManager.currScene = "walking";
-            SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 0
+        if (Events.KEY == "RIGHT" || SceneManager.caughtPokemon) {
+            var random = Math.floor(Math.random() * 1000);
+            if (random < 10) {
+                var pokemonObject = generateRandomPokemon();
+                this.foe = {};
+                this.foe = new NPC(pokemonObject, new Array(pokemonObject));
+                SceneManager.currScene = "battle";
+                SceneManager.currScene_index = 2;
+            }
+            SceneManager.caughtPokemon = false;
         }
 
 
@@ -56,10 +93,26 @@ const Game = {
             // console.log("talking");
             // adds dialogue functionality here
         }
-        else if (SceneManager.getScene() == "battle" && !SceneManager.checkBattleSceneLoaded()) {
-            BattleScene.Init();
+        else if (SceneManager.getScene() == "battle" && !SceneManager.checkBattleSceneLoaded() && (this.Player.playerParty.chosenPokemon != null)) {
+            BattleScene.Init(this.Player.playerParty.chosenPokemon, this.foe.Party.chosenPokemon);
             SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 1
         }
+
+        else if (SceneManager.getScene() == "swapping" && !SceneManager.finishedSwapping){
+            this.Player.playerParty.pokemonArray = swapAnimation.init(this.Player.playerParty.pokemonArray);
+            BattleScene.player_pokemon = this.Player.playerParty.pokemonArray[0];
+
+
+        }
+        else if (SceneManager.getScene() == "catching"){
+            this.foe.Party.chosenPokemon.hp = this.foe.Party.chosenPokemon.hpmax;
+            this.Player.playerParty.pokemonArray.push(this.foe.Party.chosenPokemon);
+            SceneManager.currScene = "walking";
+            SceneManager.currScene_index = 0;
+            SceneManager.caughtPokemon = true;
+        }
+
+
 
 
     },
@@ -81,14 +134,17 @@ const Game = {
     },
     Render: function () {
         if (SceneManager.getScene() == "walking"){
+
             this.Map.Render();
             this.Player.Render();
             this.TileEffect.Render();
+
         }
     },
     Clear: function () {
         Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
     }
 };
+
 
 export { Game, Clock };

@@ -3,8 +3,8 @@ import { CollisionHandler } from "./collision.js";
 import { Camera } from "./camera.js";
 import { Events } from "./input.js";
 
-function Player(textureId, action, x, y, dx, dy, tx, ty) {
-    this.animation = new Animation(textureId, true);
+function Player(textureId, action, x, y, dx, dy, tx, ty, isPlayer) {
+    this.animation = new Animation(textureId, isPlayer);
     this.x = x;
     this.y = y;
     this.dx = dx;

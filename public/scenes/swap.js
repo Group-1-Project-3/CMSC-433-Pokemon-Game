@@ -6,6 +6,13 @@ import { SCALE } from "../proj3.js";
 const swapAnimation={
     _pokeParty:Array(),
     index:0,
+    postionx:256,
+    postiony:0,
+     scy:98,
+      scx:256,
+      up:false,
+      down:false,
+      move:false,
     init:function(){
     
         
@@ -16,51 +23,74 @@ const swapAnimation={
         swapAnimation.loadChar(); 
         
     },
+    
     pickPokemon:function () {
-        var postionx=256;
-        var postiony=0;
-        var scy=98;
-        var scx=256;
+    
         
         let pokemon=this._pokeParty[this.index];
-        
+        this.move=this.up||this.down;
         console.log(Events.KEY);
-        if(Events.KEY==="DOWN"){
+        if(this.up){
+            this.index=this.index-1;
+            this.up=false;
+        }
+        else if(this.down){
             this.index=this.index+1;
+            this.down=false;
+        }
+        if(Events.KEY==="DOWN"&&this.move==false){
+            this.index=this.index+1;
+            this.down=true;
             
         }
-        else if(Events.KEY==="UP"){
-            this.index=this.index-1;
+        else if(Events.KEY==="UP"&&this.move==false){
+            
+            this.up=true;
         }
         if(Events.KEY==="YES"){
           pokemon=this._pokeParty[this.index];  
         }
         if(this.index==0){
-            postionx=0;
-            postiony=0;
+            this.postionx=this.postionx*SCALE;
+            this.postiony=0;
+        
         }
         else if(this.index==1){
-            postiony=postiony+scx;
+            this.postiony=this.postiony+this.scy*SCALE;
+            this.postionx=0;
+
+        
         }
         else if(this.index==2){
-            postiony=postiony+scx;
+            this.postiony=this.postiony+this.scy*SCALE;
+            this.postionx=0;
         }
         else if(this.index==3){
-            postionx=postionx+scy;
-            postiony=0;
+            this.postionx=this.postionx+this.scx*SCALE;
+            this.postiony=0;
+        
         }
         else if(this.index==4){
-            postiony=postiony+scx;
+            this.postiony=this.postiony+this.scy*SCALE;
+        
         }
         else if(this.index==5){
-            postiony=postiony+scx;
+            this.postiony=this.postiony+this.scy*SCALE;
+        
 
         }
+        else if(this.index>=6||this.index<0)
+        {
+            this.postionx=256*SCALE;
+            this.postiony=0;
+            this.index=0;
+        }
+        console.log(this.index);
+        //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+        TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
 
-            TextureManager.DrawPicture('icon_ball_sel',postionx,postiony,SCALE);
-    
 
-        return pokemon
+        return pokemon;
     },
     loadChar:function () {
         
@@ -131,7 +161,8 @@ const swapAnimation={
         
         
     }
-    swapAnimation.pickPokemon(); 
+    //setInterval(swapAnimation.pickPokemon(),500); 
+    swapAnimation.pickPokemon();
         
     }
 

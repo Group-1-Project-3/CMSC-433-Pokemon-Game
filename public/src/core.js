@@ -39,7 +39,7 @@ function populatPokeDec() {
 			var speed = 2;
 
 			//TEST
-			
+			console.log(pokemon_name);
 
 			//Set pokeChosen to new pokemon object of user's choice	
 			pokeChosen = new Pokemon(pokemon_name, type1, type2, totalstat, hp, attack, defense, spattack, spdefense, speed, 1);
@@ -68,16 +68,14 @@ const Game = {
 
         Canvas.Init();
         Events.Init();
-        
+        console.log(Events.KEY);
         TextureManager.Init();
-        
         
         
         //.Init(this.Map);
         //CollisionHandler.Init(this.Map);
     },
     Update: function () {
-        
         populatPokeDec();
         swapAnimation._pokeParty=pokeparty;
         swapAnimation.init();

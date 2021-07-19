@@ -1,11 +1,6 @@
 import { Pokemon } from "./pokemon_class.js";
 
-var pokeChosen; //Pokemon chosen by the user
-var pokeparty = []; //"Pokemon Holder" Array that will hold all the pokemon
-var user;
-
 //Get selected Pokemon
-
 document.getElementById('pokemonChosen').onclick = function () {
 	var selected = document.querySelector('input[type=radio][name=pokemon]:checked');
 	console.log(selected.value);
@@ -13,8 +8,6 @@ document.getElementById('pokemonChosen').onclick = function () {
 }
 
 document.getElementById('pokemonChosen').addEventListener("click", hideDiv);
-
-
 
 //Hide div of Poke Choices after selection
 function hideDiv() {
@@ -160,65 +153,6 @@ const Game = {
 		//Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
 	}
 };
-
-function drawBackground(textureId) {
-	var frame = {
-		row: 0,
-		col: 0
-	};
-
-	TextureManager.DrawFrame(textureId, frame, 0, 0);
-
-}
-
-function slideInAnimation() {
-	var frame = {
-		row: 0,
-		col: 0
-	};
-	TextureManager.DrawFrame('base0', frame, -300, 325);
-	TextureManager.DrawFrame('base1', frame, 600, 100);
-}
-
-function Animation(textureId) {
-	this.delay;
-	this.frame = {};
-	this.frameIndex;
-	this.frameSet;
-	this.count;
-	this.id = textureId;
-	this.action;
-
-	Animation.prototype.SetProps = function (action, delay) {
-		if (this.action !== action) {
-			this.action = action;
-			this.delay = delay;
-			this.frame = {};
-			this.frameIndex = 0;
-			this.frameSet = TextureManager.TextureMap[this.id].frameSets[action];
-			this.count = 0;
-		}
-	}
-
-	Animation.prototype.Update = function () {
-		this.count++;
-		if (this.count >= this.delay) {
-			// update the animation to the next frame in the frame set
-			this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
-			// reset the count
-			this.count = 0;
-		}
-
-		const frameArray = this.frameSet[this.frameIndex];
-		this.frame.row = frameArray[1];
-		this.frame.col = frameArray[0];
-	}
-
-	Animation.prototype.Render = function (x, y) {
-		TextureManager.DrawFrame(this.id, this.frame, x, y);
-	}
-}
-
 
 function main() {
 

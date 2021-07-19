@@ -18,10 +18,10 @@ const TextureManager = {
     Init: function () {
         const keys = Object.keys(this.TextureMap);
         let imagePath = "";
-        keys.forEach( (key) => {
+        keys.forEach((key) => {
             imagePath = this.TextureMap[key].path;
             this.TextureMap[key].image = this.CreateImage(imagePath);
-        } );
+        });
     },
     CreateImage: function (src) {
         const image = new Image();
@@ -38,6 +38,20 @@ const TextureManager = {
             texture.frameHeight,
             x,
             y,
+            texture.frameWidth,
+            texture.frameHeight
+        );
+    },
+    DrawPlayerFrame: function (textureId, currFrame, x, y) {
+        const texture = this.TextureMap[textureId];
+        Canvas.Context.drawImage(
+            texture.image,
+            currFrame.col * texture.frameWidth,
+            currFrame.row * texture.frameHeight,
+            texture.frameWidth,
+            texture.frameHeight,
+            x - Camera.camX,
+            y - Camera.camY,
             texture.frameWidth,
             texture.frameHeight
         );
@@ -100,7 +114,7 @@ const TextureManager = {
     }
 };
 
-function Animation(textureId) {
+function Animation(textureId, hasCamera=false) {
     this.delay;
     this.frame = {};
     this.frameIndex;
@@ -108,9 +122,10 @@ function Animation(textureId) {
     this.count;
     this.id = textureId;
     this.action;
+    this.hasCamera=hasCamera;
 
     Animation.prototype.SetProps = function (action, delay) {
-        if (this.action !== action ) {
+        if (this.action !== action) {
             this.action = action;
             this.delay = delay;
             this.frame = {};
@@ -129,14 +144,14 @@ function Animation(textureId) {
     }
 
     Animation.prototype.Finished = function () {
-        if(this.frameSet === undefined)
+        if (this.frameSet === undefined)
             return false;
 
         return (this.frameIndex >= this.frameSet.length - 1) ? true : false;
     }
 
     Animation.prototype.Update = function () {
-        if ( this.count++ >= this.delay ){
+        if (this.count++ >= this.delay) {
             // update the animation to the next frame in the frame set
             this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
             // reset the count
@@ -149,7 +164,10 @@ function Animation(textureId) {
     }
 
     Animation.prototype.Render = function (x, y) {
-        TextureManager.DrawFrame(this.id, this.frame, x, y);
+        if (this.hasCamera) 
+            TextureManager.DrawPlayerFrame(this.id, this.frame, x, y);
+        else
+            TextureManager.DrawFrame(this.id, this.frame, x, y);
     }
 }
 

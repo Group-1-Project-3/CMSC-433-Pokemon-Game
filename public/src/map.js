@@ -163,12 +163,12 @@ function TileEffect(textureId, tileId, layerName, map, player, delay) {
          */
 
         if (activeTileId === this.tileId) {
-            this.animation.SetProps("brush", 10, false);
+            this.animation.SetProps("brush", 10);
             this.tileEffect = true;
-            if (this.animation.Finished()) {
-                this.tileEffect = false;
-            }
-            this.animation.Update();
+            //if (this.animation.Finished()) {
+            //    this.tileEffect = false;
+            //}
+            //this.animation.Update();
         }
     }
 

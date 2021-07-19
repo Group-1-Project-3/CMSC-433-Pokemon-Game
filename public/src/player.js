@@ -9,8 +9,6 @@ function Player(textureId, action, x, y, dx, dy) {
     this.y = y;
     this.dx = dx;
     this.dy = dy;
-    this.nextX = this.x; // buffer for next tile 
-    this.nextY = this.x; // buffer for next tile 
     this.action = action;
     this.moving_right = false;
     this.moving_left = false;
@@ -31,74 +29,85 @@ function Player(textureId, action, x, y, dx, dy) {
         let prevX = this.x;
         let prevY = this.y;
 
-        if (Events.KEY === "RIGHT" && !this.moving_right){
+        this.moving = this.moving_right || this.moving_left || this.moving_down || this.moving_up;
+        if (Events.KEY === "RIGHT" && !this.moving){
             this.moving_right = true;
+            //const xx = (this.x % 2 === 0) ? 1 : 0;
+            //this.destination = ( Math.floor(this.x / 32) + xx) * 32;
             this.destination = this.x + 32;
         }
-        else if (Events.KEY === "LEFT" && !this.moving_left) {
+        else if (Events.KEY === "LEFT" && !this.moving) {
             this.moving_left = true;
             this.destination = this.x - 32;
         }
-        else if (Events.KEY === "UP" && !this.moving_up){
+        else if (Events.KEY === "UP" && !this.moving){
             this.moving_up = true;
             this.destination = this.y - 32;
         }
-        else if (Events.KEY === "DOWN" && !this.moving_down){
+        else if (Events.KEY === "DOWN" && !this.moving){
             this.moving_down = true;
             this.destination = this.y + 32;
         }
 
         if (this.moving_right) {
-            console.log(`${this.destination - this.x}`);
-            if (this.destination % this.x === 0) {
+            if (this.destination - this.x === 0) {
                 this.x = this.destination;
                 this.moving_right = false;
             }
             else{
-                this.x += 1;
+                this.action = "walk_right";
+                this.x += this.dx;
             }
         }
         else if (this.moving_left) {
-            if (this.destination % this.x === 0) {
-                this.y = this.destination;
-                this.moving_down = false;
+            if (this.destination - this.x === 0) {
+                this.x = this.destination;
+                this.moving_left = false;
             }
             else{
-                this.x -= 1;
+                this.action = "walk_left";
+                this.x += -this.dx;
             }
         }
         else if (this.moving_up) {
-            if (this.destination % this.y === 0) {
+            if (this.destination - this.y === 0) {
                 this.y = this.destination;
-                this.moving_down = false;
+                this.moving_up = false;
             }
             else{
-                this.y -= 1;
+                this.action = "walk_up";
+                this.y += -this.dy;
             }
         }
         else if (this.moving_down) {
-            if (this.destination % this.y === 0) {
+            if (this.destination - this.y === 0) {
                 this.y = this.destination;
                 this.moving_down = false;
             }
             else{
-                this.y += 1;
+                this.action = "walk_down";
+                this.y += this.dy;
             }
         }
         
-        this.animation.SetProps("walk_right", 10);
-
         /* check for collisions */
         let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) || 
                             CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);
 
         if (isCollision) {
-            // do nothing
+            // revert back to previous tile
             this.x = prevX;
             this.y = prevY;
+            /* reset */
+            this.moving = false;
+            this.moving_left = false;
+            this.moving_right = false;
+            this.moving_up = false;
+            this.moving_down = false;
         }
 
         Camera.SetTarget(this);
+        this.animation.SetProps(this.action, 3);
         this.animation.Update();
     }
 

@@ -24,7 +24,7 @@ const Game = {
     Init: function (){
         /* Initialize all game classes */
         this.Map = MapParser.Load(MAP);
-        this.Player = new Player("trainer_brendan", "idle", 96, 64, 10, 10);
+        this.Player = new Player("trainer_brendan", "idle", 96, 70, 8, 8);
         this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
 
         Canvas.Init();

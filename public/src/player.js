@@ -115,8 +115,8 @@ function Player(textureId, action, x, y, dx, dy, tx, ty) {
         this.Move(dt);
 
         /* check for collisions */
-        let isCollision = CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) ||
-            CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);
+        let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) ||
+                            CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);
 
         if (isCollision) {
             // revert back to previous tile

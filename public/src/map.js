@@ -122,8 +122,8 @@ function TileSet(name, tileSize, colCount, firstId, lastId) {
 }
 
 function TileEffect(textureId, tileId, layerName, map, player, delay) {
-    this.animation = new Animation(textureId);
-    this.tileId = tileId;
+    this.animation = new Animation(textureId, true);
+    this.targetTileId = tileId;
     this.tileEffect = false;
     this.player = player;
     this.map = map
@@ -131,6 +131,10 @@ function TileEffect(textureId, tileId, layerName, map, player, delay) {
     this.previousTiles = [];
     this.delay = delay;
     this.count = 0;
+
+    this.activeTileId;
+    this.tileX;
+    this.tileY;
 
     TileEffect.prototype.GetActiveTileId = function (layerName, playerLocation) {
         const tileLayer = this.map.GetTileLayer(layerName);
@@ -149,35 +153,41 @@ function TileEffect(textureId, tileId, layerName, map, player, delay) {
         return {row: row, col: col};
     }
 
+
+    TileEffect.prototype.TargetTileIsActive = function () {
+        return this.activeTileId === this.targetTileId
+    }
+
+    TileEffect.prototype.TargetTileIsNew = function () {
+    }
+
     TileEffect.prototype.Update = function (dt) {
-        const activeTileId = this.GetActiveTileId(this.layerName, this.player.GetOrigin());
-
-        /* 
-         * Make sure we update this animation effect for grass to trigger when the players feet hit the grass
-         * and not his origin...
-         */
-
+        this.activeTileId = this.GetActiveTileId(this.layerName, this.player.GetBottom());
+        this.tileX = this.GetActiveTileLocation( this.layerName, this.player.GetBottom() ).col * 32;
+        this.tileY = this.GetActiveTileLocation( this.layerName, this.player.GetBottom() ).row * 32;
 
         /* 
          * If the animation below has stopped than animate again
          */
 
-        if (activeTileId === this.tileId) {
-            this.animation.SetProps("brush", 10);
-            this.tileEffect = true;
-            //if (this.animation.Finished()) {
-            //    this.tileEffect = false;
-            //}
-            //this.animation.Update();
+        this.tileEffect = false;
+
+        if (this.TargetTileIsActive() && this.TargetTileIsNew()) {
+            console.log("Made it");
+            if (!this.animation.Finished()) {
+                this.tileEffect = true;
+                this.animation.SetProps("brush", 10);
+                this.animation.Update();
+            }
+            else{
+                this.tileEffect = false;
+            }
         }
     }
 
     TileEffect.prototype.Render = function () {
-        const x = this.GetActiveTileLocation( this.layerName, this.player.GetOrigin() ).col * 32;
-        const y = this.GetActiveTileLocation( this.layerName, this.player.GetOrigin() ).row * 32;
-        if (this.tileEffect === true){
-            this.animation.Render(x, y);
-        }
+        if (this.tileEffect === true)
+            this.animation.Render(this.tileX, this.tileY);
     }
 }
 

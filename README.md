@@ -27,13 +27,12 @@ if user wins, moves on to next gym
 else goes back to start of current gym, xp gained will be saved
 
 ### to do
-1.) Audio Manager
-2.) NPCFactory ( that takes a Properties obj in its constructor )
-3.) Create visual effect when running through grass
-4.) Make sure the character is going 32px exactly and starts in a location that allows it to go 32px exactly
-5.) Better Collision detection
-6.) Player should have GetHead() GetFeet() GetOrigin() GetRight() GetLeft()
-7.) Making animated tiles
+1.) Get audio to continuously play
+2.) Create visual effect when running through grass
+3.) Making animated tiles
+4.) controls page via button clickc!
+5.) Stop animation when walking in direction
+6.) load different scene when walking into gym
 
 
 ### resources

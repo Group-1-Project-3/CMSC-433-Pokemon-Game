@@ -1,4 +1,4 @@
-var MAP = { "compressionlevel":-1,
+var HOME_MAP = { "compressionlevel":-1,
  "editorsettings":
     {
      "export":

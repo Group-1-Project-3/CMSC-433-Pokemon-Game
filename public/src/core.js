@@ -6,7 +6,13 @@ import { CollisionHandler } from "./collision.js";
 import { Events } from "./input.js";
 import { BattleScene } from "../scenes/battle_scene.js";
 import { SceneManager } from "../scenes/scene_manager.js";
+import { Pokemon, Party, getPokemonObject, generateRandomPokemon } from "./pokemon.js";
+import { NPC } from "./npc.js";
+import { POKEMONS } from "../assets/pokemon_data.js";
 
+
+
+const TILEPIXELS = 32;
 const Clock = {
     DeltaTime: 0,
     _prevTime: 0,
@@ -18,10 +24,15 @@ const Clock = {
     },
 };
 
+
+
 const Game = {
     Map: {},
     Player: {},
     TileEffect: {},
+    foe: {},
+
+
     Init: function (){
         Canvas.Init();
         Events.Init();
@@ -29,26 +40,42 @@ const Game = {
 
         /* Initialize all game classes */
         this.Map = MapParser.Load(MAP);
-        this.Player = new Player("trainer_red", "idle", 400, 70, 8, 8, 32, 32);
+        this.Player = new Player("trainer_red", "idle", 21 * TILEPIXELS, 47 * TILEPIXELS, 8, 8, 10, 10, true);
         this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
+
+
 
         Camera.Init(this.Map);
         CollisionHandler.Init(this.Map);
+
+
+        // charizard for debugging MAKE SURE TO CHANGE THIS TO STARTER POKEMON
+        var starterPokemon = getPokemonObject("Charizard");
+
+        // var starterPokemon = starterPokemon(); // starterPokemon should return pokemon object
+        this.Player.playerParty = new Party(starterPokemon, new Array(starterPokemon));
     },
+
     Load: function () {
+
 
         // WHEN CODING wild pokemon encounter, CHANGE THIS!!
         if (Events.KEY == "RIGHT") {
             var random = Math.floor(Math.random() * 1000);
-            if (random < 5) {
-                console.log("Changing scene");
+            if (random < 100) {
+                var pokemonObject = generateRandomPokemon();
+                this.foe = {};
+                this.foe = new NPC(pokemonObject, new Array(pokemonObject));
                 SceneManager.currScene = "battle";
+                SceneManager.currScene_index = 2;
             }
         }
 
         if (BattleScene.action == "run" && Events.KEY == "YES") {
             SceneManager.currScene = "walking";
+            SceneManager.currScene_index = 0;
             SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 0
+
         }
 
 
@@ -57,7 +84,9 @@ const Game = {
             // adds dialogue functionality here
         }
         else if (SceneManager.getScene() == "battle" && !SceneManager.checkBattleSceneLoaded()) {
-            BattleScene.Init();
+            console.log(this.Player.playerParty.chosenPokemon);
+            console.log(this.foe.Party.chosenPokemon);
+            BattleScene.Init(this.Player.playerParty.chosenPokemon, this.foe.Party.chosenPokemon);
             SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 1
         }
 
@@ -81,9 +110,11 @@ const Game = {
     },
     Render: function () {
         if (SceneManager.getScene() == "walking"){
+
             this.Map.Render();
             this.Player.Render();
             this.TileEffect.Render();
+
         }
     },
     Clear: function () {

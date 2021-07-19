@@ -1,15 +1,17 @@
 import { Canvas, TextureManager, Animation } from "../src/graphics.js";
 import { Events } from "../src/input.js";
 import { SCALE } from "../proj3.js";
+import { Pokemon, Party } from "../src/pokemon.js";
+import { SceneManager } from "./scene_manager.js";
 
 const BattleScene = {
-    // baseSlidedIn : 0,
-    // healthBoxSlidedIn: 0,
-    // healthFilled : 0,
-    // initial_x_base0 : 900,
-    // initial_x_base1 : -500,
-    // initial_x_health0 : 1600,
-    // initial_x_health1 : -1000,
+    // is_base_animated : 0,
+    // is_health_box_animated: 0,
+    // is_health_filled : 0,
+    // initial_x_playerBase : 900,
+    // initial_x_foeBase : -500,
+    // initial_x_playerHealth : 1600,
+    // initial_x_foeHealth : -1000,
     // command_animation : new Animation("command"),
     // fight_command_animation : new Animation("fight_command"),
     // normal_attack_animation : new Animation("normal_attack_anim"),
@@ -26,85 +28,140 @@ const BattleScene = {
     // foe_pokemon : "PIKACHU",
 
 
-    Init: function(){
-        this.initial_x_base0 = 900;
-        this.initial_x_base1 = -500;
-        this.baseSlidedIn = 0;
-        this.healthBoxSlidedIn = 0;
-        this.healthFilled = 0;
-        this.initial_x_health0 = 1600;
-        this.initial_x_health1 = -1000;
-        this.command_animation = new Animation("command");
-        this.fight_command_animation = new Animation("fight_command");
-        this.normal_attack_animation = new Animation("normal_attack_anim");
-        this.special_attack_animation = new Animation("special_attack_anim");
-        this.action = "fight";
+    Init: function(player_pokemon, foe_pokemon){
+        this.initial_x_playerBase = 900;
+        this.initial_x_foeBase = -500;
+        this.initial_x_playerHealth = 1600;
+        this.initial_x_foeHealth = -1000;
         this.command_x = 600;
         this.command_y = 500;
         this.fight_command_x = 10;
         this.fight_command_y = 490;
+
+        this.is_base_animated = 0;
+        this.is_health_box_animated = 0;
+        this.is_health_filled = 0;
+
+        this.command_animation = new Animation("command");
+        this.fight_command_animation = new Animation("fight_command");
+        this.normal_attack_animation = new Animation("normal_attack_anim");
+        this.special_attack_animation = new Animation("special_attack_anim");
+
+        this.action = "fight";
+
         this.attacking_flag = false;
         this.normal_attack = false;
         this.special_attack = false;
-        this.player_pokemon = "ODDISH";
-        this.foe_pokemon = "PIKACHU";
-        drawInitBattle(this.initial_x_base0, this.initial_x_base1, this.player_pokemon, this.foe_pokemon);
+
+        this.player_pokemon = player_pokemon;
+        this.foe_pokemon = foe_pokemon;
+
+        drawInitBattle(this.initial_x_playerBase, this.initial_x_foeBase, this.player_pokemon, this.foe_pokemon);
     },
 
     Animations: function(){
+        if (!this.is_base_animated){
+            this.initial_x_playerBase -= 10;
+            this.initial_x_foeBase += 10;
 
-        if (!this.baseSlidedIn){
-            this.initial_x_base0 -= 10;
-            this.initial_x_base1 += 10;
-
-            if (this.initial_x_base0 == -300)
-                this.baseSlidedIn = 1;
+            if (this.initial_x_playerBase == -300)
+                this.is_base_animated = 1;
         }
         else {
-            if (!this.healthBoxSlidedIn){
-                this.initial_x_health0 -= 10;
-                this.initial_x_health1 += 10;
+            if (!this.is_health_box_animated){
+                this.initial_x_playerHealth -= 10;
+                this.initial_x_foeHealth += 10;
 
-                if (this.initial_x_health1 == 0){
-                    this.healthBoxSlidedIn = 1;
+                if (this.initial_x_foeHealth == 0){
+                    this.is_health_box_animated = 1;
                 }
 
             }
 
         }
-        drawInitBattle(this.initial_x_base0, this.initial_x_base1, this.player_pokemon, this.foe_pokemon);
-        drawHealthBoxes(this.initial_x_health0, this.initial_x_health1, 0.2, 0.75);
-
-
-        if (this.baseSlidedIn && this.healthBoxSlidedIn){
-            drawStatPlayer(this.player_pokemon, 50, 270, 270);
-            drawStatFoe(this.foe_pokemon, 50);
+        console.log(this.player_pokemon.hp);
+        var playerPokemon_hp_percentage = this.player_pokemon.hp / this.player_pokemon.hpmax;
+        var foePokemon_hp_percentage = this.foe_pokemon.hp / this.foe_pokemon.hpmax;
+        if (playerPokemon_hp_percentage < 0){
+            playerPokemon_hp_percentage = 0;
+        }
+        if (foePokemon_hp_percentage < 0){
+            foePokemon_hp_percentage = 0;
         }
 
-        if (this.baseSlidedIn && this.healthBoxSlidedIn && !this.attacking_flag){
+        drawInitBattle(this.initial_x_playerBase, this.initial_x_foeBase, this.player_pokemon, this.foe_pokemon);
+        drawHealthBoxes(this.initial_x_playerHealth, this.initial_x_foeHealth, foePokemon_hp_percentage, playerPokemon_hp_percentage);
+
+
+        if (this.is_base_animated && this.is_health_box_animated){
+            drawStatPlayer(this.player_pokemon.pokemon_name, this.player_pokemon.level, this.player_pokemon.hp, this.player_pokemon.hpmax);
+            drawStatFoe(this.foe_pokemon.pokemon_name, this.foe_pokemon.level);
+        }
+
+        if (this.is_base_animated && this.is_health_box_animated && !this.attacking_flag && (this.action != "normal" || this.action != "special")){
             drawOptionsOverlay();
-            this.command_animation.SetProps(this.action, 25);
+            this.command_animation.SetProps(this.action, 20);
             this.command_animation.Update();
             this.command_animation.Render(this.command_x, this.command_y);
 
 
         }
-        if (this.attacking_flag){
+        if (this.attacking_flag && (this.action == "normal" || this.action == "special")){
             drawFightOverlay();
-            this.fight_command_animation.SetProps(this.action, 25);
+            this.fight_command_animation.SetProps(this.action, 20);
             this.fight_command_animation.Update();
             this.fight_command_animation.Render(this.fight_command_x, this.fight_command_y);
             drawText(60, "Normal attack", 75, 560);
             drawText(60, "Special attack", 515, 560);
 
         }
+        var aiAttack = randomizeAttack();
+        console.log(aiAttack);
         if (this.normal_attack){
             this.normalAttack("foe");
+
+
+            if (aiAttack == "normal"){
+                this.action = "normal";
+                this.normalAttack("player");
+            }
+            else if (aiAttack == "special"){
+                this.action = "special";
+                this.specialAttack("player");
+            }
+
+            this.normal_attack = false;
+
         }
 
         if (this.special_attack){
+
             this.specialAttack("foe");
+
+            if (aiAttack == "normal"){
+                this.action = "normal";
+                this.normalAttack("player");
+            }
+            else if (aiAttack == "special"){
+                this.action = "special";
+                this.specialAttack("player");
+            }
+
+
+            this.special_attack = false;
         }
+
+        if (this.player_pokemon.hp == 0){
+            TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
+            drawText(60, "Your pokemon has fainted", 50, 575);
+
+        }
+
+        else if (this.foe_pokemon.hp == 0){
+            TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
+            drawText(60, "The enemy has fainted", 50, 575);
+        }
+
 
         this.Selection();
     },
@@ -201,6 +258,15 @@ const BattleScene = {
                 this.fight_command_x = 10;
                 this.fight_command_y = 490;
             }
+            if (this.displayingNormalAttackText || this.displayingSpecialAttackingText){
+                this.action = "fight";
+                this.action = "normal";
+            }
+
+            if (this.player_pokemon.hp == 0 || this.foe_pokemon.hp == 0){
+                SceneManager.toggleBattleSceneLoaded();
+                SceneManager.nextScene();
+            }
 
 
 
@@ -213,77 +279,108 @@ const BattleScene = {
                 this.fight_command_x = 10;
                 this.fight_command_y = 490;
             }
+
         }
         else if (Events.KEY === "SELECTED"){
             if (this.action == "normal"){
                 this.normal_attack = true;
+                this.fight_command_x = 10;
+                this.fight_command_y = 490;
+
             }
             else if (this.action == "special"){
                 this.special_attack = true;
+                this.fight_command_x = 10;
+                this.fight_command_y = 490;
             }
         }
 
     },
     normalAttack : function (target) {
+        console.log(target);
         if (target == "foe"){
-            TextureManager.DrawPicture(this.foe_pokemon, this.initial_x_base1 + 100, 0, 2);
-            TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
-            drawText(60, "You have used normal attack", 50, 575);
-            this.normal_attack_animation.SetProps(this.action, 10);
+            TextureManager.DrawPicture(this.foe_pokemon.pokemon_name.toUpperCase(), this.initial_x_foeBase + 100, 0, 2);
+            this.normal_attack_animation.SetProps(this.action, 5);
             this.normal_attack_animation.Update();
             this.normal_attack_animation.Render(900, 100);
+            this.foe_pokemon.hp -= this.player_pokemon.calcDamage(this.foe_pokemon, "normal");
+            if (this.foe_pokemon.hp < 0){
+                this.foe_pokemon.hp = 0;
+            }
         }
         else if (target == "player"){
-            TextureManager.DrawPicture(this.player_pokemon, this.initial_x_base0 + 400, 200, 2);
-            TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
-            drawText(60, "Enemy has used normal attack", 50, 575);
-            this.normal_attack_animation.SetProps(this.action, 10);
+            TextureManager.DrawPicture(this.player_pokemon.pokemon_name.toUpperCase(), this.initial_x_playerBase + 400, 200, 2);
+            this.normal_attack_animation.SetProps(this.action, 5);
             this.normal_attack_animation.Update();
             this.normal_attack_animation.Render(250, 300);
+            this.player_pokemon.hp -= this.foe_pokemon.calcDamage(this.player_pokemon, "normal");
+            if (this.player_pokemon.hp < 0){
+                this.player_pokemon.hp = 0;
+            }
         }
+        this.action = "fight";
+        this.attacking_flag = false;
+
     },
 
     specialAttack : function (target) {
         if (target == "foe"){
-            TextureManager.DrawPicture(this.foe_pokemon, this.initial_x_base1 + 100, 0, 2);
-            TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
-            drawText(60, "You have used special attack", 50, 575);
-            this.special_attack_animation.SetProps(this.action, 10);
+            TextureManager.DrawPicture(this.foe_pokemon.pokemon_name.toUpperCase(), this.initial_x_foeBase + 100, 0, 2);
+            this.special_attack_animation.SetProps(this.action, 5);
             this.special_attack_animation.Update();
             this.special_attack_animation.Render(900, 100);
+            this.foe_pokemon.hp -= this.player_pokemon.calcDamage(this.foe_pokemon, "special");
+            if (this.foe_pokemon.hp < 0){
+                this.foe_pokemon.hp = 0;
+            }
         }
         else if (target == "player"){
-            TextureManager.DrawPicture(this.player_pokemon, this.initial_x_base0 + 400, 200, 2);
-            TextureManager.DrawPicture('overlay_message', 0, 475, SCALE);
-            drawText(60, "Enemy has used special attack", 50, 575);
-            this.special_attack_animation.SetProps(this.action, 10);
+            TextureManager.DrawPicture(this.player_pokemon.pokemon_name.toUpperCase(), this.initial_x_playerBase + 400, 200, 2);
+            this.special_attack_animation.SetProps(this.action, 5);
             this.special_attack_animation.Update();
             this.special_attack_animation.Render(250, 300);
+            this.player_pokemon.hp -= this.foe_pokemon.calcDamage(this.player_pokemon, "special");
+            if (this.player_pokemon.hp < 0){
+                this.player_pokemon.hp = 0;
+            }
+
         }
+
+        this.action = "fight";
+        this.attacking_flag = false;
+
     }
 
 };
 
-function drawInitBattle(initial_x_base0, initial_x_base1, playerPokemonName, foePokemonName) {
+function randomizeAttack(){
 
+    var options = ["normal", "special"];
+    var random = Math.floor(Math.random() * 2);
+    return options[random];
+}
+
+function drawInitBattle(initial_x_playerBase, initial_x_foeBase, playerPokemon, foePokemon) {
+    var playerPokemonName = playerPokemon.pokemon_name.toUpperCase();
+    var foePokemonName = foePokemon.pokemon_name.toUpperCase();
     TextureManager.addImageObject(`./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Back/${playerPokemonName}.png`, playerPokemonName);
     TextureManager.addImageObject(`./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/${foePokemonName}.png`, foePokemonName);
 
     TextureManager.DrawPicture('battle_background', 0, 0, SCALE);
+
+
+    TextureManager.DrawPicture('base1', initial_x_foeBase, 100, SCALE);
+    TextureManager.DrawPicture(foePokemonName, initial_x_foeBase + 100, 0, 2);
+
+
+
+    TextureManager.DrawPicture('base0', initial_x_playerBase, 325, SCALE);
+    TextureManager.DrawPicture(playerPokemonName, initial_x_playerBase + 400, 200, 2);
+
     TextureManager.DrawPicture('black_bar', 0, 475, SCALE);
-
-    TextureManager.DrawPicture('base1', initial_x_base1, 100, SCALE);
-    TextureManager.DrawPicture(foePokemonName, initial_x_base1 + 100, 0, 2);
-
-
-
-    TextureManager.DrawPicture('base0', initial_x_base0, 325, SCALE);
-    TextureManager.DrawPicture(playerPokemonName, initial_x_base0 + 400, 200, 2);
-
-
 }
 
-function drawHealthBoxes(initial_x_health0, initial_x_health1, foeHealth, playerHealth){
+function drawHealthBoxes(initial_x_playerHealth, initial_x_foeHealth, foeHealth, playerHealth){
     var playerFrame = {};
     var foeFrame = {};
     var green = {
@@ -320,10 +417,10 @@ function drawHealthBoxes(initial_x_health0, initial_x_health1, foeHealth, player
         foeFrame = red;
     }
 
-    TextureManager.DrawPicture('our_health_box', initial_x_health0, 300, SCALE);
-    TextureManager.DrawPicture('foe_health_box', initial_x_health1, 50, SCALE);
-    TextureManager.DrawBar('health_bar', playerFrame, initial_x_health0 + 319, 394, SCALE * playerHealth, SCALE);
-    TextureManager.DrawBar('health_bar', foeFrame, initial_x_health1 + 277, 144, SCALE * foeHealth, SCALE);
+    TextureManager.DrawPicture('our_health_box', initial_x_playerHealth, 300, SCALE);
+    TextureManager.DrawPicture('foe_health_box', initial_x_foeHealth, 50, SCALE);
+    TextureManager.DrawBar('health_bar', playerFrame, initial_x_playerHealth + 319, 394, SCALE * playerHealth, SCALE);
+    TextureManager.DrawBar('health_bar', foeFrame, initial_x_foeHealth + 277, 144, SCALE * foeHealth, SCALE);
 
 }
 
@@ -376,6 +473,10 @@ function drawFightOverlay(){
 }
 
 function drawStatPlayer(name, level, currHealth, maxHealth){
+    currHealth = parseInt(currHealth);
+    if (currHealth < 0){
+        currHealth = 0;
+    }
     drawText(60, name, 715, 375);
     drawText(60, `Lv.${level}`, 1000, 375);
     drawText(50, `${currHealth}/${maxHealth}`, 930, 460);

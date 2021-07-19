@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
  <editorsettings>
   <export target="map.js" format="js"/>
  </editorsettings>
@@ -120,7 +120,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="collision" width="50" height="50">
+ <layer id="3" name="collision" width="50" height="50" locked="1">
   <data encoding="csv">
 449,450,451,449,450,451,497,498,499,0,0,0,0,0,481,482,483,481,482,483,2801,2802,2803,2804,2805,2806,2807,0,0,473,474,475,0,466,0,497,498,499,0,0,0,0,0,949,948,0,429,430,429,430,
 457,458,459,457,458,459,505,506,507,0,0,0,0,0,489,490,491,489,490,491,2809,2810,2811,2812,2813,2814,2815,0,0,481,482,483,473,474,475,505,506,507,0,0,0,0,0,0,466,0,437,438,437,438,

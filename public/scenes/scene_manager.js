@@ -1,9 +1,8 @@
 const SceneManager = {
     currScene: "walking",
     currScene_index: 0,
-    sceneOptions: ["walking", "talking", "battle"],
+    sceneOptions: ["walking", "talking", "battle", "swapping"],
     sceneLoaded: 0,
-
 
     nextScene: function () {
         this.currScene_index += 1;

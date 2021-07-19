@@ -8,8 +8,8 @@ class Party {
 
     }
 
-    swapPokemon() {
-        return 1;
+    swapPokemon(){
+        this.chosenPokemon = this.pokemonArray[0];
     }
 
 
@@ -63,6 +63,11 @@ class Pokemon {
         } else {
             return false;
         }
+    }
+    calcRunChance(targetPokemon, attempt_n){
+        var random = Math.floor(Math.random() * 128);
+        var odd = (Math.floor(this.speed * 128 / targetPokemon.speed) + 30 * attempt_n) % 256;
+        return (random < odd);
     }
 
 }

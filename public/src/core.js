@@ -9,8 +9,7 @@ import { SceneManager } from "../scenes/scene_manager.js";
 import { Pokemon, Party, getPokemonObject, generateRandomPokemon } from "./pokemon.js";
 import { NPC } from "./npc.js";
 import { POKEMONS } from "../assets/pokemon_data.js";
-
-
+import { swapAnimation } from "../scenes/swap.js";
 
 const TILEPIXELS = 32;
 const Clock = {
@@ -50,10 +49,12 @@ const Game = {
 
 
         // charizard for debugging MAKE SURE TO CHANGE THIS TO STARTER POKEMON
-        var starterPokemon = getPokemonObject("Charizard");
+        var starterPokemon = getPokemonObject("Charmander");
+        var secondPokemon = getPokemonObject("Bulbasaur");
 
-        // var starterPokemon = starterPokemon(); // starterPokemon should return pokemon object
+
         this.Player.playerParty = new Party(starterPokemon, new Array(starterPokemon));
+        this.Player.playerParty.pokemonArray[1] = secondPokemon;
     },
 
     Load: function () {
@@ -62,7 +63,7 @@ const Game = {
         // WHEN CODING wild pokemon encounter, CHANGE THIS!!
         if (Events.KEY == "RIGHT") {
             var random = Math.floor(Math.random() * 1000);
-            if (random < 100) {
+            if (random < 25) {
                 var pokemonObject = generateRandomPokemon();
                 this.foe = {};
                 this.foe = new NPC(pokemonObject, new Array(pokemonObject));
@@ -71,12 +72,6 @@ const Game = {
             }
         }
 
-        if (BattleScene.action == "run" && Events.KEY == "YES") {
-            SceneManager.currScene = "walking";
-            SceneManager.currScene_index = 0;
-            SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 0
-
-        }
 
 
         if (SceneManager.getScene() == "talking") {
@@ -84,10 +79,14 @@ const Game = {
             // adds dialogue functionality here
         }
         else if (SceneManager.getScene() == "battle" && !SceneManager.checkBattleSceneLoaded()) {
-            console.log(this.Player.playerParty.chosenPokemon);
-            console.log(this.foe.Party.chosenPokemon);
             BattleScene.Init(this.Player.playerParty.chosenPokemon, this.foe.Party.chosenPokemon);
             SceneManager.toggleBattleSceneLoaded(); // turns sceneLoaded to 1
+        }
+
+        else if (SceneManager.getScene() == "swapping"){
+            this.Player.playerParty.pokemonArray = swapAnimation.init(this.Player.playerParty.pokemonArray);
+            this.Player.playerParty.swapPokemon();
+
         }
 
 
@@ -121,5 +120,6 @@ const Game = {
         Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight);
     }
 };
+
 
 export { Game, Clock };

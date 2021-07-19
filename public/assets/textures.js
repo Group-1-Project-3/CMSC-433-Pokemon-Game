@@ -120,11 +120,36 @@ var TEXTURES = {
         "path": "./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Characters/trainer_POKEMONTRAINER_Brendan.png",
         "image": {},
         "frameSets": {
-            "walk_right": [ [2, 0], [2, 1], [2, 2], [2, 3] ],
-            "walk_left": [ [1, 0], [1, 1], [1, 2], [1, 3] ],
-            "walk_up": [ [3, 0], [3, 1], [3, 2], [3, 3] ],
-            "walk_down": [ [0, 0], [0, 1], [0, 2], [0, 3] ],
-            "idle": [ [0, 0], [0, 0], [0, 0], [0, 0] ]
+            "walk_right": [
+                [2, 0],
+                [2, 1],
+                [2, 2],
+                [2, 3]
+            ],
+            "walk_left": [
+                [1, 0],
+                [1, 1],
+                [1, 2],
+                [1, 3]
+            ],
+            "walk_up": [
+                [3, 0],
+                [3, 1],
+                [3, 2],
+                [3, 3]
+            ],
+            "walk_down": [
+                [0, 0],
+                [0, 1],
+                [0, 2],
+                [0, 3]
+            ],
+            "idle": [
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0]
+            ]
         },
         "frameWidth": 128 / 4,
         "frameHeight": 192 / 4
@@ -173,7 +198,12 @@ var TEXTURES = {
         "path": "./assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Animations/grass3.png",
         "image": {},
         "frameSets": {
-            "brush": [ [0, 0], [0, 1], [0, 2], [0, 3] ],
+            "brush": [
+                [0, 0],
+                [0, 1],
+                [0, 2],
+                [0, 3]
+            ],
         },
         "frameWidth": 96 / 3,
         "frameHeight": 32 / 1
@@ -336,7 +366,7 @@ var TEXTURES = {
 
     },
 
-    "health_bar" : {
+    "health_bar": {
         "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Battle/overlay_hp.png",
         "image": {},
         "frameSets": {
@@ -384,7 +414,7 @@ var TEXTURES = {
         "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Animations/004-Attack02.png",
         "image": {},
         "frameSets": {
-            "normal" : [
+            "normal": [
                 [0, 0],
                 [0, 1],
                 [0, 2],
@@ -405,7 +435,7 @@ var TEXTURES = {
         "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Animations/003-Attack01.png",
         "image": {},
         "frameSets": {
-            "special" : [
+            "special": [
                 [0, 0],
                 [0, 1],
                 [0, 2],
@@ -420,5 +450,95 @@ var TEXTURES = {
         },
         "frameWidth": 960 / 5,
         "frameHeight": 384 / 2
+    },
+    "party_background": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/bg.PNG",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 512,
+        "frameHeight": 288
+    },
+    "lv": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_lv.png",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 22,
+        "frameHeight": 14
+    },
+    "overlay_hp_back": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp_back.png",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 138,
+        "frameHeight": 14
+    },
+    "overlay_hp_back_faint": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp_back_faint.png",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 138,
+        "frameHeight": 14
+    },
+    "overlay_hp_back_swap": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp_back_swap.png",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 138,
+        "frameHeight": 14
+    },
+    "overlay_hp": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/overlay_hp.png",
+        "image": {},
+        "frameSets": {
+            "green": [0, 0],
+            "yellow": [0, 1],
+            "red": [0, 2]
+        },
+        "frameWidth": 96,
+        "frameHeight": 8
+    },
+    "red_panel": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/panel_rect_faint_sel.png",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 256,
+        "frameHeight": 98
+    },
+    "icon_ball_sel": {
+        "path": "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/icon_ball_sel.PNG",
+        "image": {},
+        "frameSets": {},
+        "frameWidth": 44,
+        "frameHeight": 56
+    },
+
+    'poke_starter_charmander': {
+        'path': "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/CHARMANDER.png",
+        'image': {},
+        'frameSets': {
+            'still': [[0, 0]]
+        },
+        'frameWidth': 512,
+        'frameHeight': 300
+    },
+
+    'poke_starter_bulbasaur': {
+        'path': "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/BULBASAUR.png",
+        'image': {},
+        'frameSets': {
+            'still': [[0, 0]]
+        },
+        'frameWidth': 512,
+        'frameHeight': 300
+    },
+
+    'poke_starter_squirtle': {
+        'path': "assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pokemon/Front/SQUIRTLE.png",
+        'image': {},
+        'frameSets': {
+            'still': [[0, 0]]
+        },
+        'frameWidth': 512,
+        'frameHeight': 300
     }
 };

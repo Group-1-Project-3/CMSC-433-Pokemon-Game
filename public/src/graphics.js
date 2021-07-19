@@ -42,6 +42,14 @@ const TextureManager = {
             texture.frameHeight
         );
     },
+    drawText : function(msg,x,y){
+    Canvas.Context.font = '48px Arial';
+    //Canvas.Context.fillStlye='black';
+    Canvas.Context.fillStlye="0000000";
+    Canvas.Context.fillText(msg, x, y);
+
+
+    },
     DrawPlayerFrame: function (textureId, currFrame, x, y) {
         const texture = this.TextureMap[textureId];
         Canvas.Context.drawImage(
@@ -164,7 +172,7 @@ function Animation(textureId, hasCamera=false) {
     }
 
     Animation.prototype.Render = function (x, y) {
-        if (this.hasCamera) 
+        if (this.hasCamera)
             TextureManager.DrawPlayerFrame(this.id, this.frame, x, y);
         else
             TextureManager.DrawFrame(this.id, this.frame, x, y);

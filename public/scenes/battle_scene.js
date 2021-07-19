@@ -3,6 +3,7 @@ import { Events } from "../src/input.js";
 import { SCALE } from "../proj3.js";
 import { Pokemon, Party } from "../src/pokemon.js";
 import { SceneManager } from "./scene_manager.js";
+// import { swapAnimation } from "./swap.js";
 
 const BattleScene = {
     // is_base_animated : 0,
@@ -55,6 +56,7 @@ const BattleScene = {
 
         this.player_pokemon = player_pokemon;
         this.foe_pokemon = foe_pokemon;
+        this.escape_attempts = 0;
 
         drawInitBattle(this.initial_x_playerBase, this.initial_x_foeBase, this.player_pokemon, this.foe_pokemon);
     },
@@ -79,7 +81,7 @@ const BattleScene = {
             }
 
         }
-        console.log(this.player_pokemon.hp);
+
         var playerPokemon_hp_percentage = this.player_pokemon.hp / this.player_pokemon.hpmax;
         var foePokemon_hp_percentage = this.foe_pokemon.hp / this.foe_pokemon.hpmax;
         if (playerPokemon_hp_percentage < 0){
@@ -116,7 +118,7 @@ const BattleScene = {
 
         }
         var aiAttack = randomizeAttack();
-        console.log(aiAttack);
+
         if (this.normal_attack){
             this.normalAttack("foe");
 
@@ -239,10 +241,30 @@ const BattleScene = {
                 // calls catch function
             }
             else if (this.action == "swap"){
-                // calls swap function
+                SceneManager.currScene = "swapping";
+                SceneManager.currScene_index = 3;
             }
             else if (this.action == "run"){
-                // calls run function
+                if (this.player_pokemon.calcRunChance(this.foe_pokemon, this.escape_attempts)){
+                    SceneManager.toggleBattleSceneLoaded();
+                    SceneManager.currScene = "walking";
+                    SceneManager.currScene_index = 0;
+                }
+                else {
+                    var aiAttack = randomizeAttack();
+                    if (aiAttack == "normal"){
+                        this.action = "normal";
+                        this.normalAttack("player");
+                    }
+                    else if (aiAttack == "special"){
+                        this.action = "special";
+                        this.specialAttack("player");
+                    }
+                    this.command_x = 834;
+                    this.command_y = 600;
+                    this.action = "run";
+                    this.escape_attempts += 1;
+                }
             }
             else if (this.normal_attack){
                 this.normal_attack = false;
@@ -265,7 +287,8 @@ const BattleScene = {
 
             if (this.player_pokemon.hp == 0 || this.foe_pokemon.hp == 0){
                 SceneManager.toggleBattleSceneLoaded();
-                SceneManager.nextScene();
+                SceneManager.currScene = "walking";
+                SceneManager.currScene_index = 0;
             }
 
 
@@ -297,7 +320,7 @@ const BattleScene = {
 
     },
     normalAttack : function (target) {
-        console.log(target);
+
         if (target == "foe"){
             TextureManager.DrawPicture(this.foe_pokemon.pokemon_name.toUpperCase(), this.initial_x_foeBase + 100, 0, 2);
             this.normal_attack_animation.SetProps(this.action, 5);

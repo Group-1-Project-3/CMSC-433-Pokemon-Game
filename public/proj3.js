@@ -23,7 +23,9 @@ function main() {
 
 /* Prepare game by init events and defaults */
 Game.Init();
-/* Performs at 60fps on most monitorss */
 requestAnimationFrame(main);
+/* Performs at 60fps on most monitorss */
+
+
 
 export { SCALE };

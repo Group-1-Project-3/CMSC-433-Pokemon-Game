@@ -6,13 +6,16 @@ import { SCALE } from "../proj3.js";
 const swapAnimation={
     _pokeParty:Array(),
     index:0,
-    postionx:256,
-    postiony:0,
-     scy:98,
-      scx:256,
+    postionx:500,
+    postiony:50,
+    ix:500,
+    iy:50,
+     scy:256,
+      scx:500,
       up:false,
       down:false,
       move:false,
+      speed:0,
     init:function(){
     
         
@@ -21,75 +24,100 @@ const swapAnimation={
         //TextureManager.setImage("./CMSC-433-Pokemon-Game/public/assets/Pokemon Essentials v19.1 2021-05-22/Graphics/Pictures/Party/bg.PNG");
         TextureManager.DrawPicture('party_background',0,0,SCALE);
         swapAnimation.loadChar(); 
+        //swapAnimation.pickPokemon();
         
     },
     
     pickPokemon:function () {
-    
-        
-        let pokemon=this._pokeParty[this.index];
-        this.move=this.up||this.down;
-        console.log(Events.KEY);
-        if(this.up){
-            this.index=this.index-1;
-            this.up=false;
-        }
-        else if(this.down){
-            this.index=this.index+1;
-            this.down=false;
-        }
-        if(Events.KEY==="DOWN"&&this.move==false){
-            this.index=this.index+1;
-            this.down=true;
-            
-        }
-        else if(Events.KEY==="UP"&&this.move==false){
-            
-            this.up=true;
-        }
-        if(Events.KEY==="YES"){
-          pokemon=this._pokeParty[this.index];  
-        }
-        if(this.index==0){
-            this.postionx=this.postionx*SCALE;
-            this.postiony=0;
-        
-        }
-        else if(this.index==1){
-            this.postiony=this.postiony+this.scy*SCALE;
-            this.postionx=0;
-
-        
-        }
-        else if(this.index==2){
-            this.postiony=this.postiony+this.scy*SCALE;
-            this.postionx=0;
-        }
-        else if(this.index==3){
-            this.postionx=this.postionx+this.scx*SCALE;
-            this.postiony=0;
-        
-        }
-        else if(this.index==4){
-            this.postiony=this.postiony+this.scy*SCALE;
-        
-        }
-        else if(this.index==5){
-            this.postiony=this.postiony+this.scy*SCALE;
-        
-
-        }
-        else if(this.index>=6||this.index<0)
-        {
-            this.postionx=256*SCALE;
-            this.postiony=0;
-            this.index=0;
-        }
-        console.log(this.index);
         //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
-        TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+         if(this.speed==3){
+            var pokemon=this._pokeParty[this.index];
+            this.move=this.down||this.up;
+            if(!this.move){
+                if(Events.KEY=="DOWN"){
+                    this.down=true;
+                    //this.index=this.index+1;
+                    console.log(this.index);
+                }
+                else if(Events.KEY=="UP"){
+                    this.up=true;
+                    //this.index=this.index-1;
+                    console.log(this.index);
 
+                }
+            }
+            else{
+                if(Events.KEY=="DOWN"){
+                    this.down=false;
+                    this.index=this.index+1;
+                    console.log(this.index);
+                    
+                }
+                else if(Events.KEY=="UP"){
+                    this.up=false;
+                    this.index=this.index-1;
+                    console.log(this.index);
+                    
 
+                }
+            }
+            //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+            if(this.index==0){
+                this.postionx=500;
+                this.postiony=50;
+                //this.postiony=this.postiony+this.scy*SCALE;
+                //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+            }
+            if(this.index==1){
+                //this.postiony=this.postiony+this.scy*SCALE;
+                this.postionx=500;
+                this.postiony=50+this.scy;
+                //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+            }
+            if(this.index==2){
+                //this.postionx=this.postionx+this.scx*SCALE;
+                //this.postiony=this.iy*SCALE;
+                this.postionx=500;
+                this.postiony=50+this.scy*2;
+            //TextureManager.DrawPicture('icon_ball_sel',500,50+this.scy*2,SCALE);
+            }
+            if(this.index==3){
+                //this.postionx=this.postionx+this.scx*SCALE;
+                //this.postiony=this.iy*SCALE;
+                this.postionx=500+this.scx;
+                this.postiony=50;
+            //TextureManager.DrawPicture('icon_ball_sel',500+this.scx,50,SCALE);
+            }
+            if(this.index==4){
+                this.postionx=500+this.scx;
+                this.postiony=50+this.scy;
+                //this.postiony=this.postiony+this.scy*SCALE;
+                //TextureManager.DrawPicture('icon_ball_sel',500+this.scx,50+this.scy,SCALE);
+            }
+            if(this.index==5){
+                this.postionx=500+this.scx;
+                this.postiony=50+this.scy*2;
+                //.postiony=this.postiony+this.scy*SCALE;
+                //TextureManager.DrawPicture('icon_ball_sel',500+this.scx,50+this.scy*2,SCALE);
+            }
+  
+            if(this.index>5||this.index<0){
+                this.index=0;
+            }
+        
+            //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);  
+        }
+        else if(this.speed>3){
+        this.speed=0;
+        }
+        //console.log(this.move);
+        
+        //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+        //TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);
+        //setInterval(Canvas.Context.clearRect(0, 0, Canvas.CanWidth, Canvas.CanHeight),500);
+        TextureManager.DrawPicture('icon_ball_sel',this.postionx,this.postiony,SCALE);  
+
+        this.speed=this.speed+1;
         return pokemon;
     },
     loadChar:function () {
@@ -113,7 +141,8 @@ const swapAnimation={
             TextureManager.drawText(`${this._pokeParty[i].level}`,textX+60,texty+50);
             //TextureManager.drawText(`hp: ${this._pokeParty[i].hp}`,textX,texty+50);
             //draw hp bar instead
-            this._pokeParty[i].hp=this._pokeParty[i].hp*.75;
+            //this._pokeParty[i].hp=this._pokeParty[i].hp*.75;
+            var barLength=(this._pokeParty[i].hp/this._pokeParty[i].hpmax)*SCALE;
             if(this._pokeParty[i].hp>=this._pokeParty[i].hpmax*.60){
                 //draw green
                 var green={
@@ -121,7 +150,7 @@ const swapAnimation={
                     col:0
                 }
                 TextureManager.DrawPicture('overlay_hp_back',textX,texty+80,SCALE);
-                TextureManager.DrawBar('overlay_hp',green,textX+70,texty+85,this._pokeParty[i].hp/153,SCALE);
+                TextureManager.DrawBar('overlay_hp',green,textX+70,texty+85,barLength,SCALE);
 
             }
             else if(this._pokeParty[i].hp>=this._pokeParty[i].hpmax*.25 & this._pokeParty[i].hp<=this._pokeParty[i].hpmax*.60 ){
@@ -130,7 +159,7 @@ const swapAnimation={
                     row:0,
                     col:1
                 }
-                TextureManager.DrawBar('overlay_hp',blue,textX+70,texty+85,this._pokeParty[i].hp/153,SCALE);
+                TextureManager.DrawBar('overlay_hp',blue,textX+70,texty+85,barLength,SCALE);
             }
             else if(this._pokeParty[i].hp<=this._pokeParty[i].hpmax*.25 ){
                 TextureManager.DrawPicture('overlay_hp_back_faint',textX,texty+80,SCALE);
@@ -138,7 +167,7 @@ const swapAnimation={
                     row:0,
                     col:2
                 }
-                TextureManager.DrawBar('overlay_hp',red,textX+70,texty+85,this._pokeParty[i].hp/153,SCALE);
+                TextureManager.DrawBar('overlay_hp',red,textX+70,texty+85,barLength,SCALE);
             }
 
             
@@ -162,7 +191,7 @@ const swapAnimation={
         
     }
     //setInterval(swapAnimation.pickPokemon(),500); 
-    swapAnimation.pickPokemon();
+    
         
     }
 

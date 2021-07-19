@@ -71,14 +71,20 @@ const Game = {
         console.log(Events.KEY);
         TextureManager.Init();
         
-        
         //.Init(this.Map);
         //CollisionHandler.Init(this.Map);
     },
     Update: function () {
+        
+
+
         populatPokeDec();
         swapAnimation._pokeParty=pokeparty;
         swapAnimation.init();
+        //swapAnimation._pokeParty=pokeparty;
+        //swapAnimation.init();
+        //swapAnimation._pokeParty=pokeparty;
+        swapAnimation.pickPokemon()
         //this.Player.Update(Clock.DeltaTime);
         //this.TileEffect.Update(Clock.DeltaTime);
         //Camera.Update(Clock.DeltaTime);

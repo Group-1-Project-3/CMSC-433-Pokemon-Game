@@ -7,13 +7,16 @@
  */
 
 import { Game, Clock } from './src/core.js';
+import { CollisionHandler } from "./src/collision.js";
+import { MapParser } from './src/map.js';
+import { Camera } from "./src/camera.js";
 const SCALE = 2.34375;
 
 function main() {
 
     /* Game loop */
     Game.Clear();
-    //Game.Load();
+    Game.Load();
     Game.Update();
     Game.Render();
     Clock.Tick();
@@ -32,11 +35,34 @@ function load() {
     let ctn = document.getElementById("canvas");
     let strtBtn = document.getElementById("strtBtn");
     let ctrlBtn = document.getElementById("ctrlBtn");
+    let mapBtn = document.getElementById("mapBtn");
+    let modalButtons = document.getElementById("maps");
+
+    // start button event
     strtBtn.addEventListener("click", (e)=>{
         ctn.style.display = "block"; 
         strtBtn.style.display = "none";
         ctrlBtn.style.display = "inline-block";
+        mapBtn.style.display = "inline-block";
         start();
+    });
+    // map button event
+    modalButtons.addEventListener("click", (e)=>{
+        if (e.target.id === "beachMap") {
+            Game.Map = MapParser.Load(BEACH_MAP);
+            CollisionHandler.Init(Game.Map);
+            Camera.Init(Game.Map);
+        }
+        else if (e.target.id === "homeMap") {
+            Game.Map = MapParser.Load(HOME_MAP);
+            CollisionHandler.Init(Game.Map);
+            Camera.Init(Game.Map);
+        }
+        else if (e.target.id === "gymMap") {
+            Game.Map = MapParser.Load(GYM_MAP);
+            CollisionHandler.Init(Game.Map);
+            Camera.Init(Game.Map);
+        }
     });
 }
 

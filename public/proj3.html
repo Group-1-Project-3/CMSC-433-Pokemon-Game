@@ -3,13 +3,17 @@
     <head>
         <meta charset="utf-8">
         <title>Pokemon</title>
+        <!-- AJAX -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- BOOTSRAP STYLES -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="stylesheet" href="proj3.css">
-        <!-- BOOTSTRAP -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+        <!-- CUSTOM STYLES -->
+        <link rel="stylesheet" href="proj3.css">
+        <!-- BOOTSTRAP STYLES -->
         <!-- LOAD TEXTURE DATA -->
         <script src="assets/textures.js"></script>
         <!-- LOAD AUDIO DATA -->
@@ -19,33 +23,60 @@
         <script src="assets/maps/beach.js"></script>
         <script src="assets/maps/gym.js"></script>
         <script type="module" src="./proj3.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     </head>
     <body>
         <div class="canvas-container">
             <!-- Start game button -->
             <button class="btn btn-primary btn-lg" id="strtBtn">Click To Play!</button>
 
-            <!-- Settings button-->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="ctrlBtn">
+            <!-- Control button-->
+            <button type="button" class="btn btn-primary settingsBtn" data-bs-toggle="modal" data-bs-target="#controlModal" id="ctrlBtn">
                 Controls
+            </button>
+
+            <!-- Maps button-->
+            <button type="button" class="btn btn-primary settingsBtn" data-bs-toggle="modal" data-bs-target="#mapModal" id="mapBtn">
+                New Map
             </button>
             
             <!-- Modal for settings -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="controlModal" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Controls</h5>
+                            <h5 class="modal-title" id="controlModalLabel">Controls</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <h1>Keys</h1>
-                            <strong>w.s.a.d / arrow keys:</strong><small> moves player around the screen</small><br>
-                            <strong>j / z:</strong><small> chooses battle action ( i.e. run/fight/catch/swap )</small><br>
-                            <strong>k / x:</strong><small> escapes from a battle action ( i.e. run/fight/catch/swap )</small><br>
-                            <strong>u:</strong><small> chooses an attack type ( i.e. normal/special )</small><br>
+                            <strong>w.s.a.d / arrow keys:</strong><small> move player around the screen</small><br>
+                            <strong>w.s.a.d / arrow keys:</strong><small> used to navigate between boxes ( i.e. when selecting starter pokemon or in battle )</small><br>
+                            <strong>j / z:</strong><small> choose new pokemon</small><br>
+                            <strong>j / z:</strong><small> chooses battle action ( i.e. run/fight/ball/pokemon )</small><br>
+                            <strong>k / x:</strong><small> go back from battle action ( i.e. run/fight/ball/pokemon )</small><br>
+                            <strong>u:</strong><small> choose an attack type ( i.e. normal/special )</small><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for new map -->
+            <div class="modal fade" id="mapModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mapModalLabel">Choose A New Map!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="maps" class="list-group">
+                                <button id="beachMap" class="list-group-item list-group-item-action" data-bs-dismiss="modal">Beach</button>
+                                <button id="gymMap" class="list-group-item list-group-item-action" data-bs-dismiss="modal">Gym</button>
+                                <button id="homeMap" class="list-group-item list-group-item-action" data-bs-dismiss="modal">Home</button>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

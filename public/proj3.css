@@ -26,12 +26,17 @@ html, body{
 #strtBtn{
     animation: glowing 1000ms infinite;
 }
-#ctrlBtn{
+.settingsBtn{
     position: absolute;
-    bottom: 3%; left: 3%;
     background-color: rgba(0, 0, 0, 0.4);
     border: none;
     display: none;
+}
+#ctrlBtn{
+    bottom: 3%; left: 3%;
+}
+#mapBtn{
+    bottom: 3%; left: 11%;
 }
 #ctrlBtn:hover{
     background-color: rgba(0, 0, 0, 0.6);

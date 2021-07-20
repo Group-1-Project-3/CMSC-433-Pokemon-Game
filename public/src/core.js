@@ -42,9 +42,7 @@ const Game = {
 
         this.Map = MapParser.Load(BEACH_MAP);
         this.Player = new Player("trainer_brendan", "idle", 736, 1300, 3, 3, 32, 32);
-        this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
-
-
+        //this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
 
         Camera.Init(this.Map);
         CollisionHandler.Init(this.Map);
@@ -113,7 +111,7 @@ const Game = {
     Update: function () {
         if (SceneManager.getScene() == "walking"){
             this.Player.Update(Clock.DeltaTime);
-            this.TileEffect.Update(Clock.DeltaTime);
+            //this.TileEffect.Update(Clock.DeltaTime);
             Camera.Update(Clock.DeltaTime);
         }
         else if (SceneManager.getScene() == "talking"){
@@ -130,7 +128,7 @@ const Game = {
 
             this.Map.Render();
             this.Player.Render();
-            this.TileEffect.Render();
+            //this.TileEffect.Render();
 
         }
     },

@@ -1,4 +1,4 @@
-import { Canvas, TextureManager } from "./graphics.js";
+import { TextureManager } from "./graphics.js";
 
 const CollisionHandler = {
     mapH: 0,

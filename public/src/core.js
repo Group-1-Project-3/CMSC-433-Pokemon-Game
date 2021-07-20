@@ -1,6 +1,5 @@
 import { MapParser, TileEffect } from "./map.js";
 import { Player } from "./player.js";
-import { NPC } from "./npc.js";
 import { TextureManager, Canvas } from "./graphics.js";
 import { Camera } from "./camera.js";
 import { CollisionHandler } from "./collision.js";

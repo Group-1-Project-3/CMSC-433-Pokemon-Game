@@ -133,7 +133,7 @@ function Player(textureId, action, x, y, dx, dy, tx, ty) {
         }
 
         Camera.SetTarget(this);
-        this.animation.SetProps(this.action, 4);
+        this.animation.SetProps(this.action, 8);
 
         /* update animation while moving, otherwise reset to initial frame */
         if (this.moving && !this.animation.Finished()) 

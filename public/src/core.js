@@ -30,7 +30,7 @@ const Game = {
         AudioManager.Init();
 
         this.Map = MapParser.Load(BEACH_MAP);
-        this.Player = new Player("trainer_brendan", "idle", 736, 1300, 8, 8, 32, 32);
+        this.Player = new Player("trainer_brendan", "idle", 736, 1300, 3, 3, 32, 32);
         this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
 
         Camera.Init(this.Map);

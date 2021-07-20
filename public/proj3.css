@@ -15,14 +15,18 @@ html, body{
     align-items: center;
     background-color: lightblue;
     position: relative;
+    border-radius: 10px;
+    border: 1px solid black;
 }
 #canvas{
     background-color: white;
     display: none;
     border-radius: 10px;
 }
+#strtBtn{
+    animation: glowing 1000ms infinite;
+}
 #ctrlBtn{
-    animation: glowing 1300ms infinite;
     position: absolute;
     bottom: 3%; left: 3%;
     background-color: rgba(0, 0, 0, 0.4);
@@ -31,6 +35,13 @@ html, body{
 }
 #ctrlBtn:hover{
     background-color: rgba(0, 0, 0, 0.6);
+}
+
+@keyframes glowing {
+    0% {
+        background-color: rgba(43, 127, 217, 0.5);
+        box-shadow: rgba(43, 127, 217, 1);
+    }
 }
 @font-face {
     font-family: 'redfont';

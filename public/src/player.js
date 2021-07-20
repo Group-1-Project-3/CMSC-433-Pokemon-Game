@@ -1,10 +1,9 @@
 import { Animation, TextureManager } from "./graphics.js";
-import { CollisionHandler } from "./collision.js";
+import { CollisionHandler, BoxCollider } from "./collision.js";
 import { Camera } from "./camera.js";
 import { Events } from "./input.js";
 
 function Player(textureId, action, x, y, dx, dy, tx, ty) {
-    this.animation = new Animation(textureId, true);
     this.x = x;
     this.y = y;
     this.dx = dx;
@@ -18,6 +17,8 @@ function Player(textureId, action, x, y, dx, dy, tx, ty) {
     this.moving_down = false;
     this.moving = false;
     this.destination;
+    this.animation = new Animation(textureId, true);
+    this.boxCollider = new BoxCollider(this.x, this.y, 12, 15, 11, 30);
 
     /* constructor */
     if (this.dx > this.tx || this.dx <= 0)
@@ -115,8 +116,9 @@ function Player(textureId, action, x, y, dx, dy, tx, ty) {
         this.Move(dt);
 
         /* check for collisions */
+        this.boxCollider.Update(this.x, this.y);
         let isCollision =   CollisionHandler.IsOutOfBoundsCollision(textureId, this.x, this.y) ||
-                            CollisionHandler.IsMapCollision(textureId, this.GetOrigin().x, this.GetOrigin().y);
+                            CollisionHandler.IsMapCollision(this.boxCollider);
 
         if (isCollision) {
             // revert back to previous tile
@@ -131,8 +133,13 @@ function Player(textureId, action, x, y, dx, dy, tx, ty) {
         }
 
         Camera.SetTarget(this);
-        this.animation.SetProps(this.action, 3);
-        this.animation.Update();
+        this.animation.SetProps(this.action, 4);
+
+        /* update animation while moving, otherwise reset to initial frame */
+        if (this.moving && !this.animation.Finished()) 
+            this.animation.Update();
+        else
+            this.animation.Reset();
     }
 
     Player.prototype.Render = function () {

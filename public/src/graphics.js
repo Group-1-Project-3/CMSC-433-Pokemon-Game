@@ -128,10 +128,14 @@ function Animation(textureId, hasCamera=false) {
         if (this.action !== action) {
             this.action = action;
             this.delay = delay;
-            this.frame = {};
             this.frameIndex = 0;
             this.frameSet = TextureManager.TextureMap[this.id].frameSets[action];
             this.count = 0;
+
+            /* set initial frame to frame 0 */
+            const frameArray = this.frameSet[this.frameIndex];
+            this.frame.row = frameArray[0];
+            this.frame.col = frameArray[1];
         }
     }
 
@@ -140,6 +144,15 @@ function Animation(textureId, hasCamera=false) {
             return false;
 
         return (this.frameIndex >= this.frameSet.length - 1) ? true : false;
+    }
+
+    Animation.prototype.Reset = function () {
+        if (this.count++ >= this.delay) {
+            this.frameIndex = 0;
+            const frameArray = this.frameSet[this.frameIndex];
+            this.frame.row = frameArray[0];
+            this.frame.col = frameArray[1];
+        }
     }
 
     Animation.prototype.Update = function () {

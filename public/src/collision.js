@@ -1,4 +1,4 @@
-import { TextureManager } from "./graphics.js";
+import { Canvas, TextureManager } from "./graphics.js";
 
 const CollisionHandler = {
     mapH: 0,
@@ -25,15 +25,15 @@ const CollisionHandler = {
 
         return false;
     },
-    IsMapCollision: function (textureId, x, y) {
+    IsMapCollision: function (boxCollider) {
         /* If our player goes into collision layer we don't update 'x' and 'y' */
-        let leftSide = Math.floor(x / this.collisionLayer.tileSize);
-        let rightSide = Math.floor((x + TextureManager.TextureMap[textureId].frameWidth) / this.collisionLayer.tileSize);
-        let topSide = Math.floor(y / this.collisionLayer.tileSize);
-        let bottomSide = Math.floor((y + TextureManager.TextureMap[textureId].frameHeight) / this.collisionLayer.tileSize);
+        let leftSide = Math.floor( boxCollider.left / this.collisionLayer.tileSize );
+        let rightSide = Math.floor( boxCollider.right / this.collisionLayer.tileSize );
+        let topSide = Math.floor( boxCollider.top / this.collisionLayer.tileSize );
+        let bottomSide = Math.floor( boxCollider.bottom / this.collisionLayer.tileSize );
 
-        for (let i = leftSide; i < rightSide; i++) {
-            for (let j = topSide; j < bottomSide; j++) {
+        for (let i = leftSide; i <= rightSide; i++) {
+            for (let j = topSide; j <= bottomSide; j++) {
                 if (this.collisionLayer.tileMap[j][i] !== 0) {
                     return true;
                 }
@@ -44,4 +44,23 @@ const CollisionHandler = {
     }
 }
 
-export { CollisionHandler };
+function BoxCollider(x, y, w, h, xOffset, yOffset) {
+    this.w = w;
+    this.h = h;
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;
+
+    this.left = x + this.xOffset;
+    this.right = this.left + this.w;
+    this.top = y + this.yOffset;
+    this.bottom = this.top + this.h;  
+
+    BoxCollider.prototype.Update = function(x, y) {
+        this.left = x + this.xOffset;
+        this.right = this.left + this.w;
+        this.top = y + this.yOffset;
+        this.bottom = this.top + this.h;  
+    }
+};
+
+export { CollisionHandler, BoxCollider };

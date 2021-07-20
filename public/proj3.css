@@ -3,18 +3,46 @@ html, body{
     height: 100%;
     margin: 0;
     background-color: lightgray;
-}
-.canvas-container{
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.canvas-container{
+    width: 1200px;
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid black;
+}
 #canvas{
     background-color: white;
+    display: none;
+    border-radius: 10px;
+}
+#strtBtn{
+    animation: glowing 1000ms infinite;
+}
+#ctrlBtn{
+    position: absolute;
+    bottom: 3%; left: 3%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: none;
+    display: none;
+}
+#ctrlBtn:hover{
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
+@keyframes glowing {
+    0% {
+        background-color: rgba(43, 127, 217, 0.5);
+        box-shadow: rgba(43, 127, 217, 1);
+    }
+}
 @font-face {
     font-family: 'redfont';
     src: local('redfont'), url("./assets/Pokemon Essentials v19.1 2021-05-22/Fonts/power red and blue intl.ttf");

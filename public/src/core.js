@@ -11,6 +11,7 @@ import { NPC } from "./npc.js";
 import { POKEMONS } from "../assets/pokemon_data.js";
 import { swapAnimation } from "../scenes/swap.js";
 import { StarterScene } from "../scenes/starter_scene.js";
+import { AudioManager } from "./audio.js";
 
 const TILEPIXELS = 32;
 const Clock = {
@@ -37,20 +38,17 @@ const Game = {
         Canvas.Init();
         Events.Init();
         TextureManager.Init();
+        AudioManager.Init();
 
-
-        /* Initialize all game classes */
-        this.Map = MapParser.Load(MAP);
-        this.Player = new Player("trainer_red", "idle", 21 * TILEPIXELS, 47 * TILEPIXELS, 8, 8, 10, 10, true);
+        this.Map = MapParser.Load(BEACH_MAP);
+        this.Player = new Player("trainer_brendan", "idle", 736, 1300, 3, 3, 32, 32);
         this.TileEffect = new TileEffect("grass", 7, "grass", this.Map, this.Player, 20);
 
 
 
         Camera.Init(this.Map);
         CollisionHandler.Init(this.Map);
-
-
-
+        AudioManager.Play("begin");
 
     },
 
@@ -111,14 +109,9 @@ const Game = {
             SceneManager.currScene_index = 0;
             SceneManager.caughtPokemon = true;
         }
-
-
-
-
     },
     Update: function () {
         if (SceneManager.getScene() == "walking"){
-
             this.Player.Update(Clock.DeltaTime);
             this.TileEffect.Update(Clock.DeltaTime);
             Camera.Update(Clock.DeltaTime);

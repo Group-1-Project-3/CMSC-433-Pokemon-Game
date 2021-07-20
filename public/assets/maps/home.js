@@ -1,4 +1,12 @@
-var MAP = { "compressionlevel":-1,
+var HOME_MAP = { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"map.json"
+        }
+    },
  "height":50,
  "infinite":false,
  "layers":[

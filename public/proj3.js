@@ -13,7 +13,7 @@ function main() {
 
     /* Game loop */
     Game.Clear();
-    Game.Load();
+    //Game.Load();
     Game.Update();
     Game.Render();
     Clock.Tick();
@@ -21,11 +21,25 @@ function main() {
     requestAnimationFrame(main);
 }
 
-/* Prepare game by init events and defaults */
-Game.Init();
-requestAnimationFrame(main);
-/* Performs at 60fps on most monitorss */
+function start() {
+    /* Prepare game by init events and defaults */
+    Game.Init();
+    /* Performs at 60fps on most monitorss */
+    requestAnimationFrame(main);
+}
 
+function load() {
+    let ctn = document.getElementById("canvas");
+    let strtBtn = document.getElementById("strtBtn");
+    let ctrlBtn = document.getElementById("ctrlBtn");
+    strtBtn.addEventListener("click", (e)=>{
+        ctn.style.display = "block"; 
+        strtBtn.style.display = "none";
+        ctrlBtn.style.display = "inline-block";
+        start();
+    });
+}
 
+load();
 
-export { SCALE };
+export { SCALE, start };

@@ -136,19 +136,15 @@ function Animation(textureId, hasCamera=false) {
         if (this.action !== action) {
             this.action = action;
             this.delay = delay;
-            this.frame = {};
             this.frameIndex = 0;
             this.frameSet = TextureManager.TextureMap[this.id].frameSets[action];
             this.count = 0;
-        }
-    }
 
-    Animation.prototype.UpdateByFrame = function () {
-        // update the animation to the next frame in the frame set
-        this.frameIndex = (this.frameIndex >= this.frameSet.length - 1) ? 0 : this.frameIndex + 1;
-        const frameArray = this.frameSet[this.frameIndex];
-        this.frame.row = frameArray[0];
-        this.frame.col = frameArray[1];
+            /* set initial frame to frame 0 */
+            const frameArray = this.frameSet[this.frameIndex];
+            this.frame.row = frameArray[0];
+            this.frame.col = frameArray[1];
+        }
     }
 
     Animation.prototype.Finished = function () {
@@ -156,6 +152,15 @@ function Animation(textureId, hasCamera=false) {
             return false;
 
         return (this.frameIndex >= this.frameSet.length - 1) ? true : false;
+    }
+
+    Animation.prototype.Reset = function () {
+        if (this.count++ >= this.delay) {
+            this.frameIndex = 0;
+            const frameArray = this.frameSet[this.frameIndex];
+            this.frame.row = frameArray[0];
+            this.frame.col = frameArray[1];
+        }
     }
 
     Animation.prototype.Update = function () {
@@ -175,7 +180,7 @@ function Animation(textureId, hasCamera=false) {
         if (this.hasCamera)
             TextureManager.DrawPlayerFrame(this.id, this.frame, x, y);
         else
-            TextureManager.DrawFrame(this.id, this.frame, x, y);
+            TextureManager.DrawPlayerFrame(this.id, this.frame, x, y);
     }
 }
 
